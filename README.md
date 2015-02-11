@@ -19,5 +19,7 @@ Now you can refer to this client in your pom.xml via
 ## Example
 
 To run a simple example do:
+
 `mvn clean assembly:single`
+
 `java -jar target/*with-dependencies.jar key=[YOUR_API_KEY]`
