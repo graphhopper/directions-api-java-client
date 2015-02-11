@@ -28,16 +28,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Main wrapper of the offline API for a simple and efficient usage.
+ * Main wrapper of the GraphHopper Directions API for a simple and efficient
+ * usage.
  * <p/>
  * @author Peter Karich
  */
-public class GraphHopperWeb implements GraphHopperAPI
-{
-    public static void main( String[] args )
-    {
+public class GraphHopperWeb implements GraphHopperAPI {
+
+    public static void main(String[] strArgs) {
+        CmdArgs args = CmdArgs.read(strArgs);
         GraphHopperWeb gh = new GraphHopperWeb();
-        gh.setKey("[YOUR_KEY]");
+        gh.setKey(args.get("key", "[YOUR_KEY]"));
 
         // for local server: gh.load("http://localhost:8989/route");        
         gh.load("https://graphhopper.com/api/1/route");
@@ -55,12 +56,10 @@ public class GraphHopperWeb implements GraphHopperAPI
     private boolean withElevation = false;
     private final TranslationMap trMap = new TranslationMap().doImport();
 
-    public GraphHopperWeb()
-    {
+    public GraphHopperWeb() {
     }
 
-    public void setDownloader( Downloader downloader )
-    {
+    public void setDownloader(Downloader downloader) {
         this.downloader = downloader;
     }
 
@@ -68,46 +67,38 @@ public class GraphHopperWeb implements GraphHopperAPI
      * Example url: http://localhost:8989 or http://217.92.216.224:8080
      */
     @Override
-    public boolean load( String url )
-    {
+    public boolean load(String url) {
         this.serviceUrl = url;
         return true;
     }
 
-    public GraphHopperWeb setPointsEncoded( boolean b )
-    {
+    public GraphHopperWeb setPointsEncoded(boolean b) {
         pointsEncoded = b;
         return this;
     }
 
-    public GraphHopperWeb setInstructions( boolean b )
-    {
+    public GraphHopperWeb setInstructions(boolean b) {
         instructions = b;
         return this;
     }
 
-    public GraphHopperWeb setElevation( boolean withElevation )
-    {
+    public GraphHopperWeb setElevation(boolean withElevation) {
         this.withElevation = withElevation;
         return this;
     }
 
-    public GraphHopperWeb setKey( String key )
-    {
+    public GraphHopperWeb setKey(String key) {
         this.key = key;
         return this;
     }
 
     @Override
-    public GHResponse route( GHRequest request )
-    {
+    public GHResponse route(GHRequest request) {
         StopWatch sw = new StopWatch().start();
         double took = 0;
-        try
-        {
+        try {
             String places = "";
-            for (GHPoint p : request.getPoints())
-            {
+            for (GHPoint p : request.getPoints()) {
                 places += "point=" + p.lat + "," + p.lon + "&";
             }
 
@@ -121,81 +112,71 @@ public class GraphHopperWeb implements GraphHopperAPI
                     + "&locale=" + request.getLocale().toString()
                     + "&elevation=" + withElevation;
 
-            if (!request.getVehicle().isEmpty())
+            if (!request.getVehicle().isEmpty()) {
                 url += "&vehicle=" + request.getVehicle();
+            }
 
-            if (!key.isEmpty())
+            if (!key.isEmpty()) {
                 url += "&key=" + key;
+            }
 
             String str = downloader.downloadAsString(url);
             JSONObject json = new JSONObject(str);
             GHResponse res = new GHResponse();
 
-            if (json.getJSONObject("info").has("errors"))
-            {
+            if (json.getJSONObject("info").has("errors")) {
                 JSONArray errors = json.getJSONObject("info").getJSONArray("errors");
 
-                for (int i = 0; i < errors.length(); i++)
-                {
+                for (int i = 0; i < errors.length(); i++) {
                     JSONObject error = errors.getJSONObject(i);
                     String exClass = error.getString("details");
                     String exMessage = error.getString("message");
 
-                    if (exClass.equals(UnsupportedOperationException.class.getName()))
-                    {
+                    if (exClass.equals(UnsupportedOperationException.class.getName())) {
                         res.addError(new UnsupportedOperationException(exMessage));
-                    } else if (exClass.equals(IllegalStateException.class.getName()))
-                    {
+                    } else if (exClass.equals(IllegalStateException.class.getName())) {
                         res.addError(new IllegalStateException(exMessage));
-                    } else if (exClass.equals(RuntimeException.class.getName()))
-                    {
+                    } else if (exClass.equals(RuntimeException.class.getName())) {
                         res.addError(new RuntimeException(exMessage));
-                    } else if (exClass.equals(IllegalArgumentException.class.getName()))
-                    {
+                    } else if (exClass.equals(IllegalArgumentException.class.getName())) {
                         res.addError(new IllegalArgumentException(exMessage));
-                    } else
-                    {
+                    } else {
                         res.addError(new Exception(exClass + " " + exMessage));
                     }
                 }
 
                 return res;
 
-            } else
-            {
+            } else {
                 took = json.getJSONObject("info").getDouble("took");
                 JSONArray paths = json.getJSONArray("paths");
                 JSONObject firstPath = paths.getJSONObject(0);
                 double distance = firstPath.getDouble("distance");
                 int time = firstPath.getInt("time");
                 PointList pointList;
-                if (pointsEncoded)
-                {
+                if (pointsEncoded) {
                     String pointStr = firstPath.getString("points");
                     pointList = WebHelper.decodePolyline(pointStr, 100, withElevation);
-                } else
-                {
+                } else {
                     JSONArray coords = firstPath.getJSONObject("points").getJSONArray("coordinates");
                     pointList = new PointList(coords.length(), withElevation);
-                    for (int i = 0; i < coords.length(); i++)
-                    {
+                    for (int i = 0; i < coords.length(); i++) {
                         JSONArray arr = coords.getJSONArray(i);
                         double lon = arr.getDouble(0);
                         double lat = arr.getDouble(1);
-                        if (withElevation)
+                        if (withElevation) {
                             pointList.add(lat, lon, arr.getDouble(2));
-                        else
+                        } else {
                             pointList.add(lat, lon);
+                        }
                     }
                 }
 
-                if (instructions)
-                {
+                if (instructions) {
                     JSONArray instrArr = firstPath.getJSONArray("instructions");
 
                     InstructionList il = new InstructionList(trMap.getWithFallBack(request.getLocale()));
-                    for (int instrIndex = 0; instrIndex < instrArr.length(); instrIndex++)
-                    {
+                    for (int instrIndex = 0; instrIndex < instrArr.length(); instrIndex++) {
                         JSONObject jsonObj = instrArr.getJSONObject(instrIndex);
                         double instDist = jsonObj.getDouble("distance");
                         String text = jsonObj.getString("text");
@@ -205,8 +186,7 @@ public class GraphHopperWeb implements GraphHopperAPI
                         int from = iv.getInt(0);
                         int to = iv.getInt(1);
                         PointList instPL = new PointList(to - from, withElevation);
-                        for (int j = from; j <= to; j++)
-                        {
+                        for (int j = from; j <= to; j++) {
                             instPL.add(pointList, j);
                         }
 
@@ -219,11 +199,9 @@ public class GraphHopperWeb implements GraphHopperAPI
                 }
                 return res.setPoints(pointList).setDistance(distance).setMillis(time);
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new RuntimeException("Problem while fetching path " + request.getPoints() + ": " + ex.getMessage(), ex);
-        } finally
-        {
+        } finally {
             logger.debug("Full request took:" + sw.stop().getSeconds() + ", API took:" + took);
         }
     }
