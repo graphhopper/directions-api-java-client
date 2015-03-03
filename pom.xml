@@ -8,6 +8,12 @@
     <version>0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>GraphHopper Directions API Java Client</name>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+        <relativePath></relativePath>
+    </parent>
     
     <properties>
         <slf4j.version>1.7.10</slf4j.version>        
@@ -77,4 +83,35 @@
             </plugin>
         </plugins>        
     </build>
+        
+    <!-- mvn deploy -DperformRelease=true -->
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
