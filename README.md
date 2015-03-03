@@ -5,7 +5,7 @@ We'll release this client as a maven dependency shortly. For now you have to bui
 `git clone https://github.com/graphhopper/directions-api-js-client/`
 
 Build it:
-`mvn clean install -DskipTests=true`
+`mvn -DskipTests=true clean install`
 
 Now you can refer to this client in your pom.xml via
 ```xml
@@ -20,6 +20,6 @@ Now you can refer to this client in your pom.xml via
 
 To run a simple example do:
 
-`mvn clean assembly:single`
+`mvn -DskipTests=true clean install assembly:single`
 
 `java -jar target/*with-dependencies.jar key=[YOUR_API_KEY]`
