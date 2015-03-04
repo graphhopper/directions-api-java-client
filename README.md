@@ -12,7 +12,8 @@ Now you can refer to this client in your pom.xml via
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client</artifactId>
-  <version>0.4-SNAPSHOT</version>
+  <!-- Or use 0.5-SNAPSHOT for the latest development version -->
+  <version>0.4.0-RC1</version>
 </dependency>   
 ```
 
