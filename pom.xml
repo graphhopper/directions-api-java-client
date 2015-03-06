@@ -5,7 +5,7 @@
 
     <groupId>com.graphhopper</groupId>
     <artifactId>directions-api-java-client</artifactId>
-    <version>0.4.0-RC1</version>
+    <version>0.4.0</version>
     <packaging>jar</packaging>
     <name>GraphHopper Directions API Java Client</name>
     <parent>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.graphhopper</groupId>
             <artifactId>graphhopper</artifactId>
-            <version>0.4.0-RC1</version>
+            <version>0.4.0</version>
         </dependency>   
         
         <dependency>
