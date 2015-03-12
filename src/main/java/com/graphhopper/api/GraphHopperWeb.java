@@ -20,8 +20,17 @@ package com.graphhopper.api;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopperAPI;
-import com.graphhopper.util.*;
+import com.graphhopper.util.FinishInstruction;
+import com.graphhopper.util.Instruction;
+import com.graphhopper.util.InstructionAnnotation;
+import com.graphhopper.util.InstructionList;
+import com.graphhopper.util.PointList;
+import com.graphhopper.util.RoundaboutInstruction;
+import com.graphhopper.util.StopWatch;
+import com.graphhopper.util.ViaInstruction;
 import com.graphhopper.util.shapes.GHPoint;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -35,40 +44,24 @@ import org.slf4j.LoggerFactory;
  */
 public class GraphHopperWeb implements GraphHopperAPI {
 
-    public static void main(String[] strArgs) {
-        CmdArgs args = CmdArgs.read(strArgs);
-        GraphHopperWeb gh = new GraphHopperWeb();
-        gh.setKey(args.get("key", "[YOUR_KEY]"));
-
-        // for local server: gh.load("http://localhost:8989/route");        
-        gh.load("https://graphhopper.com/api/1/route");
-
-        //GHResponse ph = gh.route(new GHRequest(53.080827, 9.074707, 50.597186, 11.184082));
-        GHResponse ph = gh.route(new GHRequest(49.6724, 11.3494, 49.6550, 11.4180));
-        System.out.println(ph);
-    }
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private String serviceUrl;
     private boolean pointsEncoded = true;
-    private Downloader downloader = new Downloader("GraphHopperWeb");
+    private OkHttpClient downloader = new OkHttpClient();
     private boolean instructions = true;
     private String key = "";
     private boolean withElevation = false;
-    private final TranslationMap trMap = new TranslationMap().doImport();
 
     public GraphHopperWeb() {
     }
 
-    public void setDownloader(Downloader downloader) {
+    public void setDownloader(OkHttpClient downloader) {
         this.downloader = downloader;
     }
 
-    /**
-     * Example url: http://localhost:8989 or http://217.92.216.224:8080
-     */
     @Override
-    public boolean load(String url) {
-        this.serviceUrl = url;
+    public boolean load(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
         return true;
     }
 
@@ -88,6 +81,9 @@ public class GraphHopperWeb implements GraphHopperAPI {
     }
 
     public GraphHopperWeb setKey(String key) {
+        if (key == null || key.isEmpty()) {
+            throw new IllegalStateException("Key cannot be empty");
+        }
         this.key = key;
         return this;
     }
@@ -107,7 +103,6 @@ public class GraphHopperWeb implements GraphHopperAPI {
                     + places
                     + "&type=json"
                     + "&points_encoded=" + pointsEncoded
-                    + "&way_point_max_distance=" + request.getHints().getDouble("wayPointMaxDistance", 1)
                     + "&algo=" + request.getAlgorithm()
                     + "&locale=" + request.getLocale().toString()
                     + "&elevation=" + withElevation;
@@ -120,7 +115,8 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 url += "&key=" + key;
             }
 
-            String str = downloader.downloadAsString(url);
+            Request okRequest = new Request.Builder().url(url).build();
+            String str = downloader.newCall(okRequest).execute().body().string();
             JSONObject json = new JSONObject(str);
             GHResponse res = new GHResponse();
 
@@ -175,7 +171,8 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 if (instructions) {
                     JSONArray instrArr = firstPath.getJSONArray("instructions");
 
-                    InstructionList il = new InstructionList(trMap.getWithFallBack(request.getLocale()));
+                    InstructionList il = new InstructionList(null);
+                    int viaCount = 1;
                     for (int instrIndex = 0; instrIndex < instrArr.length(); instrIndex++) {
                         JSONObject jsonObj = instrArr.getJSONObject(instrIndex);
                         double instDist = jsonObj.getDouble("distance");
@@ -190,9 +187,30 @@ public class GraphHopperWeb implements GraphHopperAPI {
                             instPL.add(pointList, j);
                         }
 
-                        // TODO way and payment type
-                        Instruction instr = new Instruction(sign, text, InstructionAnnotation.EMPTY, instPL).
-                                setDistance(instDist).setTime(instTime);
+                        InstructionAnnotation ia = InstructionAnnotation.EMPTY;
+                        if (jsonObj.has("annotation_importance") && jsonObj.has("annotation_text")) {
+                            ia = new InstructionAnnotation(jsonObj.getInt("annotation_importance"), jsonObj.getString("annotation_text"));
+                        }
+
+                        Instruction instr;
+                        if (sign == Instruction.USE_ROUNDABOUT || sign == Instruction.LEAVE_ROUNDABOUT) {
+                            instr = new RoundaboutInstruction(sign, text, ia, instPL);
+                        } else if (sign == Instruction.REACHED_VIA) {
+                            ViaInstruction tmpInstr = new ViaInstruction(text, ia, instPL);
+                            tmpInstr.setViaCount(viaCount);
+                            viaCount++;
+                            instr = tmpInstr;
+                        } else if (sign == Instruction.FINISH) {
+                            instr = new FinishInstruction(instPL, 0);
+                        } else {
+                            instr = new Instruction(sign, text, ia, instPL);
+                        }
+
+                        // The translation is done from the routing service so just use the provided string
+                        // instead of creating a combination with sign and name etc
+                        instr.setUseRawName();
+
+                        instr.setDistance(instDist).setTime(instTime);
                         il.add(instr);
                     }
                     res.setInstructions(il);
