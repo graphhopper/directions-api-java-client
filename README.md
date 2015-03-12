@@ -11,7 +11,7 @@ You can refer to this client in your pom.xml via
 
 ## Usage
 
-See [GraphHopperWebTest](./src/main/java/com/graphhopper/api/GraphHopperWebTest.java)
+See [GraphHopperWebTest](./src/test/java/com/graphhopper/api/GraphHopperWebTest.java#L30)
 
 ## Build Latest Development Version
 
