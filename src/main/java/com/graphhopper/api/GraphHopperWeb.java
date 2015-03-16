@@ -45,12 +45,11 @@ import org.slf4j.LoggerFactory;
 public class GraphHopperWeb implements GraphHopperAPI {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private String serviceUrl;
-    private boolean pointsEncoded = true;
+    private String serviceUrl = "https://graphhopper.com/api/1/route";
     private OkHttpClient downloader = new OkHttpClient();
     private boolean instructions = true;
+    private boolean elevation = false;
     private String key = "";
-    private boolean withElevation = false;
 
     public GraphHopperWeb() {
     }
@@ -59,15 +58,14 @@ public class GraphHopperWeb implements GraphHopperAPI {
         this.downloader = downloader;
     }
 
+    public OkHttpClient getDownloader() {
+        return downloader;
+    }
+
     @Override
     public boolean load(String serviceUrl) {
         this.serviceUrl = serviceUrl;
         return true;
-    }
-
-    public GraphHopperWeb setPointsEncoded(boolean b) {
-        pointsEncoded = b;
-        return this;
     }
 
     public GraphHopperWeb setInstructions(boolean b) {
@@ -76,7 +74,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
     }
 
     public GraphHopperWeb setElevation(boolean withElevation) {
-        this.withElevation = withElevation;
+        this.elevation = withElevation;
         return this;
     }
 
@@ -98,21 +96,26 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 places += "point=" + p.lat + "," + p.lon + "&";
             }
 
+            boolean tmpInstructions = request.getHints().getBool("instructions", instructions);
+            boolean tmpElevation = request.getHints().getBool("elevation", elevation);
+            String tmpKey = request.getHints().get("key", key);
+
             String url = serviceUrl
                     + "?"
                     + places
                     + "&type=json"
-                    + "&points_encoded=" + pointsEncoded
+                    + "&instructions=" + tmpInstructions
+                    + "&points_encoded=true"
                     + "&algo=" + request.getAlgorithm()
                     + "&locale=" + request.getLocale().toString()
-                    + "&elevation=" + withElevation;
+                    + "&elevation=" + tmpElevation;
 
             if (!request.getVehicle().isEmpty()) {
                 url += "&vehicle=" + request.getVehicle();
             }
 
-            if (!key.isEmpty()) {
-                url += "&key=" + key;
+            if (!tmpKey.isEmpty()) {
+                url += "&key=" + tmpKey;
             }
 
             Request okRequest = new Request.Builder().url(url).build();
@@ -149,26 +152,10 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 JSONObject firstPath = paths.getJSONObject(0);
                 double distance = firstPath.getDouble("distance");
                 int time = firstPath.getInt("time");
-                PointList pointList;
-                if (pointsEncoded) {
-                    String pointStr = firstPath.getString("points");
-                    pointList = WebHelper.decodePolyline(pointStr, 100, withElevation);
-                } else {
-                    JSONArray coords = firstPath.getJSONObject("points").getJSONArray("coordinates");
-                    pointList = new PointList(coords.length(), withElevation);
-                    for (int i = 0; i < coords.length(); i++) {
-                        JSONArray arr = coords.getJSONArray(i);
-                        double lon = arr.getDouble(0);
-                        double lat = arr.getDouble(1);
-                        if (withElevation) {
-                            pointList.add(lat, lon, arr.getDouble(2));
-                        } else {
-                            pointList.add(lat, lon);
-                        }
-                    }
-                }
+                String pointStr = firstPath.getString("points");
+                PointList pointList = WebHelper.decodePolyline(pointStr, 100, tmpElevation);
 
-                if (instructions) {
+                if (tmpInstructions) {
                     JSONArray instrArr = firstPath.getJSONArray("instructions");
 
                     InstructionList il = new InstructionList(null);
@@ -182,7 +169,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
                         JSONArray iv = jsonObj.getJSONArray("interval");
                         int from = iv.getInt(0);
                         int to = iv.getInt(1);
-                        PointList instPL = new PointList(to - from, withElevation);
+                        PointList instPL = new PointList(to - from, tmpElevation);
                         for (int j = from; j <= to; j++) {
                             instPL.add(pointList, j);
                         }
