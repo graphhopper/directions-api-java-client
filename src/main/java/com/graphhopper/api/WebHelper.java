@@ -18,10 +18,6 @@
 package com.graphhopper.api;
 
 import com.graphhopper.util.PointList;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URLEncoder;
 
 /**
@@ -83,65 +79,5 @@ public class WebHelper {
             }
         }
         return poly;
-    }
-
-    public static String encodePolyline(PointList poly) {
-        if (poly.isEmpty()) {
-            return "";
-        }
-
-        return encodePolyline(poly, poly.is3D());
-    }
-
-    public static String encodePolyline(PointList poly, boolean includeElevation) {
-        StringBuilder sb = new StringBuilder();
-        int size = poly.getSize();
-        int prevLat = 0;
-        int prevLon = 0;
-        int prevEle = 0;
-        for (int i = 0; i < size; i++) {
-            int num = (int) Math.floor(poly.getLatitude(i) * 1e5);
-            encodeNumber(sb, num - prevLat);
-            prevLat = num;
-            num = (int) Math.floor(poly.getLongitude(i) * 1e5);
-            encodeNumber(sb, num - prevLon);
-            prevLon = num;
-            if (includeElevation) {
-                num = (int) Math.floor(poly.getElevation(i) * 100);
-                encodeNumber(sb, num - prevEle);
-                prevEle = num;
-            }
-        }
-        return sb.toString();
-    }
-
-    private static void encodeNumber(StringBuilder sb, int num) {
-        num = num << 1;
-        if (num < 0) {
-            num = ~num;
-        }
-        while (num >= 0x20) {
-            int nextValue = (0x20 | (num & 0x1f)) + 63;
-            sb.append((char) (nextValue));
-            num >>= 5;
-        }
-        num += 63;
-        sb.append((char) (num));
-    }
-
-    public static String readString(InputStream inputStream) throws IOException {
-        String encoding = "UTF-8";
-        InputStream in = new BufferedInputStream(inputStream, 4096);
-        try {
-            byte[] buffer = new byte[4096];
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            int numRead;
-            while ((numRead = in.read(buffer)) != -1) {
-                output.write(buffer, 0, numRead);
-            }
-            return output.toString(encoding);
-        } finally {
-            in.close();
-        }
     }
 }

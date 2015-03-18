@@ -22,6 +22,9 @@ import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopperAPI;
 import com.graphhopper.util.*;
 import com.graphhopper.util.shapes.GHPoint;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import java.util.concurrent.TimeUnit;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -35,45 +38,43 @@ import org.slf4j.LoggerFactory;
  */
 public class GraphHopperWeb implements GraphHopperAPI {
 
-    public static void main(String[] strArgs) {
-        CmdArgs args = CmdArgs.read(strArgs);
-        GraphHopperWeb gh = new GraphHopperWeb();
-        gh.setKey(args.get("key", "[YOUR_KEY]"));
-
-        // for local server: gh.load("http://localhost:8989/route");        
-        gh.load("https://graphhopper.com/api/1/route");
-
-        //GHResponse ph = gh.route(new GHRequest(53.080827, 9.074707, 50.597186, 11.184082));
-        GHResponse ph = gh.route(new GHRequest(49.6724, 11.3494, 49.6550, 11.4180));
-        System.out.println(ph);
-    }
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private String serviceUrl;
-    private boolean pointsEncoded = true;
-    private Downloader downloader = new Downloader("GraphHopperWeb");
-    private boolean instructions = true;
+    private OkHttpClient downloader = new OkHttpClient();
+    private String serviceUrl = "https://graphhopper.com/api/1/route";
     private String key = "";
-    private boolean withElevation = false;
-    private final TranslationMap trMap = new TranslationMap().doImport();
+    private boolean instructions = true;
+    private boolean calcPoints = true;
+    private boolean elevation = false;
 
     public GraphHopperWeb() {
+        downloader.setConnectTimeout(5, TimeUnit.SECONDS);
     }
 
-    public void setDownloader(Downloader downloader) {
+    public void setDownloader(OkHttpClient downloader) {
         this.downloader = downloader;
     }
 
-    /**
-     * Example url: http://localhost:8989 or http://217.92.216.224:8080
-     */
+    public OkHttpClient getDownloader() {
+        return downloader;
+    }
+
     @Override
-    public boolean load(String url) {
-        this.serviceUrl = url;
+    public boolean load(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
         return true;
     }
 
-    public GraphHopperWeb setPointsEncoded(boolean b) {
-        pointsEncoded = b;
+    public GraphHopperWeb setKey(String key) {
+        if (key == null || key.isEmpty()) {
+            throw new IllegalStateException("Key cannot be empty");
+        }
+
+        this.key = key;
+        return this;
+    }
+
+    public GraphHopperWeb setCalcPoints(boolean calcPoints) {
+        this.calcPoints = calcPoints;
         return this;
     }
 
@@ -83,12 +84,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
     }
 
     public GraphHopperWeb setElevation(boolean withElevation) {
-        this.withElevation = withElevation;
-        return this;
-    }
-
-    public GraphHopperWeb setKey(String key) {
-        this.key = key;
+        this.elevation = withElevation;
         return this;
     }
 
@@ -102,25 +98,38 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 places += "point=" + p.lat + "," + p.lon + "&";
             }
 
+            boolean tmpInstructions = request.getHints().getBool("instructions", instructions);
+            boolean tmpCalcPoints = request.getHints().getBool("calcPoints", calcPoints);
+
+            if (tmpInstructions && !tmpCalcPoints) {
+                throw new IllegalStateException("Cannot calculate instructions without points (only points without instructions). "
+                        + "Use calcPoints=false and instructions=false to disable point and instruction calculation");
+            }
+
+            boolean tmpElevation = request.getHints().getBool("elevation", elevation);
+            String tmpKey = request.getHints().get("key", key);
+
             String url = serviceUrl
                     + "?"
                     + places
                     + "&type=json"
-                    + "&points_encoded=" + pointsEncoded
-                    + "&way_point_max_distance=" + request.getHints().getDouble("wayPointMaxDistance", 1)
+                    + "&instructions=" + tmpInstructions
+                    + "&points_encoded=true"
+                    + "&calc_points=" + tmpCalcPoints
                     + "&algo=" + request.getAlgorithm()
                     + "&locale=" + request.getLocale().toString()
-                    + "&elevation=" + withElevation;
+                    + "&elevation=" + tmpElevation;
 
             if (!request.getVehicle().isEmpty()) {
                 url += "&vehicle=" + request.getVehicle();
             }
 
-            if (!key.isEmpty()) {
-                url += "&key=" + key;
+            if (!tmpKey.isEmpty()) {
+                url += "&key=" + tmpKey;
             }
 
-            String str = downloader.downloadAsString(url);
+            Request okRequest = new Request.Builder().url(url).build();
+            String str = downloader.newCall(okRequest).execute().body().string();
             JSONObject json = new JSONObject(str);
             GHResponse res = new GHResponse();
 
@@ -153,51 +162,60 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 JSONObject firstPath = paths.getJSONObject(0);
                 double distance = firstPath.getDouble("distance");
                 int time = firstPath.getInt("time");
-                PointList pointList;
-                if (pointsEncoded) {
+                if (tmpCalcPoints) {
                     String pointStr = firstPath.getString("points");
-                    pointList = WebHelper.decodePolyline(pointStr, 100, withElevation);
-                } else {
-                    JSONArray coords = firstPath.getJSONObject("points").getJSONArray("coordinates");
-                    pointList = new PointList(coords.length(), withElevation);
-                    for (int i = 0; i < coords.length(); i++) {
-                        JSONArray arr = coords.getJSONArray(i);
-                        double lon = arr.getDouble(0);
-                        double lat = arr.getDouble(1);
-                        if (withElevation) {
-                            pointList.add(lat, lon, arr.getDouble(2));
-                        } else {
-                            pointList.add(lat, lon);
+                    PointList pointList = WebHelper.decodePolyline(pointStr, 100, tmpElevation);
+                    res.setPoints(pointList);
+
+                    if (tmpInstructions) {
+                        JSONArray instrArr = firstPath.getJSONArray("instructions");
+
+                        InstructionList il = new InstructionList(null);
+                        int viaCount = 1;
+                        for (int instrIndex = 0; instrIndex < instrArr.length(); instrIndex++) {
+                            JSONObject jsonObj = instrArr.getJSONObject(instrIndex);
+                            double instDist = jsonObj.getDouble("distance");
+                            String text = jsonObj.getString("text");
+                            long instTime = jsonObj.getLong("time");
+                            int sign = jsonObj.getInt("sign");
+                            JSONArray iv = jsonObj.getJSONArray("interval");
+                            int from = iv.getInt(0);
+                            int to = iv.getInt(1);
+                            PointList instPL = new PointList(to - from, tmpElevation);
+                            for (int j = from; j <= to; j++) {
+                                instPL.add(pointList, j);
+                            }
+
+                            InstructionAnnotation ia = InstructionAnnotation.EMPTY;
+                            if (jsonObj.has("annotation_importance") && jsonObj.has("annotation_text")) {
+                                ia = new InstructionAnnotation(jsonObj.getInt("annotation_importance"), jsonObj.getString("annotation_text"));
+                            }
+
+                            Instruction instr;
+                            if (sign == Instruction.USE_ROUNDABOUT || sign == Instruction.LEAVE_ROUNDABOUT) {
+                                instr = new RoundaboutInstruction(sign, text, ia, instPL);
+                            } else if (sign == Instruction.REACHED_VIA) {
+                                ViaInstruction tmpInstr = new ViaInstruction(text, ia, instPL);
+                                tmpInstr.setViaCount(viaCount);
+                                viaCount++;
+                                instr = tmpInstr;
+                            } else if (sign == Instruction.FINISH) {
+                                instr = new FinishInstruction(instPL, 0);
+                            } else {
+                                instr = new Instruction(sign, text, ia, instPL);
+                            }
+
+                            // The translation is done from the routing service so just use the provided string
+                            // instead of creating a combination with sign and name etc
+                            instr.setUseRawName();
+
+                            instr.setDistance(instDist).setTime(instTime);
+                            il.add(instr);
                         }
+                        res.setInstructions(il);
                     }
                 }
-
-                if (instructions) {
-                    JSONArray instrArr = firstPath.getJSONArray("instructions");
-
-                    InstructionList il = new InstructionList(trMap.getWithFallBack(request.getLocale()));
-                    for (int instrIndex = 0; instrIndex < instrArr.length(); instrIndex++) {
-                        JSONObject jsonObj = instrArr.getJSONObject(instrIndex);
-                        double instDist = jsonObj.getDouble("distance");
-                        String text = jsonObj.getString("text");
-                        long instTime = jsonObj.getLong("time");
-                        int sign = jsonObj.getInt("sign");
-                        JSONArray iv = jsonObj.getJSONArray("interval");
-                        int from = iv.getInt(0);
-                        int to = iv.getInt(1);
-                        PointList instPL = new PointList(to - from, withElevation);
-                        for (int j = from; j <= to; j++) {
-                            instPL.add(pointList, j);
-                        }
-
-                        // TODO way and payment type
-                        Instruction instr = new Instruction(sign, text, InstructionAnnotation.EMPTY, instPL).
-                                setDistance(instDist).setTime(instTime);
-                        il.add(instr);
-                    }
-                    res.setInstructions(il);
-                }
-                return res.setPoints(pointList).setDistance(distance).setMillis(time);
+                return res.setDistance(distance).setMillis(time);
             }
         } catch (Exception ex) {
             throw new RuntimeException("Problem while fetching path " + request.getPoints() + ": " + ex.getMessage(), ex);
