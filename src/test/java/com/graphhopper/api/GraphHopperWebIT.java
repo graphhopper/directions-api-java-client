@@ -11,13 +11,16 @@ import org.junit.Before;
  *
  * @author Peter Karich
  */
-public class GraphHopperWebTest {
+public class GraphHopperWebIT {
 
     private final GraphHopperWeb gh = new GraphHopperWeb();
+    GraphHopperMatrixWeb ghMatrix = new GraphHopperMatrixWeb();
 
     @Before
     public void setUp() {
-        gh.setKey(System.getProperty("graphhopper.key", ""));
+        String key = System.getProperty("graphhopper.key", "");
+        gh.setKey(key);
+        ghMatrix.setKey(key);
     }
 
     @Test
@@ -58,5 +61,24 @@ public class GraphHopperWebTest {
     void isBetween(double from, double to, double expected) {
         assertTrue("expected value " + expected + " was smaller than limit " + from, expected >= from);
         assertTrue("expected value " + expected + " was bigger than limit " + to, expected <= to);
+    }
+
+    @Test
+    public void testMatrix() {
+        GHMRequest req = GraphHopperMatrixWebTest.createRequest();
+        MatrixResponse res = ghMatrix.route(req);
+
+        // no distances available
+        assertEquals(0, res.get(1, 2).getDistance(), .1);
+        // ... only weight:
+        assertEquals(807.167, res.get(1, 2).getRouteWeight(), .1);
+
+        req = GraphHopperMatrixWebTest.createRequest();
+        req.addOutArray("weights");
+        req.addOutArray("distances");
+        res = ghMatrix.route(req);
+
+        assertEquals(9734., res.get(1, 2).getDistance(), .1);
+        assertEquals(807.167, res.get(1, 2).getRouteWeight(), .1);
     }
 }
