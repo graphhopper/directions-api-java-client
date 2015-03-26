@@ -59,7 +59,7 @@ InstructionList il = res.getInstructions();
 ## Build Latest Development Version
 
 ```bash
-git clone https://github.com/graphhopper/directions-api-js-client/
+git clone https://github.com/graphhopper/directions-api-java-client/
 mvn -DskipTests=true clean install assembly:single
 
 # now execute the test and set your key
