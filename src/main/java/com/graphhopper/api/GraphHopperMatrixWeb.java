@@ -87,7 +87,7 @@ public class GraphHopperMatrixWeb {
             try {
                 json = new JSONObject(str);
             } catch (Exception ex) {
-                throw new RuntimeException("Cannot parse json " + str);
+                throw new RuntimeException("Cannot parse json " + str + " from " + url);
             }
             if (json.has("message")) {
                 throw new RuntimeException(json.getString("message") + ", code:" + json.getInt("code"));
