@@ -5,6 +5,7 @@ import com.graphhopper.util.shapes.GHPoint;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -181,9 +182,17 @@ public class GraphHopperMatrixWeb {
                 pointsStr += "&";
             }
 
-            pointsStr += pointName + "=" + p.lat + "," + p.lon;
+            pointsStr += pointName + "=" + encode(p.lat + "," + p.lon);
         }
         return pointsStr;
+    }
+
+    public String encode(String str) {
+        try {
+            return URLEncoder.encode(str, "UTF-8");
+        } catch (Exception ex) {
+            return str;
+        }
     }
 
     protected String fetchJson(String url) throws IOException {
