@@ -210,7 +210,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 res.setInstructions(il);
             }
         }
-        res.setDistance(distance).setTime(time);
+        res.setDistance(distance).setMillis(time);
     }
 
     public static void readErrors(List<Throwable> errors, JSONObject json) {
