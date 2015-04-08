@@ -47,7 +47,7 @@ public class GraphHopperMatrixWeb {
         StopWatch sw = new StopWatch().start();
 
         int fromCount, toCount;
-        String pointsStr = "";
+        String pointsStr;
         if (request.identicalLists) {
             fromCount = toCount = request.getFromPoints().size();
             pointsStr = createPointQuery(request.getFromPoints(), "point");
@@ -90,15 +90,9 @@ public class GraphHopperMatrixWeb {
             } catch (Exception ex) {
                 throw new RuntimeException("Cannot parse json " + str + " from " + url);
             }
-            if (json.has("message")) {
-                throw new RuntimeException(json.getString("message") + ", code:" + json.getInt("code"));
-            }
 
-            JSONObject infoJson = json.getJSONObject("info");
-            if (infoJson.has("errors")) {
-                GraphHopperWeb.readErrors(matrixResponse.getErrors(), infoJson.getJSONArray("errors"));
-            } else {
-
+            GraphHopperWeb.readErrors(matrixResponse.getErrors(), json);
+            if (!matrixResponse.hasErrors()) {
                 if (outArraysList.contains("paths") && json.has("paths")) {
                     JSONArray pathArray = json.getJSONArray("paths");
                     for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {

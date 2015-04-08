@@ -1,6 +1,5 @@
 package com.graphhopper.api;
 
-import com.graphhopper.GHRequest;
 import com.graphhopper.util.shapes.GHPoint;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,6 +46,7 @@ public class GraphHopperMatrixWebTest {
         MatrixResponse rsp = matrixWeb.route(req);
 
         assertTrue(rsp.hasErrors());
+        assertEquals(2, rsp.getErrors().size());
     }
 
     @Test

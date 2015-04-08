@@ -1,11 +1,9 @@
 {
-  "info" : {
-    "errors" : [ {
-      "message" : "Cannot find from_points: 7, 8"
-    }, {
-      "message" : "Cannot find to_points: 7, 8"
-    } ],
-    "copyrights" : [ "GraphHopper", "OpenStreetMap contributors" ],
-    "took" : 0.002572816
-  }
+    "message": "Cannot find from_points: 7, 8",
+    "code": 400,
+    "hints": [{
+            "message": "Cannot find from_points: 7, 8"
+        }, {
+            "message": "Cannot find to_points: 7, 8"
+        }]
 }
