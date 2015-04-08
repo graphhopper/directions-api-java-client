@@ -5,7 +5,7 @@ You can refer to this client in your pom.xml via
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client</artifactId>
-  <version>0.4.0</version>
+  <version>0.4.2.1</version>
 </dependency>
 ```
 
@@ -59,8 +59,8 @@ InstructionList il = res.getInstructions();
 ## Build Latest Development Version
 
 ```bash
-git clone https://github.com/graphhopper/directions-api-js-client/
+git clone https://github.com/graphhopper/directions-api-java-client/
 mvn -DskipTests=true clean install assembly:single
 # now execute the test and set your key
-mvn -Dgraphhopper.key=[YOUR_KEY] clean test
+mvn -Dgraphhopper.key=[YOUR_KEY] clean test verify
 ```
