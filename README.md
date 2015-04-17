@@ -60,7 +60,7 @@ InstructionList il = res.getInstructions();
 
 ```bash
 git clone https://github.com/graphhopper/directions-api-java-client/
-mvn -DskipTests=true clean install assembly:single
+mvn -DskipTests=true clean install
 
 # now execute the test and set your key
 mvn -Dgraphhopper.key=[YOUR_KEY] clean test verify
