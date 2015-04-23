@@ -2,6 +2,8 @@ package com.graphhopper.api;
 
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
+import com.graphhopper.util.Instruction;
+import com.graphhopper.util.RoundaboutInstruction;
 import com.graphhopper.util.shapes.GHPoint;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -56,6 +58,24 @@ public class GraphHopperWebIT {
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         assertEquals(0, res.getPoints().size());
         isBetween(11000, 12000, res.getDistance());
+    }
+
+    @Test
+    public void readRoundabout() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(52.261434, 13.485718)).
+                addPoint(new GHPoint(52.399067, 13.469238));
+
+        GHResponse res = gh.route(req);
+        int counter = 0;
+        for (Instruction i : res.getInstructions()) {
+            if (i instanceof RoundaboutInstruction) {
+                counter++;
+                RoundaboutInstruction ri = (RoundaboutInstruction) i;
+                assertEquals("turn_angle was incorrect:" + ri.getRadian(), -1.5, ri.getRadian(), 0.1);
+            }
+        }
+        assertTrue("no roundabout in route?", counter > 0);
     }
 
     void isBetween(double from, double to, double expected) {
