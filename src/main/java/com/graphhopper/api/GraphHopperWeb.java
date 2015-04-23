@@ -131,7 +131,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
             Request okRequest = new Request.Builder().url(url).build();
             String str = downloader.newCall(okRequest).execute().body().string();
-            
+
             JSONObject json = new JSONObject(str);
             GHResponse res = new GHResponse();
             readErrors(res.getErrors(), json);
@@ -188,7 +188,17 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
                     Instruction instr;
                     if (sign == Instruction.USE_ROUNDABOUT || sign == Instruction.LEAVE_ROUNDABOUT) {
-                        instr = new RoundaboutInstruction(sign, text, ia, instPL);
+                        RoundaboutInstruction ri = new RoundaboutInstruction(sign, text, ia, instPL);
+
+                        if (jsonObj.has("exit_number")) {
+                            ri.setExitNumber(jsonObj.getInt("exit_number"));
+                        }
+
+                        if (jsonObj.has("turn_angle")) {
+                            ri.setRadian(jsonObj.getDouble("turn_angle"));
+                        }
+
+                        instr = ri;
                     } else if (sign == Instruction.REACHED_VIA) {
                         ViaInstruction tmpInstr = new ViaInstruction(text, ia, instPL);
                         tmpInstr.setViaCount(viaCount);
