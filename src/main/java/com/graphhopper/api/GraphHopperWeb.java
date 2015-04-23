@@ -195,7 +195,10 @@ public class GraphHopperWeb implements GraphHopperAPI {
                         }
 
                         if (jsonObj.has("turn_angle")) {
-                            ri.setRadian(jsonObj.getDouble("turn_angle"));
+                            // TODO provide setTurnAngle setter
+                            double angle = jsonObj.getDouble("turn_angle");
+                            ri.setDirOfRotation(angle);
+                            ri.setRadian((angle < 0 ? -Math.PI : Math.PI) - angle);
                         }
 
                         instr = ri;
