@@ -65,3 +65,11 @@ mvn -DskipTests=true clean install
 # now execute the test and set your key
 mvn -Dgraphhopper.key=[YOUR_KEY] clean test verify
 ```
+
+## Android Alternative
+
+The OSM [OSMBonusPack](https://github.com/MKergall/osmbonuspack/wiki/Tutorial_1) also has
+an Android client written from the community. It also supports 
+online map tiles. You can see this code in action in 
+[Geopaparazzi](http://geopaparazzi.github.io/geopaparazzi/), 
+[OSMNavigator](https://github.com/MKergall/osmbonuspack/wiki/OSMNavigator) and [more](https://github.com/geopaparazzi/geopaparazzi/wiki/Projects-Using-It)
