@@ -62,13 +62,14 @@ public class GraphHopperMatrixWebTest {
     }
 
     @Test
-    public void testReadingWeightsAndDistances() throws IOException {
+    public void testReadingWeights_TimesAndDistances() throws IOException {
         String ghMatrix = readFile(new InputStreamReader(getClass().getResourceAsStream("matrix.json")));
         GraphHopperMatrixWeb matrixWeb = new GraphHopperMatrixWebFake(ghMatrix);
 
         GHMRequest req = createRequest();
         req.addOutArray("weights");
         req.addOutArray("distances");
+        req.addOutArray("times");
         MatrixResponse rsp = matrixWeb.route(req);
 
         assertFalse(rsp.hasErrors());
@@ -80,6 +81,8 @@ public class GraphHopperMatrixWebTest {
         assertEquals(885.867, rsp.get(0, 1).getRouteWeight(), .1);
         assertEquals(807.167, rsp.get(1, 2).getRouteWeight(), .1);
         assertEquals(0., rsp.get(1, 1).getRouteWeight(), .1);
+        
+        assertEquals(886, rsp.get(0, 1).getMillis() / 1000);
     }
 
     @Test
@@ -101,6 +104,8 @@ public class GraphHopperMatrixWebTest {
 
         assertEquals(170, rsp.get(0, 1).getPoints().size(), .1);
         assertEquals(174, rsp.get(1, 2).getPoints().size(), .1);
+        
+        assertEquals(885, rsp.get(0, 1).getMillis() / 1000);
     }
 
     public static String readFile(Reader simpleReader) throws IOException {
