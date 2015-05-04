@@ -148,7 +148,7 @@ public class GraphHopperMatrixWeb {
                             }
 
                             if (readTimes) {
-                                singleRsp.setMillis(timesFromArray.getLong(toIndex));
+                                singleRsp.setMillis(timesFromArray.getLong(toIndex) * 1000);
                             }
 
                             if (readDistances) {
