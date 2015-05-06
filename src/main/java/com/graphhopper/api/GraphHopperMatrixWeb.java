@@ -19,10 +19,15 @@ import org.json.JSONObject;
 public class GraphHopperMatrixWeb {
 
     private OkHttpClient downloader = new OkHttpClient();
-    private final String serviceUrl = "https://graphhopper.com/api/1/matrix";
+    private final String serviceUrl;
     private String key = "";
 
     public GraphHopperMatrixWeb() {
+        this("https://graphhopper.com/api/1/matrix");
+    }
+
+    public GraphHopperMatrixWeb(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
         downloader.setConnectTimeout(5, TimeUnit.SECONDS);
     }
 
