@@ -2,10 +2,11 @@ package com.graphhopper.api;
 
 import com.graphhopper.util.StopWatch;
 import com.graphhopper.util.shapes.GHPoint;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -18,8 +19,11 @@ import org.json.JSONObject;
  */
 public class GraphHopperMatrixWeb {
 
+    public static final MediaType MT_JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient downloader = new OkHttpClient();
     private final String serviceUrl;
+    private int maxIterations = 10;
+    private long sleepAfterGET = 1000;
     private String key = "";
 
     public GraphHopperMatrixWeb() {
@@ -28,6 +32,9 @@ public class GraphHopperMatrixWeb {
 
     public GraphHopperMatrixWeb(String serviceUrl) {
         this.serviceUrl = serviceUrl;
+        if (serviceUrl.endsWith("/")) {
+            serviceUrl = serviceUrl.substring(0, serviceUrl.length() - 1);
+        }
         downloader.setConnectTimeout(5, TimeUnit.SECONDS);
     }
 
@@ -37,6 +44,20 @@ public class GraphHopperMatrixWeb {
 
     public OkHttpClient getDownloader() {
         return downloader;
+    }
+
+    /**
+     * Internal parameter. Modify only if you have very large matrices.
+     */
+    public void setMaxIterations(int maxIterations) {
+        this.maxIterations = maxIterations;
+    }
+
+    /**
+     * Internal parameter. Modify only if you have very large matrices.
+     */
+    public void setSleepAfterGET(long sleepAfterGETMillis) {
+        this.sleepAfterGET = sleepAfterGETMillis;
     }
 
     public GraphHopperMatrixWeb setKey(String key) {
@@ -51,122 +72,125 @@ public class GraphHopperMatrixWeb {
     public MatrixResponse route(GHMRequest request) {
         StopWatch sw = new StopWatch().start();
 
-        int fromCount, toCount;
-        String pointsStr;
-        if (request.identicalLists) {
-            fromCount = toCount = request.getFromPoints().size();
-            pointsStr = createPointQuery(request.getFromPoints(), "point");
-        } else {
-            fromCount = request.getFromPoints().size();
-            toCount = request.getToPoints().size();
-            pointsStr = createPointQuery(request.getFromPoints(), "from_point");
-            pointsStr += "&" + createPointQuery(request.getToPoints(), "to_point");
-        }
+        JSONObject requestJson = new JSONObject();
+        int fromCount = request.getFromPoints().size(), toCount = request.getToPoints().size();
+        List<Double[]> fromPointList = createPointList(request.getFromPoints());
+        List<Double[]> toPointList = createPointList(request.getToPoints());
 
-        String outArrayStr = "";
         List<String> outArraysList = new ArrayList<>(request.getOutArrays());
         if (outArraysList.isEmpty()) {
             outArraysList.add("weights");
         }
 
-        for (String type : outArraysList) {
-            if (!type.isEmpty()) {
-                outArrayStr += "&";
-            }
-
-            outArrayStr += "out_array=" + type;
-        }
-
+        requestJson.put("from_points", fromPointList);
+        requestJson.put("to_points", toPointList);
+        requestJson.put("out_arrays", outArraysList);
+        requestJson.put("vehicle", request.getVehicle());
         // TODO allow elevation for full path
         boolean hasElevation = false;
-        String url = serviceUrl + "?"
-                + pointsStr
-                + "&" + outArrayStr
-                + "&vehicle=" + request.getVehicle()
-                + "&key=" + key;
+        requestJson.put("elevation", hasElevation);
 
-        MatrixResponse matrixResponse = new MatrixResponse(request.getFromPoints().size(), request.getToPoints().size());
+        final MatrixResponse matrixResponse = new MatrixResponse(request.getFromPoints().size(), request.getToPoints().size());
 
         try {
-            String str = fetchJson(url);
-            JSONObject json = null;
-            try {
-                json = new JSONObject(str);
-            } catch (Exception ex) {
-                throw new RuntimeException("Cannot parse json " + str + " from " + url);
+            String postUrl = serviceUrl + "/calculate?key=" + key;
+            String postResponseStr = postJson(postUrl, requestJson);
+            JSONObject responseJson = toJSON(postUrl, postResponseStr);
+            if (responseJson.has("message")) {
+                matrixResponse.addError(new RuntimeException(responseJson.getString("message")));
+                return matrixResponse;
+            }
+            if (!responseJson.has("job_id")) {
+                throw new IllegalStateException("Response should contain job_id but was " + postResponseStr + ", json:" + requestJson + ",url:" + postUrl);
             }
 
-            GraphHopperWeb.readErrors(matrixResponse.getErrors(), json);
-            if (!matrixResponse.hasErrors()) {
-                if (outArraysList.contains("paths") && json.has("paths")) {
-                    JSONArray pathArray = json.getJSONArray("paths");
-                    for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
-                        matrixResponse.newFromList();
-                        JSONArray fromArray = pathArray.getJSONArray(fromIndex);
-                        for (int toIndex = 0; toIndex < toCount; toIndex++) {
-                            GHMResponse res = new GHMResponse(fromIndex, toIndex,
-                                    request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
-                            GraphHopperWeb.readPath(res, fromArray.getJSONObject(toIndex),
-                                    true, true, hasElevation);
-                            matrixResponse.add(res);
+            final String id = responseJson.getString("job_id");
+
+            for (int i = 0; i < maxIterations; i++) {
+                // SLEEP a bit and GET solution
+                if (sleepAfterGET > 0) {
+                    Thread.sleep(sleepAfterGET);
+                }
+                String getUrl = serviceUrl + "/solution/" + id + "?key=" + key;
+                String getResponseStr = getJson(getUrl);
+                JSONObject getResponseJson = toJSON(getUrl, getResponseStr);
+                GraphHopperWeb.readErrors(matrixResponse.getErrors(), getResponseJson);
+                if (matrixResponse.hasErrors()) {
+                    break;
+                } else if ("finished".equals(getResponseJson.getString("status"))) {
+                    JSONObject solution = getResponseJson.getJSONObject("solution");
+                    if (outArraysList.contains("paths") && solution.has("paths")) {
+                        JSONArray pathArray = solution.getJSONArray("paths");
+                        for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
+                            matrixResponse.newFromList();
+                            JSONArray fromArray = pathArray.getJSONArray(fromIndex);
+                            for (int toIndex = 0; toIndex < toCount; toIndex++) {
+                                GHMResponse res = new GHMResponse(fromIndex, toIndex,
+                                                                  request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
+                                GraphHopperWeb.readPath(res, fromArray.getJSONObject(toIndex),
+                                                        true, true, hasElevation);
+                                matrixResponse.add(res);
+                            }
                         }
-                    }
-                } else {
-                    boolean readWeights = outArraysList.contains("weights") && json.has("weights");
-                    boolean readDistances = outArraysList.contains("distances") && json.has("distances");
-                    boolean readTimes = outArraysList.contains("times") && json.has("times");
+                    } else {
+                        boolean readWeights = outArraysList.contains("weights") && solution.has("weights");
+                        boolean readDistances = outArraysList.contains("distances") && solution.has("distances");
+                        boolean readTimes = outArraysList.contains("times") && solution.has("times");
 
-                    JSONArray weightsArray = null;
-                    if (readWeights) {
-                        weightsArray = json.getJSONArray("weights");
-                    }
-                    JSONArray timesArray = null;
-                    if (readTimes) {
-                        timesArray = json.getJSONArray("times");
-                    }
-                    JSONArray distancesArray = null;
-                    if (readDistances) {
-                        distancesArray = json.getJSONArray("distances");
-                    }
-
-                    for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
-                        matrixResponse.newFromList();
-
-                        JSONArray weightsFromArray = null;
+                        JSONArray weightsArray = null;
                         if (readWeights) {
-                            weightsFromArray = weightsArray.getJSONArray(fromIndex);
+                            weightsArray = solution.getJSONArray("weights");
                         }
-                        JSONArray timesFromArray = null;
+                        JSONArray timesArray = null;
                         if (readTimes) {
-                            timesFromArray = timesArray.getJSONArray(fromIndex);
+                            timesArray = solution.getJSONArray("times");
                         }
-                        JSONArray distancesFromArray = null;
+                        JSONArray distancesArray = null;
                         if (readDistances) {
-                            distancesFromArray = distancesArray.getJSONArray(fromIndex);
+                            distancesArray = solution.getJSONArray("distances");
                         }
 
-                        for (int toIndex = 0; toIndex < toCount; toIndex++) {
-                            GHMResponse singleRsp = new GHMResponse(fromIndex, toIndex,
-                                    request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
+                        for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
+                            matrixResponse.newFromList();
+
+                            JSONArray weightsFromArray = null;
                             if (readWeights) {
-                                singleRsp.setRouteWeight(weightsFromArray.getDouble(toIndex));
+                                weightsFromArray = weightsArray.getJSONArray(fromIndex);
                             }
-
+                            JSONArray timesFromArray = null;
                             if (readTimes) {
-                                singleRsp.setMillis(timesFromArray.getLong(toIndex) * 1000);
+                                timesFromArray = timesArray.getJSONArray(fromIndex);
                             }
-
+                            JSONArray distancesFromArray = null;
                             if (readDistances) {
-                                singleRsp.setDistance(distancesFromArray.getDouble(toIndex));
+                                distancesFromArray = distancesArray.getJSONArray(fromIndex);
                             }
 
-                            matrixResponse.add(singleRsp);
+                            for (int toIndex = 0; toIndex < toCount; toIndex++) {
+                                GHMResponse singleRsp = new GHMResponse(fromIndex, toIndex,
+                                                                        request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
+                                if (readWeights) {
+                                    singleRsp.setRouteWeight(weightsFromArray.getDouble(toIndex));
+                                }
+
+                                if (readTimes) {
+                                    singleRsp.setMillis(timesFromArray.getLong(toIndex) * 1000);
+                                }
+
+                                if (readDistances) {
+                                    singleRsp.setDistance(distancesFromArray.getDouble(toIndex));
+                                }
+
+                                matrixResponse.add(singleRsp);
+                            }
                         }
                     }
+                    matrixResponse.setTook(sw.stop().getSeconds());
+                    break;
                 }
             }
-
-            matrixResponse.setTook(sw.stop().getSeconds());
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -174,28 +198,29 @@ public class GraphHopperMatrixWeb {
         return matrixResponse;
     }
 
-    private String createPointQuery(List<GHPoint> list, String pointName) {
-        String pointsStr = "";
+    private List<Double[]> createPointList(List<GHPoint> list) {
+        List<Double[]> outList = new ArrayList<>(list.size());
         for (GHPoint p : list) {
-            if (!pointsStr.isEmpty()) {
-                pointsStr += "&";
-            }
-
-            pointsStr += pointName + "=" + encode(p.lat + "," + p.lon);
+            outList.add(new Double[]{p.lon, p.lat});
         }
-        return pointsStr;
+        return outList;
     }
 
-    public String encode(String str) {
-        try {
-            return URLEncoder.encode(str, "UTF-8");
-        } catch (Exception ex) {
-            return str;
-        }
-    }
-
-    protected String fetchJson(String url) throws IOException {
+    protected String getJson(String url) throws IOException {
         Request okRequest = new Request.Builder().url(url).build();
         return downloader.newCall(okRequest).execute().body().string();
+    }
+
+    protected String postJson(String url, JSONObject data) throws IOException {
+        Request okRequest = new Request.Builder().url(url).post(RequestBody.create(MT_JSON, data.toString())).build();
+        return downloader.newCall(okRequest).execute().body().string();
+    }
+
+    protected JSONObject toJSON(String url, String str) {
+        try {
+            return new JSONObject(str);
+        } catch (Exception ex) {
+            throw new RuntimeException("Cannot parse json " + str + " from " + url);
+        }
     }
 }

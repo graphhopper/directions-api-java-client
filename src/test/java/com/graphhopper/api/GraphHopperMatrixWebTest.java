@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import org.json.JSONObject;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -23,9 +24,20 @@ public class GraphHopperMatrixWebTest {
         }
 
         @Override
-        protected String fetchJson(String url) throws IOException {
+        protected String postJson(String url, JSONObject data) throws IOException {
+            return "{\"job_id\": \"1\"}";
+        }
+
+        @Override
+        protected String getJson(String url) throws IOException {
             return json;
         }
+    }
+
+    GraphHopperMatrixWeb createMatrixClient(String json) {
+        GraphHopperMatrixWebFake client = new GraphHopperMatrixWebFake(json);
+        client.setSleepAfterGET(0);
+        return client;
     }
 
     public static GHMRequest createRequest() {
@@ -40,7 +52,7 @@ public class GraphHopperMatrixWebTest {
     @Test
     public void testReadingMatrixWithError() throws IOException {
         String ghMatrix = readFile(new InputStreamReader(getClass().getResourceAsStream("matrix_error.json")));
-        GraphHopperMatrixWeb matrixWeb = new GraphHopperMatrixWebFake(ghMatrix);
+        GraphHopperMatrixWeb matrixWeb = createMatrixClient(ghMatrix);
 
         GHMRequest req = createRequest();
         MatrixResponse rsp = matrixWeb.route(req);
@@ -52,7 +64,7 @@ public class GraphHopperMatrixWebTest {
     @Test
     public void testReadingWeights() throws IOException {
         String ghMatrix = readFile(new InputStreamReader(getClass().getResourceAsStream("matrix.json")));
-        GraphHopperMatrixWeb matrixWeb = new GraphHopperMatrixWebFake(ghMatrix);
+        GraphHopperMatrixWeb matrixWeb = createMatrixClient(ghMatrix);
 
         GHMRequest req = createRequest();
         MatrixResponse rsp = matrixWeb.route(req);
@@ -64,7 +76,7 @@ public class GraphHopperMatrixWebTest {
     @Test
     public void testReadingWeights_TimesAndDistances() throws IOException {
         String ghMatrix = readFile(new InputStreamReader(getClass().getResourceAsStream("matrix.json")));
-        GraphHopperMatrixWeb matrixWeb = new GraphHopperMatrixWebFake(ghMatrix);
+        GraphHopperMatrixWeb matrixWeb = createMatrixClient(ghMatrix);
 
         GHMRequest req = createRequest();
         req.addOutArray("weights");
@@ -81,14 +93,14 @@ public class GraphHopperMatrixWebTest {
         assertEquals(885.867, rsp.get(0, 1).getRouteWeight(), .1);
         assertEquals(807.167, rsp.get(1, 2).getRouteWeight(), .1);
         assertEquals(0., rsp.get(1, 1).getRouteWeight(), .1);
-        
+
         assertEquals(886, rsp.get(0, 1).getMillis() / 1000);
     }
 
     @Test
     public void testReadingPaths() throws IOException {
         String ghMatrix = readFile(new InputStreamReader(getClass().getResourceAsStream("matrix.json")));
-        GraphHopperMatrixWeb matrixWeb = new GraphHopperMatrixWebFake(ghMatrix);
+        GraphHopperMatrixWeb matrixWeb = createMatrixClient(ghMatrix);
 
         GHMRequest req = createRequest();
         req.addOutArray("paths");
@@ -104,7 +116,7 @@ public class GraphHopperMatrixWebTest {
 
         assertEquals(170, rsp.get(0, 1).getPoints().size(), .1);
         assertEquals(174, rsp.get(1, 2).getPoints().size(), .1);
-        
+
         assertEquals(885, rsp.get(0, 1).getMillis() / 1000);
     }
 

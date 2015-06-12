@@ -16,7 +16,7 @@ import org.junit.Before;
 public class GraphHopperWebIT {
 
     private final GraphHopperWeb gh = new GraphHopperWeb();
-    GraphHopperMatrixWeb ghMatrix = new GraphHopperMatrixWeb();
+    private final GraphHopperMatrixWeb ghMatrix = new GraphHopperMatrixWeb();
 
     @Before
     public void setUp() {
