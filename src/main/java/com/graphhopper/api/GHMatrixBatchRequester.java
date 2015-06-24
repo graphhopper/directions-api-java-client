@@ -16,6 +16,10 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
     private int maxIterations = 10;
     private long sleepAfterGET = 1000;
 
+    public GHMatrixBatchRequester() {
+        super();
+    }
+
     public GHMatrixBatchRequester(String serviceUrl) {
         super(serviceUrl);
     }

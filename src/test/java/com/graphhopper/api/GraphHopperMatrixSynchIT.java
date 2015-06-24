@@ -8,6 +8,6 @@ public class GraphHopperMatrixSynchIT extends AbstractGraphHopperMatrixWebIntegr
 
     @Override
     GraphHopperMatrixWeb createMatrixWeb() {
-        return new GraphHopperMatrixWeb(new GHMatrixSyncRequester(GraphHopperMatrixWeb.SERVICE_URL));
+        return new GraphHopperMatrixWeb(new GHMatrixSyncRequester());
     }
 }

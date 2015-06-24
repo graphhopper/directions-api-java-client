@@ -8,13 +8,12 @@ import com.squareup.okhttp.MediaType;
  */
 public class GraphHopperMatrixWeb {
 
-    final static String SERVICE_URL = "https://graphhopper.com/api/1/matrix";
     public static final MediaType MT_JSON = MediaType.parse("application/json; charset=utf-8");
     private final GHMatrixAbstractRequester requester;
     private String key = "";
 
     public GraphHopperMatrixWeb() {
-        this(new GHMatrixBatchRequester(SERVICE_URL));
+        this(new GHMatrixBatchRequester());
     }
 
     public GraphHopperMatrixWeb(GHMatrixAbstractRequester requester) {

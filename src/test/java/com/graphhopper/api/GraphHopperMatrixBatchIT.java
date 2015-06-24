@@ -8,6 +8,6 @@ public class GraphHopperMatrixBatchIT extends AbstractGraphHopperMatrixWebIntegr
 
     @Override
     GraphHopperMatrixWeb createMatrixWeb() {
-        return new GraphHopperMatrixWeb(new GHMatrixBatchRequester(GraphHopperMatrixWeb.SERVICE_URL));
+        return new GraphHopperMatrixWeb(new GHMatrixBatchRequester());
     }
 }

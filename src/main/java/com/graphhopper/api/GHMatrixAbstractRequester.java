@@ -21,6 +21,10 @@ public abstract class GHMatrixAbstractRequester {
     protected final String serviceUrl;
     private OkHttpClient downloader = new OkHttpClient();
 
+    public GHMatrixAbstractRequester() {
+        this("https://graphhopper.com/api/1/matrix");
+    }
+
     public GHMatrixAbstractRequester(String serviceUrl) {
         if (serviceUrl.endsWith("/")) {
             serviceUrl = serviceUrl.substring(0, serviceUrl.length() - 1);

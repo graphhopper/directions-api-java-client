@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -14,6 +13,10 @@ import org.json.JSONObject;
  * @author Peter Karich
  */
 public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
+
+    public GHMatrixSyncRequester() {
+        super();
+    }
 
     public GHMatrixSyncRequester(String serviceUrl) {
         super(serviceUrl);
@@ -58,7 +61,7 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
                 + "&key=" + key;
 
         MatrixResponse matrixResponse = new MatrixResponse(
-                ghRequest.getFromPoints().size(), 
+                ghRequest.getFromPoints().size(),
                 ghRequest.getToPoints().size());
 
         try {
@@ -73,7 +76,7 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
             GraphHopperWeb.readErrors(matrixResponse.getErrors(), json);
             if (!matrixResponse.hasErrors()) {
                 fillResponseFromJson(ghRequest, outArraysList,
-                            matrixResponse, json, hasElevation);
+                        matrixResponse, json, hasElevation);
             }
 
             matrixResponse.setTook(sw.stop().getSeconds());
