@@ -98,7 +98,7 @@ public class GraphHopperWebIT {
         req.addOutArray("distances");
         res = ghMatrix.route(req);
 
-        assertEquals(9734., res.get(1, 2).getDistance(), .1);
-        assertEquals(807.167, res.get(1, 2).getRouteWeight(), .1);
+        assertEquals(9734., res.get(1, 2).getDistance(), 5);
+        assertEquals(807.167, res.get(1, 2).getRouteWeight(), 5);
     }
 }
