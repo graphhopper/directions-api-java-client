@@ -85,7 +85,7 @@ public class GraphHopperWebIT {
 
     @Test
     public void testMatrix() {
-        GHMRequest req = GraphHopperMatrixWebTest.createRequest();
+        GHMRequest req = AbstractGHMatrixWebTester.createRequest();
         MatrixResponse res = ghMatrix.route(req);
 
         // no distances available
@@ -93,7 +93,7 @@ public class GraphHopperWebIT {
         // ... only weight:
         assertEquals(807.167, res.get(1, 2).getRouteWeight(), .1);
 
-        req = GraphHopperMatrixWebTest.createRequest();
+        req = AbstractGHMatrixWebTester.createRequest();
         req.addOutArray("weights");
         req.addOutArray("distances");
         res = ghMatrix.route(req);

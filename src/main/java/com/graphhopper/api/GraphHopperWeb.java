@@ -90,12 +90,12 @@ public class GraphHopperWeb implements GraphHopperAPI {
     }
 
     @Override
-    public GHResponse route(GHRequest request) {
+    public GHResponse route(GHRequest ghRequest) {
         StopWatch sw = new StopWatch().start();
         double took = 0;
         try {
 
-            Request okRequest = createRequest(request);
+            Request okRequest = createRequest(ghRequest);
             String str = downloader.newCall(okRequest).execute().body().string();
 
             JSONObject json = new JSONObject(str);
@@ -109,14 +109,14 @@ public class GraphHopperWeb implements GraphHopperAPI {
             JSONArray paths = json.getJSONArray("paths");
             JSONObject firstPath = paths.getJSONObject(0);
 
-            boolean tmpInstructions = request.getHints().getBool("instructions", instructions);
-            boolean tmpCalcPoints = request.getHints().getBool("calcPoints", calcPoints);
-            boolean tmpElevation = request.getHints().getBool("elevation", elevation);
+            boolean tmpInstructions = ghRequest.getHints().getBool("instructions", instructions);
+            boolean tmpCalcPoints = ghRequest.getHints().getBool("calcPoints", calcPoints);
+            boolean tmpElevation = ghRequest.getHints().getBool("elevation", elevation);
 
             readPath(res, firstPath, tmpCalcPoints, tmpInstructions, tmpElevation);
             return res;
         } catch (Exception ex) {
-            throw new RuntimeException("Problem while fetching path " + request.getPoints() + ": " + ex.getMessage(), ex);
+            throw new RuntimeException("Problem while fetching path " + ghRequest.getPoints() + ": " + ex.getMessage(), ex);
         } finally {
             logger.debug("Full request took:" + sw.stop().getSeconds() + ", API took:" + took);
         }
