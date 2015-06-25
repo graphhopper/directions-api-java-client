@@ -41,13 +41,18 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private OkHttpClient downloader = new OkHttpClient();
-    private String serviceUrl = "https://graphhopper.com/api/1/route";
+    private String serviceUrl;
     private String key = "";
     private boolean instructions = true;
     private boolean calcPoints = true;
     private boolean elevation = false;
 
     public GraphHopperWeb() {
+        this("https://graphhopper.com/api/1/route");
+    }
+
+    public GraphHopperWeb(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
         downloader.setConnectTimeout(5, TimeUnit.SECONDS);
     }
 
@@ -90,46 +95,12 @@ public class GraphHopperWeb implements GraphHopperAPI {
     }
 
     @Override
-    public GHResponse route(GHRequest request) {
+    public GHResponse route(GHRequest ghRequest) {
         StopWatch sw = new StopWatch().start();
         double took = 0;
         try {
-            String places = "";
-            for (GHPoint p : request.getPoints()) {
-                places += "point=" + p.lat + "," + p.lon + "&";
-            }
 
-            boolean tmpInstructions = request.getHints().getBool("instructions", instructions);
-            boolean tmpCalcPoints = request.getHints().getBool("calcPoints", calcPoints);
-
-            if (tmpInstructions && !tmpCalcPoints) {
-                throw new IllegalStateException("Cannot calculate instructions without points (only points without instructions). "
-                        + "Use calcPoints=false and instructions=false to disable point and instruction calculation");
-            }
-
-            boolean tmpElevation = request.getHints().getBool("elevation", elevation);
-            String tmpKey = request.getHints().get("key", key);
-
-            String url = serviceUrl
-                    + "?"
-                    + places
-                    + "&type=json"
-                    + "&instructions=" + tmpInstructions
-                    + "&points_encoded=true"
-                    + "&calc_points=" + tmpCalcPoints
-                    + "&algo=" + request.getAlgorithm()
-                    + "&locale=" + request.getLocale().toString()
-                    + "&elevation=" + tmpElevation;
-
-            if (!request.getVehicle().isEmpty()) {
-                url += "&vehicle=" + request.getVehicle();
-            }
-
-            if (!tmpKey.isEmpty()) {
-                url += "&key=" + tmpKey;
-            }
-
-            Request okRequest = new Request.Builder().url(url).build();
+            Request okRequest = createRequest(ghRequest);
             String str = downloader.newCall(okRequest).execute().body().string();
 
             JSONObject json = new JSONObject(str);
@@ -142,19 +113,65 @@ public class GraphHopperWeb implements GraphHopperAPI {
             took = json.getJSONObject("info").getDouble("took");
             JSONArray paths = json.getJSONArray("paths");
             JSONObject firstPath = paths.getJSONObject(0);
+
+            boolean tmpInstructions = ghRequest.getHints().getBool("instructions", instructions);
+            boolean tmpCalcPoints = ghRequest.getHints().getBool("calcPoints", calcPoints);
+            boolean tmpElevation = ghRequest.getHints().getBool("elevation", elevation);
+
             readPath(res, firstPath, tmpCalcPoints, tmpInstructions, tmpElevation);
             return res;
         } catch (Exception ex) {
-            throw new RuntimeException("Problem while fetching path " + request.getPoints() + ": " + ex.getMessage(), ex);
+            throw new RuntimeException("Problem while fetching path " + ghRequest.getPoints() + ": " + ex.getMessage(), ex);
         } finally {
             logger.debug("Full request took:" + sw.stop().getSeconds() + ", API took:" + took);
         }
+    }
+
+    public Request createRequest(GHRequest request) {
+        boolean tmpInstructions = request.getHints().getBool("instructions", instructions);
+        boolean tmpCalcPoints = request.getHints().getBool("calcPoints", calcPoints);
+
+        if (tmpInstructions && !tmpCalcPoints) {
+            throw new IllegalStateException("Cannot calculate instructions without points (only points without instructions). "
+                    + "Use calcPoints=false and instructions=false to disable point and instruction calculation");
+        }
+
+        boolean tmpElevation = request.getHints().getBool("elevation", elevation);
+
+        String tmpKey = request.getHints().get("key", key);
+
+        String places = "";
+        for (GHPoint p : request.getPoints()) {
+            places += "point=" + p.lat + "," + p.lon + "&";
+        }
+
+        String url = serviceUrl
+                + "?"
+                + places
+                + "&type=json"
+                + "&instructions=" + tmpInstructions
+                + "&points_encoded=true"
+                + "&calc_points=" + tmpCalcPoints
+                + "&algo=" + request.getAlgorithm()
+                + "&locale=" + request.getLocale().toString()
+                + "&elevation=" + tmpElevation;
+
+        if (!request.getVehicle().isEmpty()) {
+            url += "&vehicle=" + request.getVehicle();
+        }
+
+        if (!tmpKey.isEmpty()) {
+            url += "&key=" + tmpKey;
+        }
+
+        return new Request.Builder().url(url).build();
     }
 
     public static void readPath(GHResponse res, JSONObject firstPath,
             boolean tmpCalcPoints,
             boolean tmpInstructions,
             boolean tmpElevation) {
+
         double distance = firstPath.getDouble("distance");
         long time = firstPath.getLong("time");
         if (tmpCalcPoints) {

@@ -73,3 +73,7 @@ an Android client written from the community. It also supports
 online map tiles. You can see this code in action in 
 [Geopaparazzi](http://geopaparazzi.github.io/geopaparazzi/), 
 [OSMNavigator](https://github.com/MKergall/osmbonuspack/wiki/OSMNavigator) and [more](https://github.com/geopaparazzi/geopaparazzi/wiki/Projects-Using-It)
+
+## Tour Optimization API
+
+The client for the Tour Optimization API is currently hosted in a [separate repository](https://github.com/karussell/directions-api-vrp-java-client/).

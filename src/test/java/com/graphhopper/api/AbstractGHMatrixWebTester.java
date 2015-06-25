@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import org.json.JSONObject;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -13,32 +12,9 @@ import org.junit.Test;
  *
  * @author Peter Karich
  */
-public class GraphHopperMatrixWebTest {
+public abstract class AbstractGHMatrixWebTester {
 
-    private static class GraphHopperMatrixWebFake extends GraphHopperMatrixWeb {
-
-        private final String json;
-
-        public GraphHopperMatrixWebFake(String json) {
-            this.json = json;
-        }
-
-        @Override
-        protected String postJson(String url, JSONObject data) throws IOException {
-            return "{\"job_id\": \"1\"}";
-        }
-
-        @Override
-        protected String getJson(String url) throws IOException {
-            return json;
-        }
-    }
-
-    GraphHopperMatrixWeb createMatrixClient(String json) {
-        GraphHopperMatrixWebFake client = new GraphHopperMatrixWebFake(json);
-        client.setSleepAfterGET(0);
-        return client;
-    }
+    abstract GraphHopperMatrixWeb createMatrixClient(String json);
 
     public static GHMRequest createRequest() {
         GHMRequest req = new GHMRequest();
