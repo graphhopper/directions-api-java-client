@@ -41,13 +41,18 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private OkHttpClient downloader = new OkHttpClient();
-    private String serviceUrl = "https://graphhopper.com/api/1/route";
+    private String serviceUrl;
     private String key = "";
     private boolean instructions = true;
     private boolean calcPoints = true;
     private boolean elevation = false;
 
     public GraphHopperWeb() {
+        this("https://graphhopper.com/api/1/route");
+    }
+
+    public GraphHopperWeb(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
         downloader.setConnectTimeout(5, TimeUnit.SECONDS);
     }
 

@@ -16,6 +16,10 @@ public class GraphHopperMatrixWeb {
         this(new GHMatrixBatchRequester());
     }
 
+    public GraphHopperMatrixWeb(String serviceUrl) {
+        this(new GHMatrixBatchRequester(serviceUrl));
+    }
+
     public GraphHopperMatrixWeb(GHMatrixAbstractRequester requester) {
         this.requester = requester;
     }
