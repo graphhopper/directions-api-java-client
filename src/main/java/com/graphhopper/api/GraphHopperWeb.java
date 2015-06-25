@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Main wrapper of the GraphHopper Directions API for a simple and efficient
  * usage.
- * <p/>
+ *
  * @author Peter Karich
  */
 public class GraphHopperWeb implements GraphHopperAPI {
