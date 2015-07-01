@@ -96,10 +96,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     @Override
     public GHResponse route(GHRequest ghRequest) {
-        StopWatch sw = new StopWatch().start();
-        double took = 0;
         try {
-
             Request okRequest = createRequest(ghRequest);
             String str = downloader.newCall(okRequest).execute().body().string();
 
@@ -110,7 +107,6 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 return res;
             }
 
-            took = json.getJSONObject("info").getDouble("took");
             JSONArray paths = json.getJSONArray("paths");
             JSONObject firstPath = paths.getJSONObject(0);
 
@@ -122,8 +118,6 @@ public class GraphHopperWeb implements GraphHopperAPI {
             return res;
         } catch (Exception ex) {
             throw new RuntimeException("Problem while fetching path " + ghRequest.getPoints() + ": " + ex.getMessage(), ex);
-        } finally {
-            logger.debug("Full request took:" + sw.stop().getSeconds() + ", API took:" + took);
         }
     }
 
