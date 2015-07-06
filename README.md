@@ -5,7 +5,7 @@ You can refer to this client in your pom.xml via
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client</artifactId>
-  <version>0.4.1.5</version>
+  <version>0.4.1.6</version>
 </dependency>
 ```
 
@@ -101,6 +101,8 @@ online map tiles. You can see this code in action in
 [Geopaparazzi](http://geopaparazzi.github.io/geopaparazzi/), 
 [OSMNavigator](https://github.com/MKergall/osmbonuspack/wiki/OSMNavigator) and [more](https://github.com/geopaparazzi/geopaparazzi/wiki/Projects-Using-It)
 
-## Tour Optimization API
+## Route Optimization
 
-The client for the Tour Optimization API is currently hosted in a [separate repository](https://github.com/karussell/directions-api-vrp-java-client/).
+If you setOptimize("true") then the locations will be optimized according to the best overall route.
+For more advanced features like multiple vehicles and capacity restrictions etc. you need the Route Optimization API.
+The client for the Route Optimization API is currently hosted in a [separate repository](https://github.com/karussell/directions-api-vrp-java-client/).
