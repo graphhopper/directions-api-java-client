@@ -46,6 +46,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
     private boolean instructions = true;
     private boolean calcPoints = true;
     private boolean elevation = false;
+    private String optimize = "false";
 
     public GraphHopperWeb() {
         this("https://graphhopper.com/api/1/route");
@@ -79,18 +80,42 @@ public class GraphHopperWeb implements GraphHopperAPI {
         return this;
     }
 
+    /**
+     * Enable or disable calculating points for the way. The default is true.
+     */
     public GraphHopperWeb setCalcPoints(boolean calcPoints) {
         this.calcPoints = calcPoints;
         return this;
     }
 
+    /**
+     * Enable or disable calculating and returning turn instructions. The
+     * default is true.
+     */
     public GraphHopperWeb setInstructions(boolean b) {
         instructions = b;
         return this;
     }
 
+    /**
+     * Enable or disable elevation. The default is false.
+     */
     public GraphHopperWeb setElevation(boolean withElevation) {
         this.elevation = withElevation;
+        return this;
+    }
+
+    /**
+     * @param optimize "false" if the order of the locations should be left
+     * unchanged, this is the default. Or if "true" then the order of the
+     * location is optimized according to the overall best route and returned
+     * this way i.e. the traveling salesman problem is solved under the hood.
+     * Note that in this case the request takes longer and costs more credits.
+     * For more details see:
+     * https://github.com/graphhopper/directions-api/blob/master/FAQ.md#what-is-one-credit
+     */
+    public GraphHopperWeb setOptimize(String optimize) {
+        this.optimize = optimize;
         return this;
     }
 
@@ -124,6 +149,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
     public Request createRequest(GHRequest request) {
         boolean tmpInstructions = request.getHints().getBool("instructions", instructions);
         boolean tmpCalcPoints = request.getHints().getBool("calcPoints", calcPoints);
+        String tmpOptimize = request.getHints().get("optimize", optimize);
 
         if (tmpInstructions && !tmpCalcPoints) {
             throw new IllegalStateException("Cannot calculate instructions without points (only points without instructions). "
@@ -148,7 +174,8 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 + "&calc_points=" + tmpCalcPoints
                 + "&algo=" + request.getAlgorithm()
                 + "&locale=" + request.getLocale().toString()
-                + "&elevation=" + tmpElevation;
+                + "&elevation=" + tmpElevation
+                + "&optimize=" + tmpOptimize;
 
         if (!request.getVehicle().isEmpty()) {
             url += "&vehicle=" + request.getVehicle();
