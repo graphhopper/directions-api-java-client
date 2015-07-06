@@ -95,7 +95,6 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                     fillResponseFromJson(ghRequest, outArraysList,
                             matrixResponse, getResponseJson.getJSONObject("solution"),
                             hasElevation);
-                    matrixResponse.setTook(sw.stop().getSeconds());
                     break;
                 }
             }

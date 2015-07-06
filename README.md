@@ -56,6 +56,33 @@ long millis = res.getTime();
 InstructionList il = res.getInstructions();
 ```
 
+### Matrix API
+
+```java
+GraphHopperMatrixWeb matrixClient = new GraphHopperMatrixWeb();
+matrixClient.setKey("[YOUR_KEY]");
+
+GHMRequest ghmRequest = new GHMRequest();
+ghmRequest.addOutArray("distances");
+ghmRequest.addOutArray("times");
+ghmRequest.setVehicle("car");
+
+// init points for a symmetric matrix
+List<GHPoint> allPoints = ...;
+ghmRequest.addAllPoints(allPoints);
+
+// or init e.g. a one-to-many matrix:
+ghmRequest.addFromPoint(from);
+for(GHPoint to : toList) {
+   ghmRequest.addToPoint(to);
+}
+
+MatrixResponse response = matrixClient.route(ghmRequest);
+GHMResponse singleRsp = response.get(fromIndex, toIndex);
+singleRsp.getDistance();
+...
+```
+
 ## Build Latest Development Version
 
 ```bash

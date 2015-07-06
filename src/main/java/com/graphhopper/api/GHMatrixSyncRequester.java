@@ -79,7 +79,6 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
                         matrixResponse, json, hasElevation);
             }
 
-            matrixResponse.setTook(sw.stop().getSeconds());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

@@ -13,7 +13,6 @@ public class MatrixResponse {
 
     private String debugInfo = "";
     private final List<Throwable> errors = new ArrayList<>(4);
-    private double took;
     private int fromCap;
     private List<GHMResponse> currentFromList;
     private final List<List<GHMResponse>> rspList;
@@ -53,18 +52,6 @@ public class MatrixResponse {
             throw new IllegalStateException("maximum size for 'to' is " + list.size());
         }
         return list.get(to);
-    }
-
-    void setTook(double took) {
-        this.took = took;
-    }
-
-    /**
-     * @return the full time in seconds for the request and reading the json
-     * took
-     */
-    public double getTook() {
-        return took;
     }
 
     public String getDebugInfo() {
