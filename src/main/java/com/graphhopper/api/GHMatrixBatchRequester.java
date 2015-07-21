@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -13,7 +15,8 @@ import org.json.JSONObject;
  */
 public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
 
-    private int maxIterations = 10;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private int maxIterations = 100;
     private long sleepAfterGET = 1000;
 
     public GHMatrixBatchRequester() {
@@ -65,9 +68,16 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 ghRequest.getFromPoints().size(),
                 ghRequest.getToPoints().size());
 
+        boolean debug = ghRequest.getHints().getBool("debug", false);
+
         try {
             String postUrl = serviceUrl + "/calculate?key=" + key;
             String postResponseStr = postJson(postUrl, requestJson);
+
+            if (debug) {
+                logger.info("POST URL:" + postUrl + ", response: " + postResponseStr);
+            }
+
             JSONObject responseJson = toJSON(postUrl, postResponseStr);
             if (responseJson.has("message")) {
                 matrixResponse.addError(new RuntimeException(responseJson.getString("message")));
@@ -88,6 +98,9 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 String getUrl = serviceUrl + "/solution/" + id + "?key=" + key;
                 String getResponseStr = getJson(getUrl);
                 JSONObject getResponseJson = toJSON(getUrl, getResponseStr);
+                if (debug) {
+                    logger.info(i + " GET URL:" + getUrl + ", response: " + getResponseStr);
+                }
                 GraphHopperWeb.readErrors(matrixResponse.getErrors(), getResponseJson);
                 if (matrixResponse.hasErrors()) {
                     break;
@@ -97,7 +110,12 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                             hasElevation);
                     break;
                 }
+
+                if (i == maxIterations) {
+                    throw new IllegalStateException("Maximum number of iterations reached " + maxIterations + ", increasing should only be necessary if very big matrices. For small matrices contact us! info@graphhopper.com");
+                }
             }
+
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         } catch (IOException ex) {
