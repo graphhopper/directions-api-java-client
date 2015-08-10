@@ -72,7 +72,7 @@ public class GraphHopperWebIT {
             if (i instanceof RoundaboutInstruction) {
                 counter++;
                 RoundaboutInstruction ri = (RoundaboutInstruction) i;
-                assertEquals("turn_angle was incorrect:" + ri.getRadian(), -1.5, ri.getRadian(), 0.1);
+                assertEquals("turn_angle was incorrect:" + ri.getTurnAngle(), -1.5, ri.getTurnAngle(), 0.1);
             }
         }
         assertTrue("no roundabout in route?", counter > 0);
