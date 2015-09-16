@@ -5,7 +5,7 @@
 
     <groupId>com.graphhopper</groupId>
     <artifactId>directions-api-java-client</artifactId>
-    <version>0.5.0.0</version>
+    <version>0.5.0.2</version>
     <packaging>jar</packaging>
     <name>GraphHopper Directions API Java Client</name>
     <parent>
