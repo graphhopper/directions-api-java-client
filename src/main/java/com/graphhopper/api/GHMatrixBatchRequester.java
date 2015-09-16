@@ -75,7 +75,7 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
             String postResponseStr = postJson(postUrl, requestJson);
 
             if (debug) {
-                logger.info("POST URL:" + postUrl + ", response: " + postResponseStr);
+                logger.info("POST URL:" + postUrl + ", request:" + requestJson + ", response: " + postResponseStr);
             }
 
             JSONObject responseJson = toJSON(postUrl, postResponseStr);

@@ -43,13 +43,17 @@ public class MatrixResponse {
     }
 
     public GHMResponse get(int from, int to) {
+        if (hasErrors()) {
+            throw new IllegalStateException("Cannot return response (" + from + "," + to + ") if errors occured " + getErrors());
+        }
+
         if (from >= rspList.size()) {
-            throw new IllegalStateException("maximum size for 'from' is " + rspList.size());
+            throw new IllegalStateException("Cannot get 'from' " + from + " from list with size " + rspList.size());
         }
 
         List<GHMResponse> list = rspList.get(from);
         if (to >= list.size()) {
-            throw new IllegalStateException("maximum size for 'to' is " + list.size());
+            throw new IllegalStateException("Cannot get 'to' " + to + " from list with size " + list.size());
         }
         return list.get(to);
     }
@@ -88,6 +92,11 @@ public class MatrixResponse {
 
     @Override
     public String toString() {
-        return errors.toString();
+        String addInfo = "";
+        if (!rspList.isEmpty()) {
+            addInfo = "," + rspList.get(0).size();
+        }
+        
+        return "[" + rspList.size() + addInfo + "] errors:" + errors.toString();
     }
 }
