@@ -5,11 +5,11 @@ You can refer to this client in your pom.xml via
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client</artifactId>
-  <version>0.5.0.2</version>
+  <version>0.6.0-RC1</version>
 </dependency>
 ```
 
-The latest development version is 0.5-SNAPSHOT
+The latest development version is 0.7-SNAPSHOT
 
 ## Usage
 
@@ -39,13 +39,14 @@ req.getHints().put("calcPoints", true);
 // defaults to English
 req.setLocale(Locale.GERMAN);
 
-GHResponse res = gh.route(req);
+GHResponse fullRes = gh.route(req);
         
 if(res.hasErrors()) {
    // handle or throw exceptions res.getErrors()
    return;
 }
 
+AltResponse res = fullRes.getFirst();
 // get path geometry information (latitude, longitude and optionally elevation)
 PointList pl = res.getPoints();
 // distance of the full path, in meter
