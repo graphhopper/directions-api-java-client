@@ -71,10 +71,10 @@ public abstract class GHMatrixAbstractRequester {
                 for (int toIndex = 0; toIndex < toCount; toIndex++) {
                     GHMResponse res = new GHMResponse(fromIndex, toIndex,
                             request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
-                    AltResponse alt = new AltResponse();
-                    res.addAlternative(alt);
-                    GraphHopperWeb.readPath(alt, fromArray.getJSONObject(toIndex),
-                            true, true, hasElevation);
+
+                    res.addAlternative(GraphHopperWeb.createAltResponse(fromArray.getJSONObject(toIndex),
+                            true, true, hasElevation));
+
                     matrixResponse.add(res);
                 }
             }
