@@ -25,6 +25,7 @@ import com.graphhopper.util.*;
 import com.graphhopper.util.shapes.GHPoint;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.json.JSONArray;
@@ -128,21 +129,22 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
             JSONObject json = new JSONObject(str);
             GHResponse res = new GHResponse();
-            readErrors(res.getErrors(), json);
-            if (res.hasErrors()) {
+            res.addErrors(readErrors(json));
+            if (res.hasRawErrors()) {
                 return res;
             }
 
             JSONArray paths = json.getJSONArray("paths");
-            JSONObject firstPath = paths.getJSONObject(0);
 
             boolean tmpInstructions = ghRequest.getHints().getBool("instructions", instructions);
             boolean tmpCalcPoints = ghRequest.getHints().getBool("calcPoints", calcPoints);
             boolean tmpElevation = ghRequest.getHints().getBool("elevation", elevation);
 
-            AltResponse alt = new AltResponse();
-            res.addAlternative(alt);
-            readPath(alt, firstPath, tmpCalcPoints, tmpInstructions, tmpElevation);
+            for (int index = 0; index < paths.length(); index++) {
+                JSONObject path = paths.getJSONObject(index);
+                AltResponse altRsp = createAltResponse(path, tmpCalcPoints, tmpInstructions, tmpElevation);
+                res.addAlternative(altRsp);
+            }
             return res;
         } catch (Exception ex) {
             throw new RuntimeException("Problem while fetching path " + ghRequest.getPoints() + ": " + ex.getMessage(), ex);
@@ -191,20 +193,23 @@ public class GraphHopperWeb implements GraphHopperAPI {
         return new Request.Builder().url(url).build();
     }
 
-    public static void readPath(AltResponse res, JSONObject firstPath,
-            boolean tmpCalcPoints,
-            boolean tmpInstructions,
-            boolean tmpElevation) {
+    public static AltResponse createAltResponse(JSONObject path,
+            boolean tmpCalcPoints, boolean tmpInstructions, boolean tmpElevation) {
+        AltResponse altRsp = new AltResponse();
+        altRsp.addErrors(readErrors(path));
+        if (altRsp.hasErrors()) {
+            return altRsp;
+        }
 
-        double distance = firstPath.getDouble("distance");
-        long time = firstPath.getLong("time");
+        double distance = path.getDouble("distance");
+        long time = path.getLong("time");
         if (tmpCalcPoints) {
-            String pointStr = firstPath.getString("points");
+            String pointStr = path.getString("points");
             PointList pointList = WebHelper.decodePolyline(pointStr, 100, tmpElevation);
-            res.setPoints(pointList);
+            altRsp.setPoints(pointList);
 
             if (tmpInstructions) {
-                JSONArray instrArr = firstPath.getJSONArray("instructions");
+                JSONArray instrArr = path.getJSONArray("instructions");
 
                 InstructionList il = new InstructionList(null);
                 int viaCount = 1;
@@ -261,13 +266,16 @@ public class GraphHopperWeb implements GraphHopperAPI {
                     instr.setDistance(instDist).setTime(instTime);
                     il.add(instr);
                 }
-                res.setInstructions(il);
+                altRsp.setInstructions(il);
             }
         }
-        res.setDistance(distance).setTime(time);
+        altRsp.setDistance(distance).setTime(time);
+        return altRsp;
     }
 
-    public static void readErrors(List<Throwable> errors, JSONObject json) {
+    public static List<Throwable> readErrors(JSONObject json) {
+        List<Throwable> errors = new ArrayList<Throwable>();
+
         JSONArray errorJson;
 
         if (json.has("message")) {
@@ -276,18 +284,10 @@ public class GraphHopperWeb implements GraphHopperAPI {
             } else {
                 // should not happen
                 errors.add(new RuntimeException(json.getString("message")));
-                return;
-            }
-        } else if (json.has("info")) {
-            // deprecated JSON format for errors, remove in 0.5 release
-            JSONObject jsonInfo = json.getJSONObject("info");
-            if (jsonInfo.has("errors")) {
-                errorJson = jsonInfo.getJSONArray("errors");
-            } else {
-                return;
+                return errors;
             }
         } else {
-            return;
+            return errors;
         }
 
         for (int i = 0; i < errorJson.length(); i++) {
@@ -316,5 +316,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
         if (json.has("message") && errors.isEmpty()) {
             errors.add(new RuntimeException(json.getString("message")));
         }
+
+        return errors;
     }
 }

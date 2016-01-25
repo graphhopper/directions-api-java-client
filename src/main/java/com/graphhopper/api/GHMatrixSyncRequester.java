@@ -66,17 +66,17 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
 
         try {
             String str = getJson(url);
-            JSONObject json = null;
+            JSONObject getResponseJson = null;
             try {
-                json = new JSONObject(str);
+                getResponseJson = new JSONObject(str);
             } catch (Exception ex) {
                 throw new RuntimeException("Cannot parse json " + str + " from " + url);
             }
 
-            GraphHopperWeb.readErrors(matrixResponse.getErrors(), json);
+            matrixResponse.addErrors(GraphHopperWeb.readErrors(getResponseJson));
             if (!matrixResponse.hasErrors()) {
                 fillResponseFromJson(ghRequest, outArraysList,
-                        matrixResponse, json, hasElevation);
+                        matrixResponse, getResponseJson, hasElevation);
             }
 
         } catch (IOException ex) {

@@ -101,7 +101,7 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 if (debug) {
                     logger.info(i + " GET URL:" + getUrl + ", response: " + getResponseStr);
                 }
-                GraphHopperWeb.readErrors(matrixResponse.getErrors(), getResponseJson);
+                matrixResponse.addErrors(GraphHopperWeb.readErrors(getResponseJson));
                 if (matrixResponse.hasErrors()) {
                     break;
                 } else if ("finished".equals(getResponseJson.getString("status"))) {
