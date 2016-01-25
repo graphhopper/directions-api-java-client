@@ -1,5 +1,6 @@
 package com.graphhopper.api;
 
+import com.graphhopper.AltResponse;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.util.Instruction;
@@ -36,14 +37,16 @@ public class GraphHopperWebIT {
         req.getHints().put("calcPoints", true);
         GHResponse res = gh.route(req);
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
-        isBetween(200, 250, res.getPoints().size());
-        isBetween(11000, 12000, res.getDistance());
+        AltResponse alt = res.getFirst();
+        isBetween(200, 250, alt.getPoints().size());
+        isBetween(11000, 12000, alt.getDistance());
 
         // change vehicle
         res = gh.route(new GHRequest(49.6724, 11.3494, 49.6550, 11.4180).
                 setVehicle("bike"));
+        alt = res.getFirst();
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
-        isBetween(9000, 10000, res.getDistance());
+        isBetween(9000, 10000, alt.getDistance());
     }
 
     @Test
@@ -56,8 +59,9 @@ public class GraphHopperWebIT {
         req.getHints().put("calcPoints", false);
         GHResponse res = gh.route(req);
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
-        assertEquals(0, res.getPoints().size());
-        isBetween(11000, 12000, res.getDistance());
+        AltResponse alt = res.getFirst();
+        assertEquals(0, alt.getPoints().size());
+        isBetween(11000, 12000, alt.getDistance());
     }
 
     @Test
@@ -68,7 +72,7 @@ public class GraphHopperWebIT {
 
         GHResponse res = gh.route(req);
         int counter = 0;
-        for (Instruction i : res.getInstructions()) {
+        for (Instruction i : res.getFirst().getInstructions()) {
             if (i instanceof RoundaboutInstruction) {
                 counter++;
                 RoundaboutInstruction ri = (RoundaboutInstruction) i;
@@ -87,18 +91,18 @@ public class GraphHopperWebIT {
     public void testMatrix() {
         GHMRequest req = AbstractGHMatrixWebTester.createRequest();
         MatrixResponse res = ghMatrix.route(req);
-
+        
         // no distances available
-        assertEquals(0, res.get(1, 2).getDistance(), 1);
+        assertEquals(0, res.get(1, 2).getFirst().getDistance(), 1);
         // ... only weight:
-        assertEquals(807, res.get(1, 2).getRouteWeight(), 1);
+        assertEquals(807, res.get(1, 2).getFirst().getRouteWeight(), 1);
 
         req = AbstractGHMatrixWebTester.createRequest();
         req.addOutArray("weights");
         req.addOutArray("distances");
         res = ghMatrix.route(req);
 
-        assertEquals(9734., res.get(1, 2).getDistance(), 5);
-        assertEquals(807, res.get(1, 2).getRouteWeight(), 5);
+        assertEquals(9734., res.get(1, 2).getFirst().getDistance(), 5);
+        assertEquals(807, res.get(1, 2).getFirst().getRouteWeight(), 5);
     }
 }

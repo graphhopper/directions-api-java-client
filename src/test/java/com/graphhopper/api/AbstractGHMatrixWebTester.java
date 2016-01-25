@@ -14,7 +14,7 @@ import org.junit.Test;
  */
 public abstract class AbstractGHMatrixWebTester {
 
-    abstract GraphHopperMatrixWeb createMatrixClient(String json);        
+    abstract GraphHopperMatrixWeb createMatrixClient(String json);
 
     public static GHMRequest createRequest() {
         GHMRequest req = new GHMRequest();
@@ -46,7 +46,7 @@ public abstract class AbstractGHMatrixWebTester {
         MatrixResponse rsp = matrixWeb.route(req);
         assertFalse(rsp.hasErrors());
 
-        assertEquals(0., rsp.get(0, 1).getDistance(), .1);
+        assertEquals(0., rsp.get(0, 1).getFirst().getDistance(), .1);
     }
 
     @Test
@@ -62,15 +62,15 @@ public abstract class AbstractGHMatrixWebTester {
 
         assertFalse(rsp.hasErrors());
 
-        assertEquals(9475., rsp.get(0, 1).getDistance(), .1);
-        assertEquals(9734., rsp.get(1, 2).getDistance(), .1);
-        assertEquals(0., rsp.get(1, 1).getDistance(), .1);
+        assertEquals(9475., rsp.get(0, 1).getFirst().getDistance(), .1);
+        assertEquals(9734., rsp.get(1, 2).getFirst().getDistance(), .1);
+        assertEquals(0., rsp.get(1, 1).getFirst().getDistance(), .1);
 
-        assertEquals(885.867, rsp.get(0, 1).getRouteWeight(), .1);
-        assertEquals(807.167, rsp.get(1, 2).getRouteWeight(), .1);
-        assertEquals(0., rsp.get(1, 1).getRouteWeight(), .1);
+        assertEquals(885.867, rsp.get(0, 1).getFirst().getRouteWeight(), .1);
+        assertEquals(807.167, rsp.get(1, 2).getFirst().getRouteWeight(), .1);
+        assertEquals(0., rsp.get(1, 1).getFirst().getRouteWeight(), .1);
 
-        assertEquals(886, rsp.get(0, 1).getMillis() / 1000);
+        assertEquals(886, rsp.get(0, 1).getFirst().getTime() / 1000);
     }
 
     @Test
@@ -86,14 +86,14 @@ public abstract class AbstractGHMatrixWebTester {
         assertFalse(rsp.hasErrors());
 
         // for paths we store more precise data:
-        assertEquals(9474.564, rsp.get(0, 1).getDistance(), .1);
-        assertEquals(9733.831, rsp.get(1, 2).getDistance(), .1);
-        assertEquals(0., rsp.get(1, 1).getDistance(), .1);
+        assertEquals(9474.564, rsp.get(0, 1).getFirst().getDistance(), .1);
+        assertEquals(9733.831, rsp.get(1, 2).getFirst().getDistance(), .1);
+        assertEquals(0., rsp.get(1, 1).getFirst().getDistance(), .1);
 
-        assertEquals(170, rsp.get(0, 1).getPoints().size(), .1);
-        assertEquals(174, rsp.get(1, 2).getPoints().size(), .1);
+        assertEquals(170, rsp.get(0, 1).getFirst().getPoints().size(), .1);
+        assertEquals(174, rsp.get(1, 2).getFirst().getPoints().size(), .1);
 
-        assertEquals(885, rsp.get(0, 1).getMillis() / 1000);
+        assertEquals(885, rsp.get(0, 1).getFirst().getTime() / 1000);
     }
 
     public static String readFile(Reader simpleReader) throws IOException {

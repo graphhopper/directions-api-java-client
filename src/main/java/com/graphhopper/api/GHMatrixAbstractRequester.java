@@ -1,12 +1,11 @@
 package com.graphhopper.api;
 
+import com.graphhopper.AltResponse;
 import static com.graphhopper.api.GraphHopperMatrixWeb.MT_JSON;
-import com.graphhopper.util.shapes.GHPoint;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.json.JSONArray;
@@ -72,7 +71,9 @@ public abstract class GHMatrixAbstractRequester {
                 for (int toIndex = 0; toIndex < toCount; toIndex++) {
                     GHMResponse res = new GHMResponse(fromIndex, toIndex,
                             request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
-                    GraphHopperWeb.readPath(res, fromArray.getJSONObject(toIndex),
+                    AltResponse alt = new AltResponse();
+                    res.addAlternative(alt);
+                    GraphHopperWeb.readPath(alt, fromArray.getJSONObject(toIndex),
                             true, true, hasElevation);
                     matrixResponse.add(res);
                 }
@@ -114,16 +115,18 @@ public abstract class GHMatrixAbstractRequester {
                 for (int toIndex = 0; toIndex < toCount; toIndex++) {
                     GHMResponse singleRsp = new GHMResponse(fromIndex, toIndex,
                             request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
+                    AltResponse alt = new AltResponse();
+                    singleRsp.addAlternative(alt);
                     if (readWeights) {
-                        singleRsp.setRouteWeight(weightsFromArray.getDouble(toIndex));
+                        alt.setRouteWeight(weightsFromArray.getDouble(toIndex));
                     }
 
                     if (readTimes) {
-                        singleRsp.setTime(timesFromArray.getLong(toIndex) * 1000);
+                        alt.setTime(timesFromArray.getLong(toIndex) * 1000);
                     }
 
                     if (readDistances) {
-                        singleRsp.setDistance(distancesFromArray.getDouble(toIndex));
+                        alt.setDistance(distancesFromArray.getDouble(toIndex));
                     }
 
                     matrixResponse.add(singleRsp);
