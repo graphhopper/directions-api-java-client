@@ -1,6 +1,6 @@
 package com.graphhopper.api;
 
-import com.graphhopper.AltResponse;
+import com.graphhopper.PathWrapper;
 import static com.graphhopper.api.GraphHopperMatrixWeb.MT_JSON;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -72,7 +72,7 @@ public abstract class GHMatrixAbstractRequester {
                     GHMResponse res = new GHMResponse(fromIndex, toIndex,
                             request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
 
-                    res.addAlternative(GraphHopperWeb.createAltResponse(fromArray.getJSONObject(toIndex),
+                    res.add(GraphHopperWeb.createAltResponse(fromArray.getJSONObject(toIndex),
                             true, true, hasElevation));
 
                     matrixResponse.add(res);
@@ -115,8 +115,8 @@ public abstract class GHMatrixAbstractRequester {
                 for (int toIndex = 0; toIndex < toCount; toIndex++) {
                     GHMResponse singleRsp = new GHMResponse(fromIndex, toIndex,
                             request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
-                    AltResponse alt = new AltResponse();
-                    singleRsp.addAlternative(alt);
+                    PathWrapper alt = new PathWrapper();
+                    singleRsp.add(alt);
                     if (readWeights) {
                         alt.setRouteWeight(weightsFromArray.getDouble(toIndex));
                     }
