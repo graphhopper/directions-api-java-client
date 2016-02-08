@@ -26,7 +26,10 @@ import com.graphhopper.util.shapes.GHPoint;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,6 +52,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
     private boolean calcPoints = true;
     private boolean elevation = false;
     private String optimize = "false";
+    private final Set<String> ignoreSet;
 
     public GraphHopperWeb() {
         this("https://graphhopper.com/api/1/route");
@@ -57,6 +61,26 @@ public class GraphHopperWeb implements GraphHopperAPI {
     public GraphHopperWeb(String serviceUrl) {
         this.serviceUrl = serviceUrl;
         downloader.setConnectTimeout(5, TimeUnit.SECONDS);
+
+        // some parameters are supported directly via Java API so ignore them when writing the getHints map
+        ignoreSet = new HashSet<String>();
+        ignoreSet.add("calc_points");
+        ignoreSet.add("calcpoints");
+        ignoreSet.add("instructions");
+        ignoreSet.add("elevation");
+        ignoreSet.add("key");
+        ignoreSet.add("optimize");
+
+        // some parameters are in the request:
+        ignoreSet.add("algorithm");
+        ignoreSet.add("locale");
+        ignoreSet.add("point");
+        ignoreSet.add("vehicle");
+
+        // some are special and need to be avoided
+        ignoreSet.add("points_encoded");
+        ignoreSet.add("pointsencoded");
+        ignoreSet.add("type");
     }
 
     public void setDownloader(OkHttpClient downloader) {
@@ -163,8 +187,6 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
         boolean tmpElevation = request.getHints().getBool("elevation", elevation);
 
-        String tmpKey = request.getHints().get("key", key);
-
         String places = "";
         for (GHPoint p : request.getPoints()) {
             places += "point=" + p.lat + "," + p.lon + "&";
@@ -177,7 +199,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 + "&instructions=" + tmpInstructions
                 + "&points_encoded=true"
                 + "&calc_points=" + tmpCalcPoints
-                + "&algo=" + request.getAlgorithm()
+                + "&algorithm=" + request.getAlgorithm()
                 + "&locale=" + request.getLocale().toString()
                 + "&elevation=" + tmpElevation
                 + "&optimize=" + tmpOptimize;
@@ -186,8 +208,22 @@ public class GraphHopperWeb implements GraphHopperAPI {
             url += "&vehicle=" + request.getVehicle();
         }
 
-        if (!tmpKey.isEmpty()) {
-            url += "&key=" + tmpKey;
+        if (!key.isEmpty()) {
+            url += "&key=" + key;
+        }
+
+        for (Map.Entry<String, String> entry : request.getHints().toMap().entrySet()) {
+            String urlKey = entry.getKey();
+            String urlValue = entry.getValue();
+
+            // use lower case conversion for check only!
+            if (ignoreSet.contains(urlKey.toLowerCase())) {
+                continue;
+            }
+
+            if (urlValue != null && !urlValue.isEmpty()) {
+                url += "&" + WebHelper.encodeURL(urlKey) + "=" + WebHelper.encodeURL(urlValue);
+            }
         }
 
         return new Request.Builder().url(url).build();
