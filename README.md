@@ -11,6 +11,10 @@ You can refer to this client in your pom.xml via
 
 The latest development version is 0.7-SNAPSHOT
 
+## License
+
+We chose the Apache License 2.0 to make it easy for you to embed GraphHopper in your products. We suggest to contribute back your changes, as GraphHopper will evolves fast, but of course this is not necessary.
+
 ## Usage
 
 ```java
