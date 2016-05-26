@@ -29,14 +29,14 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
         // no distances available
         assertEquals(0, res.get(1, 2).getBest().getDistance(), 1);
         // ... only weight:
-        assertEquals(807, res.get(1, 2).getBest().getRouteWeight(), 5);
+        assertEquals(1056, res.get(1, 2).getBest().getRouteWeight(), 5);
 
         req = AbstractGHMatrixWebTester.createRequest();
         req.addOutArray("weights");
         req.addOutArray("distances");
         res = ghMatrix.route(req);
 
-        assertEquals(9750, res.get(1, 2).getBest().getDistance(), 5);
-        assertEquals(807, res.get(1, 2).getBest().getRouteWeight(), 5);
+        assertEquals(9637, res.get(1, 2).getBest().getDistance(), 5);
+        assertEquals(1056, res.get(1, 2).getBest().getRouteWeight(), 5);
     }
 }
