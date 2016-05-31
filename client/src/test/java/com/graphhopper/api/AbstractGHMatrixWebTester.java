@@ -73,29 +73,6 @@ public abstract class AbstractGHMatrixWebTester {
         assertEquals(886, rsp.get(0, 1).getBest().getTime() / 1000);
     }
 
-    @Test
-    public void testReadingPaths() throws IOException {
-        String ghMatrix = readFile(new InputStreamReader(getClass().getResourceAsStream("matrix.json")));
-        GraphHopperMatrixWeb matrixWeb = createMatrixClient(ghMatrix);
-
-        GHMRequest req = createRequest();
-        req.addOutArray("paths");
-        req.addOutArray("distances");
-        MatrixResponse rsp = matrixWeb.route(req);
-
-        assertFalse(rsp.hasErrors());
-
-        // for paths we store more precise data:
-        assertEquals(9474.564, rsp.get(0, 1).getBest().getDistance(), .1);
-        assertEquals(9733.831, rsp.get(1, 2).getBest().getDistance(), .1);
-        assertEquals(0., rsp.get(1, 1).getBest().getDistance(), .1);
-
-        assertEquals(170, rsp.get(0, 1).getBest().getPoints().size(), .1);
-        assertEquals(174, rsp.get(1, 2).getBest().getPoints().size(), .1);
-
-        assertEquals(885, rsp.get(0, 1).getBest().getTime() / 1000);
-    }
-
     public static String readFile(Reader simpleReader) throws IOException {
         try (BufferedReader reader = new BufferedReader(simpleReader)) {
             String res = "";
