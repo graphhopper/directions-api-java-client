@@ -161,14 +161,14 @@ public class GraphHopperWeb implements GraphHopperAPI {
             JSONArray paths = json.getJSONArray("paths");
 
             boolean tmpInstructions = ghRequest.getHints().getBool("instructions", instructions);
-            boolean tmpCalcPoints = ghRequest.getHints().getBool("calcPoints", calcPoints);
+            boolean tmpCalcPoints = ghRequest.getHints().getBool("calc_points", calcPoints);
             boolean tmpElevation = ghRequest.getHints().getBool("elevation", elevation);
 
             for (int index = 0; index < paths.length(); index++) {
                 JSONObject path = paths.getJSONObject(index);
                 PathWrapper altRsp = createAltResponse(path, tmpCalcPoints, tmpInstructions, tmpElevation);
                 res.add(altRsp);
-            }
+            }            
             return res;
         } catch (Exception ex) {
             throw new RuntimeException("Problem while fetching path " + ghRequest.getPoints() + ": " + ex.getMessage(), ex);
@@ -177,12 +177,12 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     public Request createRequest(GHRequest request) {
         boolean tmpInstructions = request.getHints().getBool("instructions", instructions);
-        boolean tmpCalcPoints = request.getHints().getBool("calcPoints", calcPoints);
+        boolean tmpCalcPoints = request.getHints().getBool("calc_points", calcPoints);
         String tmpOptimize = request.getHints().get("optimize", optimize);
 
         if (tmpInstructions && !tmpCalcPoints) {
             throw new IllegalStateException("Cannot calculate instructions without points (only points without instructions). "
-                    + "Use calcPoints=false and instructions=false to disable point and instruction calculation");
+                    + "Use calc_points=false and instructions=false to disable point and instruction calculation");
         }
 
         boolean tmpElevation = request.getHints().getBool("elevation", elevation);
@@ -231,18 +231,29 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     public static PathWrapper createAltResponse(JSONObject path,
             boolean tmpCalcPoints, boolean tmpInstructions, boolean tmpElevation) {
-        PathWrapper altRsp = new PathWrapper();
-        altRsp.addErrors(readErrors(path));
-        if (altRsp.hasErrors()) {
-            return altRsp;
+        
+        PathWrapper pathWrapper = new PathWrapper();
+        pathWrapper.addErrors(readErrors(path));
+        if (pathWrapper.hasErrors()) {
+            return pathWrapper;
         }
 
         double distance = path.getDouble("distance");
         long time = path.getLong("time");
+        
+        JSONArray snappedPoints = path.getJSONArray("snapped_waypoints");
+        PointList points = new PointList(snappedPoints.length(), tmpElevation);
+        for (int index = 0; index < snappedPoints.length(); index++)
+        {
+            JSONArray point = snappedPoints.getJSONArray(index);
+            points.add(WebHelper.toGHPoint(point));
+        }
+        pathWrapper.setPoints(points);
+        
         if (tmpCalcPoints) {
             String pointStr = path.getString("points");
             PointList pointList = WebHelper.decodePolyline(pointStr, 100, tmpElevation);
-            altRsp.setPoints(pointList);
+            pathWrapper.setPoints(pointList);
 
             if (tmpInstructions) {
                 JSONArray instrArr = path.getJSONArray("instructions");
@@ -302,11 +313,11 @@ public class GraphHopperWeb implements GraphHopperAPI {
                     instr.setDistance(instDist).setTime(instTime);
                     il.add(instr);
                 }
-                altRsp.setInstructions(il);
+                pathWrapper.setInstructions(il);
             }
         }
-        altRsp.setDistance(distance).setTime(time);
-        return altRsp;
+        pathWrapper.setDistance(distance).setTime(time);
+        return pathWrapper;
     }
 
     public static List<Throwable> readErrors(JSONObject json) {

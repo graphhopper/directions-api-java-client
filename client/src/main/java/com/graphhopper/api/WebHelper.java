@@ -18,7 +18,10 @@
 package com.graphhopper.api;
 
 import com.graphhopper.util.PointList;
+import com.graphhopper.util.shapes.GHPoint;
+import com.graphhopper.util.shapes.GHPoint3D;
 import java.net.URLEncoder;
+import org.json.JSONArray;
 
 /**
  * Code which handles polyline encoding and other web stuff.
@@ -79,5 +82,13 @@ public class WebHelper {
             }
         }
         return poly;
+    }
+
+    public static GHPoint toGHPoint(JSONArray point) {
+        if (point.length() == 3 && !Double.isNaN(point.getDouble(2))) {
+            return new GHPoint3D(point.getDouble(1), point.getDouble(0), point.getDouble(2));
+        }
+
+        return new GHPoint(point.getDouble(1), point.getDouble(0));
     }
 }

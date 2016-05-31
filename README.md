@@ -92,13 +92,19 @@ singleRsp.getDistance();
 
 ```bash
 git clone https://github.com/graphhopper/directions-api-java-client/
+cd client
 mvn -DskipTests=true clean install
 
 # now execute the test and set your key
 mvn -Dgraphhopper.key=[YOUR_KEY] clean test verify
 ```
 
-## Android Alternative
+## Android 
+
+It is important to use this client not on the main thread of Android as it could block the app. 
+See [issue 7](https://github.com/graphhopper/directions-api-java-client/issues/7) for more information.
+
+### Android Alternative
 
 The OSM [OSMBonusPack](https://github.com/MKergall/osmbonuspack/wiki/Tutorial_1) also has
 an Android client written from the community. It also supports 
@@ -106,8 +112,45 @@ online map tiles. You can see this code in action in
 [Geopaparazzi](http://geopaparazzi.github.io/geopaparazzi/), 
 [OSMNavigator](https://github.com/MKergall/osmbonuspack/wiki/OSMNavigator) and [more](https://github.com/geopaparazzi/geopaparazzi/wiki/Projects-Using-It)
 
-## Route Optimization
+# Route Optimization API
 
 If you setOptimize("true") then the locations will be optimized according to the best overall route.
-For more advanced features like multiple vehicles and capacity restrictions etc. you need the Route Optimization API.
-The client for the Route Optimization API is currently hosted in a [separate repository](https://github.com/karussell/directions-api-vrp-java-client/).
+For more advanced features like multiple vehicles and capacity restrictions etc. you need to call the Route Optimization API.
+The client for the Route Optimization API is located in the folder "route-optimization".
+
+## Java Client
+
+This client was automatically created from [this swagger specification](https://graphhopper.com/api/1/vrp/swagger.json)
+via swagger codegen 2.1.3
+
+## Usage
+
+See the [examples](./tree/master/route-optimization/src/main/java/com/graphhopper/api/vrp/example) on how to use this client.
+
+## Maven
+
+The route optimization client is in the maven central repository, thus you can just reference it in your pom like:
+
+```xml
+<dependency>
+  <groupId>com.graphhopper</groupId>
+  <artifactId>directions-api-java-client-route-opt</artifactId>
+  <version>CURRENT-VERSION</version>
+</dependency>
+```
+
+## Customization
+
+If you want to build it from source do:
+```
+git clone https://github.com/graphhopper/directions-api-java-client/
+cd directions-api-java-client/route-optimization
+mvn install
+```
+
+To update the sources from your spec follow [this guide](https://github.com/swagger-api/swagger-codegen) to create the Java 
+sources from [this spec](https://graphhopper.com/api/1/vrp/swagger.json). E.g. via:
+```java
+cd swagger-codegen
+java -jar modules/swagger-codegen-cli/target/swagger-codegen-cli.jar generate -i https://graphhopper.com/api/1/vrp/swagger.json -l java -c bin/java-petstore-okhttp-gson.json -o ../route-optimization-tmp
+```
