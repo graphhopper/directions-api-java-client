@@ -34,7 +34,7 @@ public class GraphHopperWebIT {
                 addPoint(new GHPoint(49.6550, 11.4180));
         req.getHints().put("elevation", false);
         req.getHints().put("instructions", true);
-        req.getHints().put("calcPoints", true);
+        req.getHints().put("calc_points", true);
         GHResponse res = gh.route(req);
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         PathWrapper alt = res.getBest();
@@ -56,7 +56,7 @@ public class GraphHopperWebIT {
                 addPoint(new GHPoint(49.6550, 11.4180));
 
         req.getHints().put("instructions", false);
-        req.getHints().put("calcPoints", false);
+        req.getHints().put("calc_points", false);
         GHResponse res = gh.route(req);
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         PathWrapper alt = res.getBest();

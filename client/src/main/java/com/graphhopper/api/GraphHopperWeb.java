@@ -248,7 +248,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
             JSONArray point = snappedPoints.getJSONArray(index);
             points.add(WebHelper.toGHPoint(point));
         }
-        pathWrapper.setPoints(points);
+        pathWrapper.setWaypoints(points);
         
         if (tmpCalcPoints) {
             String pointStr = path.getString("points");
