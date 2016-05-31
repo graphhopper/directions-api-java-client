@@ -35,7 +35,7 @@ req.getHints().put("elevation", false);
 // Optionally enable/disable turn instruction information, defaults is true
 req.getHints().put("instructions", true);
 // Optionally enable/disable path geometry information, default is true
-req.getHints().put("calcPoints", true);
+req.getHints().put("calc_points", true);
 // note: turn off instructions and calcPoints if you just need the distance or time 
 // information to make calculation and transmission faster
 //
