@@ -2,7 +2,7 @@ lazy val root = (project in file(".")).
   settings(
     organization := "com.graphhopper",
     name := "directions-api-java-client-route-opt",
-    version := "1.0.0",
+    version := "0.7-SNAPSHOT",
     scalaVersion := "2.11.4",
     scalacOptions ++= Seq("-feature"),
     javacOptions in compile ++= Seq("-Xlint:deprecation"),

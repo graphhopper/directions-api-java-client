@@ -5,7 +5,7 @@
   <artifactId>directions-api-java-client-route-opt</artifactId>
   <packaging>jar</packaging>
   <name>directions-api-java-client-route-opt</name>
-  <version>1.0.0</version>
+  <version>0.7-SNAPSHOT</version>
   <scm>
     <connection>scm:git:git@github.com:swagger-api/swagger-mustache.git</connection>
     <developerConnection>scm:git:git@github.com:swagger-api/swagger-codegen.git</developerConnection>

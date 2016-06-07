@@ -1,5 +1,5 @@
 group = 'com.graphhopper'
-version = '1.0.0'
+version = '0.7-SNAPSHOT'
 
 buildscript {
     repositories {
