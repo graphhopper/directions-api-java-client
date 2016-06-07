@@ -89,8 +89,8 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
             }
 
             final String id = responseJson.getString("job_id");
-
-            for (int i = 0; i < maxIterations; i++) {
+            int i = 0;
+            for (; i < maxIterations; i++) {
                 // SLEEP a bit and GET solution
                 if (sleepAfterGET > 0) {
                     Thread.sleep(sleepAfterGET);
@@ -110,10 +110,10 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                             hasElevation);
                     break;
                 }
+            }
 
-                if (i == maxIterations) {
-                    throw new IllegalStateException("Maximum number of iterations reached " + maxIterations + ", increasing should only be necessary if very big matrices. For small matrices contact us! info@graphhopper.com");
-                }
+            if (i >= maxIterations) {
+                throw new IllegalStateException("Maximum number of iterations reached " + maxIterations + ", increasing should only be necessary for big matrices. For smaller ones this is a bug, please contact us");
             }
 
         } catch (InterruptedException ex) {
