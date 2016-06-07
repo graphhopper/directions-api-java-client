@@ -1,17 +1,16 @@
-package io.swagger.client.model;
+package com.graphhopper.routeopt.client.model;
 
 import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-
+@ApiModel(description = "")
 public class SolutionUnassigned   {
   
   @SerializedName("services")
@@ -56,8 +55,8 @@ public class SolutionUnassigned   {
       return false;
     }
     SolutionUnassigned solutionUnassigned = (SolutionUnassigned) o;
-    return Objects.equals(this.services, solutionUnassigned.services) &&
-        Objects.equals(this.shipments, solutionUnassigned.shipments);
+    return Objects.equals(services, solutionUnassigned.services) &&
+        Objects.equals(shipments, solutionUnassigned.shipments);
   }
 
   @Override

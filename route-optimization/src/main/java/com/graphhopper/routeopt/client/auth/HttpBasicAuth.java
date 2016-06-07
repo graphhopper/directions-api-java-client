@@ -1,6 +1,6 @@
-package io.swagger.client.auth;
+package com.graphhopper.routeopt.client.auth;
 
-import io.swagger.client.Pair;
+import com.graphhopper.routeopt.client.Pair;
 
 import com.squareup.okhttp.Credentials;
 

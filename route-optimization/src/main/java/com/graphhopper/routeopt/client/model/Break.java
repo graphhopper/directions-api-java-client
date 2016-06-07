@@ -1,12 +1,11 @@
-package io.swagger.client.model;
+package com.graphhopper.routeopt.client.model;
 
-import io.swagger.client.StringUtil;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import com.google.gson.annotations.SerializedName;
 
-
-
-import io.swagger.annotations.*;
 
 
 
@@ -62,14 +61,44 @@ public class Break   {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Break _break = (Break) o;
+    return Objects.equals(earliest, _break.earliest) &&
+        Objects.equals(latest, _break.latest) &&
+        Objects.equals(duration, _break.duration);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(earliest, latest, duration);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Break {\n");
     
-    sb.append("    earliest: ").append(StringUtil.toIndentedString(earliest)).append("\n");
-    sb.append("    latest: ").append(StringUtil.toIndentedString(latest)).append("\n");
-    sb.append("    duration: ").append(StringUtil.toIndentedString(duration)).append("\n");
+    sb.append("    earliest: ").append(toIndentedString(earliest)).append("\n");
+    sb.append("    latest: ").append(toIndentedString(latest)).append("\n");
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

@@ -1,4 +1,4 @@
-package io.swagger.client.model;
+package com.graphhopper.routeopt.client.model;
 
 import java.util.Objects;
 import io.swagger.annotations.ApiModel;
@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-
+@ApiModel(description = "")
 public class JobId   {
   
   @SerializedName("job_id")
@@ -39,7 +39,7 @@ public class JobId   {
       return false;
     }
     JobId jobId = (JobId) o;
-    return Objects.equals(this.jobId, jobId.jobId);
+    return Objects.equals(jobId, jobId.jobId);
   }
 
   @Override

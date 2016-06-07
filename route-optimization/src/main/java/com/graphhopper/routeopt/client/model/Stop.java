@@ -1,19 +1,18 @@
-package io.swagger.client.model;
+package com.graphhopper.routeopt.client.model;
 
 import java.util.Objects;
+import com.graphhopper.routeopt.client.model.Address;
+import com.graphhopper.routeopt.client.model.TimeWindow;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.client.model.Address;
-import io.swagger.client.model.TimeWindow;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-
+@ApiModel(description = "")
 public class Stop   {
   
   @SerializedName("address")
@@ -72,9 +71,9 @@ public class Stop   {
       return false;
     }
     Stop stop = (Stop) o;
-    return Objects.equals(this.address, stop.address) &&
-        Objects.equals(this.duration, stop.duration) &&
-        Objects.equals(this.timeWindows, stop.timeWindows);
+    return Objects.equals(address, stop.address) &&
+        Objects.equals(duration, stop.duration) &&
+        Objects.equals(timeWindows, stop.timeWindows);
   }
 
   @Override

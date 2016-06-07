@@ -1,4 +1,4 @@
-package io.swagger.client.model;
+package com.graphhopper.routeopt.client.model;
 
 import java.util.Objects;
 import io.swagger.annotations.ApiModel;
@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-
+@ApiModel(description = "")
 public class Activity   {
   
 
@@ -128,11 +128,11 @@ public enum TypeEnum {
       return false;
     }
     Activity activity = (Activity) o;
-    return Objects.equals(this.type, activity.type) &&
-        Objects.equals(this.id, activity.id) &&
-        Objects.equals(this.locationId, activity.locationId) &&
-        Objects.equals(this.arrTime, activity.arrTime) &&
-        Objects.equals(this.endTime, activity.endTime);
+    return Objects.equals(type, activity.type) &&
+        Objects.equals(id, activity.id) &&
+        Objects.equals(locationId, activity.locationId) &&
+        Objects.equals(arrTime, activity.arrTime) &&
+        Objects.equals(endTime, activity.endTime);
   }
 
   @Override

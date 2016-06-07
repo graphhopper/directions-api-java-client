@@ -1,4 +1,4 @@
-package io.swagger.client;
+package com.graphhopper.routeopt.client;
 
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.RequestBody;

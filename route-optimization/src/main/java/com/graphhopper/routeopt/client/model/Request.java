@@ -1,23 +1,22 @@
-package io.swagger.client.model;
+package com.graphhopper.routeopt.client.model;
 
 import java.util.Objects;
+import com.graphhopper.routeopt.client.model.Algorithm;
+import com.graphhopper.routeopt.client.model.Relation;
+import com.graphhopper.routeopt.client.model.Service;
+import com.graphhopper.routeopt.client.model.Shipment;
+import com.graphhopper.routeopt.client.model.Vehicle;
+import com.graphhopper.routeopt.client.model.VehicleType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.client.model.Algorithm;
-import io.swagger.client.model.Relation;
-import io.swagger.client.model.Service;
-import io.swagger.client.model.Shipment;
-import io.swagger.client.model.Vehicle;
-import io.swagger.client.model.VehicleType;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-
+@ApiModel(description = "")
 public class Request   {
   
   @SerializedName("vehicles")
@@ -121,12 +120,12 @@ public class Request   {
       return false;
     }
     Request request = (Request) o;
-    return Objects.equals(this.vehicles, request.vehicles) &&
-        Objects.equals(this.vehicleTypes, request.vehicleTypes) &&
-        Objects.equals(this.services, request.services) &&
-        Objects.equals(this.shipments, request.shipments) &&
-        Objects.equals(this.relations, request.relations) &&
-        Objects.equals(this.algorithm, request.algorithm);
+    return Objects.equals(vehicles, request.vehicles) &&
+        Objects.equals(vehicleTypes, request.vehicleTypes) &&
+        Objects.equals(services, request.services) &&
+        Objects.equals(shipments, request.shipments) &&
+        Objects.equals(relations, request.relations) &&
+        Objects.equals(algorithm, request.algorithm);
   }
 
   @Override

@@ -1,11 +1,11 @@
-package io.swagger.client.auth;
+package com.graphhopper.routeopt.client.auth;
 
-import io.swagger.client.Pair;
+import com.graphhopper.routeopt.client.Pair;
 
 import java.util.Map;
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-06-07T13:21:27.377+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-06-07T14:02:44.580+02:00")
 public class ApiKeyAuth implements Authentication {
   private final String location;
   private final String paramName;

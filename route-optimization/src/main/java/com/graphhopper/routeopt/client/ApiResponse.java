@@ -1,4 +1,4 @@
-package io.swagger.client;
+package com.graphhopper.routeopt.client;
 
 import java.util.List;
 import java.util.Map;

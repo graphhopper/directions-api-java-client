@@ -1,4 +1,4 @@
-package io.swagger.client;
+package com.graphhopper.routeopt.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,17 +1,16 @@
-package io.swagger.client.model;
+package com.graphhopper.routeopt.client.model;
 
 import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-
+@ApiModel(description = "")
 public class Relation   {
   
   @SerializedName("type")
@@ -71,9 +70,9 @@ public class Relation   {
       return false;
     }
     Relation relation = (Relation) o;
-    return Objects.equals(this.type, relation.type) &&
-        Objects.equals(this.ids, relation.ids) &&
-        Objects.equals(this.vehicleId, relation.vehicleId);
+    return Objects.equals(type, relation.type) &&
+        Objects.equals(ids, relation.ids) &&
+        Objects.equals(vehicleId, relation.vehicleId);
   }
 
   @Override

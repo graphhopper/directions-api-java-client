@@ -1,16 +1,16 @@
-package io.swagger.client.model;
+package com.graphhopper.routeopt.client.model;
 
 import java.util.Objects;
+import com.graphhopper.routeopt.client.model.Solution;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.client.model.Solution;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-
+@ApiModel(description = "")
 public class Response   {
   
   @SerializedName("job_id")
@@ -123,11 +123,11 @@ public enum StatusEnum {
       return false;
     }
     Response response = (Response) o;
-    return Objects.equals(this.jobId, response.jobId) &&
-        Objects.equals(this.status, response.status) &&
-        Objects.equals(this.waitingInQueue, response.waitingInQueue) &&
-        Objects.equals(this.processingTime, response.processingTime) &&
-        Objects.equals(this.solution, response.solution);
+    return Objects.equals(jobId, response.jobId) &&
+        Objects.equals(status, response.status) &&
+        Objects.equals(waitingInQueue, response.waitingInQueue) &&
+        Objects.equals(processingTime, response.processingTime) &&
+        Objects.equals(solution, response.solution);
   }
 
   @Override

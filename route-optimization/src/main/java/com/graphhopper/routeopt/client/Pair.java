@@ -1,6 +1,6 @@
-package io.swagger.client;
+package com.graphhopper.routeopt.client;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-06-07T13:21:27.377+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-06-07T14:02:44.580+02:00")
 public class Pair {
     private String name = "";
     private String value = "";
