@@ -45,8 +45,6 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
 
     @Override
     public MatrixResponse route(GHMRequest ghRequest, String key) {
-        StopWatch sw = new StopWatch().start();
-
         JSONObject requestJson = new JSONObject();
         List<Double[]> fromPointList = createPointList(ghRequest.getFromPoints());
         List<Double[]> toPointList = createPointList(ghRequest.getToPoints());
