@@ -1,17 +1,17 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import java.util.*;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Relation   {
   
   @SerializedName("type")
@@ -63,14 +63,44 @@ public class Relation   {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Relation relation = (Relation) o;
+    return Objects.equals(this.type, relation.type) &&
+        Objects.equals(this.ids, relation.ids) &&
+        Objects.equals(this.vehicleId, relation.vehicleId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(type, ids, vehicleId);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Relation {\n");
     
-    sb.append("    type: ").append(StringUtil.toIndentedString(type)).append("\n");
-    sb.append("    ids: ").append(StringUtil.toIndentedString(ids)).append("\n");
-    sb.append("    vehicleId: ").append(StringUtil.toIndentedString(vehicleId)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    ids: ").append(toIndentedString(ids)).append("\n");
+    sb.append("    vehicleId: ").append(toIndentedString(vehicleId)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

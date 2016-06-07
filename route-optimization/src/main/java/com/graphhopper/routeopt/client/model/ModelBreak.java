@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-public class TimeWindow   {
+public class ModelBreak   {
   
   @SerializedName("earliest")
   private Long earliest = null;
@@ -18,12 +18,15 @@ public class TimeWindow   {
   @SerializedName("latest")
   private Long latest = null;
   
+  @SerializedName("duration")
+  private Long duration = null;
+  
 
   
   /**
-   * earliest start time of corresponding activity
+   * earliest start of break
    **/
-  @ApiModelProperty(value = "earliest start time of corresponding activity")
+  @ApiModelProperty(value = "earliest start of break")
   public Long getEarliest() {
     return earliest;
   }
@@ -33,14 +36,26 @@ public class TimeWindow   {
 
   
   /**
-   * latest start time of corresponding activity
+   * latest start of break
    **/
-  @ApiModelProperty(value = "latest start time of corresponding activity")
+  @ApiModelProperty(value = "latest start of break")
   public Long getLatest() {
     return latest;
   }
   public void setLatest(Long latest) {
     this.latest = latest;
+  }
+
+  
+  /**
+   * duration of break
+   **/
+  @ApiModelProperty(value = "duration of break")
+  public Long getDuration() {
+    return duration;
+  }
+  public void setDuration(Long duration) {
+    this.duration = duration;
   }
 
   
@@ -53,23 +68,25 @@ public class TimeWindow   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TimeWindow timeWindow = (TimeWindow) o;
-    return Objects.equals(this.earliest, timeWindow.earliest) &&
-        Objects.equals(this.latest, timeWindow.latest);
+    ModelBreak _break = (ModelBreak) o;
+    return Objects.equals(this.earliest, _break.earliest) &&
+        Objects.equals(this.latest, _break.latest) &&
+        Objects.equals(this.duration, _break.duration);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(earliest, latest);
+    return Objects.hash(earliest, latest, duration);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TimeWindow {\n");
+    sb.append("class ModelBreak {\n");
     
     sb.append("    earliest: ").append(toIndentedString(earliest)).append("\n");
     sb.append("    latest: ").append(toIndentedString(latest)).append("\n");
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
     sb.append("}");
     return sb.toString();
   }

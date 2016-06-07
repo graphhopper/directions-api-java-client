@@ -1,4 +1,4 @@
-package com.graphhopper.routeopt.client.auth;
+package io.swagger.client.auth;
 
 public enum OAuthFlow {
     accessCode, implicit, password, application

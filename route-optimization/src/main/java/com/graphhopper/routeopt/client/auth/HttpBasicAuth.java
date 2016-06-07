@@ -1,8 +1,8 @@
-package com.graphhopper.routeopt.client.auth;
+package io.swagger.client.auth;
 
-import com.graphhopper.routeopt.client.Pair;
+import io.swagger.client.Pair;
 
-import com.migcomponents.migbase64.Base64;
+import com.squareup.okhttp.Credentials;
 
 import java.util.Map;
 import java.util.List;
@@ -31,11 +31,11 @@ public class HttpBasicAuth implements Authentication {
 
   @Override
   public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams) {
-    String str = (username == null ? "" : username) + ":" + (password == null ? "" : password);
-    try {
-      headerParams.put("Authorization", "Basic " + Base64.encodeToString(str.getBytes("UTF-8"), false));
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
+    if (username == null && password == null) {
+      return;
     }
+    headerParams.put("Authorization", Credentials.basic(
+        username == null ? "" : username,
+        password == null ? "" : password));
   }
 }

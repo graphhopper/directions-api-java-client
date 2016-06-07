@@ -1,16 +1,15 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Address   {
   
   @SerializedName("location_id")
@@ -62,14 +61,44 @@ public class Address   {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Address address = (Address) o;
+    return Objects.equals(this.locationId, address.locationId) &&
+        Objects.equals(this.lon, address.lon) &&
+        Objects.equals(this.lat, address.lat);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(locationId, lon, lat);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Address {\n");
     
-    sb.append("    locationId: ").append(StringUtil.toIndentedString(locationId)).append("\n");
-    sb.append("    lon: ").append(StringUtil.toIndentedString(lon)).append("\n");
-    sb.append("    lat: ").append(StringUtil.toIndentedString(lat)).append("\n");
+    sb.append("    locationId: ").append(toIndentedString(locationId)).append("\n");
+    sb.append("    lon: ").append(toIndentedString(lon)).append("\n");
+    sb.append("    lat: ").append(toIndentedString(lat)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

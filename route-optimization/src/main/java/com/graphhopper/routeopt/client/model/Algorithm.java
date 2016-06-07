@@ -1,16 +1,15 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Algorithm   {
   
 
@@ -85,13 +84,42 @@ public enum ObjectiveEnum {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Algorithm algorithm = (Algorithm) o;
+    return Objects.equals(this.problemType, algorithm.problemType) &&
+        Objects.equals(this.objective, algorithm.objective);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(problemType, objective);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Algorithm {\n");
     
-    sb.append("    problemType: ").append(StringUtil.toIndentedString(problemType)).append("\n");
-    sb.append("    objective: ").append(StringUtil.toIndentedString(objective)).append("\n");
+    sb.append("    problemType: ").append(toIndentedString(problemType)).append("\n");
+    sb.append("    objective: ").append(toIndentedString(objective)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

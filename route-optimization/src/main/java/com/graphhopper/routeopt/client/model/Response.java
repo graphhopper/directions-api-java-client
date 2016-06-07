@@ -1,17 +1,16 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import com.graphhopper.routeopt.client.model.Solution;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.client.model.Solution;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Response   {
   
   @SerializedName("job_id")
@@ -116,16 +115,48 @@ public enum StatusEnum {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Response response = (Response) o;
+    return Objects.equals(this.jobId, response.jobId) &&
+        Objects.equals(this.status, response.status) &&
+        Objects.equals(this.waitingInQueue, response.waitingInQueue) &&
+        Objects.equals(this.processingTime, response.processingTime) &&
+        Objects.equals(this.solution, response.solution);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(jobId, status, waitingInQueue, processingTime, solution);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Response {\n");
     
-    sb.append("    jobId: ").append(StringUtil.toIndentedString(jobId)).append("\n");
-    sb.append("    status: ").append(StringUtil.toIndentedString(status)).append("\n");
-    sb.append("    waitingInQueue: ").append(StringUtil.toIndentedString(waitingInQueue)).append("\n");
-    sb.append("    processingTime: ").append(StringUtil.toIndentedString(processingTime)).append("\n");
-    sb.append("    solution: ").append(StringUtil.toIndentedString(solution)).append("\n");
+    sb.append("    jobId: ").append(toIndentedString(jobId)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    waitingInQueue: ").append(toIndentedString(waitingInQueue)).append("\n");
+    sb.append("    processingTime: ").append(toIndentedString(processingTime)).append("\n");
+    sb.append("    solution: ").append(toIndentedString(solution)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

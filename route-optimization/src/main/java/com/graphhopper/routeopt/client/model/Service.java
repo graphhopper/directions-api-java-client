@@ -1,19 +1,19 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import com.graphhopper.routeopt.client.model.TimeWindow;
-import com.graphhopper.routeopt.client.model.Address;
-import java.util.*;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.client.model.Address;
+import io.swagger.client.model.TimeWindow;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Service   {
   
   @SerializedName("id")
@@ -44,6 +44,9 @@ public enum TypeEnum {
 
   @SerializedName("type")
   private TypeEnum type = null;
+  
+  @SerializedName("priority")
+  private Integer priority = null;
   
   @SerializedName("name")
   private String name = null;
@@ -89,6 +92,18 @@ public enum TypeEnum {
   }
   public void setType(TypeEnum type) {
     this.type = type;
+  }
+
+  
+  /**
+   * priority of service, i.e. 1 = high, 2 = normal, 3 = low. default is 2.
+   **/
+  @ApiModelProperty(value = "priority of service, i.e. 1 = high, 2 = normal, 3 = low. default is 2.")
+  public Integer getPriority() {
+    return priority;
+  }
+  public void setPriority(Integer priority) {
+    this.priority = priority;
   }
 
   
@@ -177,20 +192,58 @@ public enum TypeEnum {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Service service = (Service) o;
+    return Objects.equals(this.id, service.id) &&
+        Objects.equals(this.type, service.type) &&
+        Objects.equals(this.priority, service.priority) &&
+        Objects.equals(this.name, service.name) &&
+        Objects.equals(this.address, service.address) &&
+        Objects.equals(this.duration, service.duration) &&
+        Objects.equals(this.timeWindows, service.timeWindows) &&
+        Objects.equals(this.size, service.size) &&
+        Objects.equals(this.requiredSkills, service.requiredSkills) &&
+        Objects.equals(this.allowedVehicles, service.allowedVehicles);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, type, priority, name, address, duration, timeWindows, size, requiredSkills, allowedVehicles);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Service {\n");
     
-    sb.append("    id: ").append(StringUtil.toIndentedString(id)).append("\n");
-    sb.append("    type: ").append(StringUtil.toIndentedString(type)).append("\n");
-    sb.append("    name: ").append(StringUtil.toIndentedString(name)).append("\n");
-    sb.append("    address: ").append(StringUtil.toIndentedString(address)).append("\n");
-    sb.append("    duration: ").append(StringUtil.toIndentedString(duration)).append("\n");
-    sb.append("    timeWindows: ").append(StringUtil.toIndentedString(timeWindows)).append("\n");
-    sb.append("    size: ").append(StringUtil.toIndentedString(size)).append("\n");
-    sb.append("    requiredSkills: ").append(StringUtil.toIndentedString(requiredSkills)).append("\n");
-    sb.append("    allowedVehicles: ").append(StringUtil.toIndentedString(allowedVehicles)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
+    sb.append("    timeWindows: ").append(toIndentedString(timeWindows)).append("\n");
+    sb.append("    size: ").append(toIndentedString(size)).append("\n");
+    sb.append("    requiredSkills: ").append(toIndentedString(requiredSkills)).append("\n");
+    sb.append("    allowedVehicles: ").append(toIndentedString(allowedVehicles)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

@@ -1,19 +1,19 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import com.graphhopper.routeopt.client.model.TimeWindow;
-import com.graphhopper.routeopt.client.model.Address;
-import java.util.*;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.client.model.Address;
+import io.swagger.client.model.TimeWindow;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Stop   {
   
   @SerializedName("address")
@@ -64,14 +64,44 @@ public class Stop   {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Stop stop = (Stop) o;
+    return Objects.equals(this.address, stop.address) &&
+        Objects.equals(this.duration, stop.duration) &&
+        Objects.equals(this.timeWindows, stop.timeWindows);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(address, duration, timeWindows);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Stop {\n");
     
-    sb.append("    address: ").append(StringUtil.toIndentedString(address)).append("\n");
-    sb.append("    duration: ").append(StringUtil.toIndentedString(duration)).append("\n");
-    sb.append("    timeWindows: ").append(StringUtil.toIndentedString(timeWindows)).append("\n");
+    sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
+    sb.append("    timeWindows: ").append(toIndentedString(timeWindows)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

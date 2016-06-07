@@ -1,4 +1,4 @@
-package com.graphhopper.routeopt.client;
+package io.swagger.client;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -58,10 +58,10 @@ import javax.net.ssl.X509TrustManager;
 import okio.BufferedSink;
 import okio.Okio;
 
-import com.graphhopper.routeopt.client.auth.Authentication;
-import com.graphhopper.routeopt.client.auth.HttpBasicAuth;
-import com.graphhopper.routeopt.client.auth.ApiKeyAuth;
-import com.graphhopper.routeopt.client.auth.OAuth;
+import io.swagger.client.auth.Authentication;
+import io.swagger.client.auth.HttpBasicAuth;
+import io.swagger.client.auth.ApiKeyAuth;
+import io.swagger.client.auth.OAuth;
 
 public class ApiClient {
   private String basePath = "https://graphhopper.com/api/1/vrp";

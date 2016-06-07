@@ -1,18 +1,18 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import java.util.*;
-import com.graphhopper.routeopt.client.model.Stop;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.client.model.Stop;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Shipment   {
   
   @SerializedName("id")
@@ -20,6 +20,9 @@ public class Shipment   {
   
   @SerializedName("name")
   private String name = null;
+  
+  @SerializedName("priority")
+  private Integer priority = null;
   
   @SerializedName("pickup")
   private Stop pickup = null;
@@ -59,6 +62,18 @@ public class Shipment   {
   }
   public void setName(String name) {
     this.name = name;
+  }
+
+  
+  /**
+   * priority of service, i.e. 1 = high, 2 = normal, 3 = low. default is 2.
+   **/
+  @ApiModelProperty(value = "priority of service, i.e. 1 = high, 2 = normal, 3 = low. default is 2.")
+  public Integer getPriority() {
+    return priority;
+  }
+  public void setPriority(Integer priority) {
+    this.priority = priority;
   }
 
   
@@ -122,18 +137,54 @@ public class Shipment   {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Shipment shipment = (Shipment) o;
+    return Objects.equals(this.id, shipment.id) &&
+        Objects.equals(this.name, shipment.name) &&
+        Objects.equals(this.priority, shipment.priority) &&
+        Objects.equals(this.pickup, shipment.pickup) &&
+        Objects.equals(this.delivery, shipment.delivery) &&
+        Objects.equals(this.size, shipment.size) &&
+        Objects.equals(this.requiredSkills, shipment.requiredSkills) &&
+        Objects.equals(this.allowedVehicles, shipment.allowedVehicles);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, priority, pickup, delivery, size, requiredSkills, allowedVehicles);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Shipment {\n");
     
-    sb.append("    id: ").append(StringUtil.toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(StringUtil.toIndentedString(name)).append("\n");
-    sb.append("    pickup: ").append(StringUtil.toIndentedString(pickup)).append("\n");
-    sb.append("    delivery: ").append(StringUtil.toIndentedString(delivery)).append("\n");
-    sb.append("    size: ").append(StringUtil.toIndentedString(size)).append("\n");
-    sb.append("    requiredSkills: ").append(StringUtil.toIndentedString(requiredSkills)).append("\n");
-    sb.append("    allowedVehicles: ").append(StringUtil.toIndentedString(allowedVehicles)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
+    sb.append("    pickup: ").append(toIndentedString(pickup)).append("\n");
+    sb.append("    delivery: ").append(toIndentedString(delivery)).append("\n");
+    sb.append("    size: ").append(toIndentedString(size)).append("\n");
+    sb.append("    requiredSkills: ").append(toIndentedString(requiredSkills)).append("\n");
+    sb.append("    allowedVehicles: ").append(toIndentedString(allowedVehicles)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

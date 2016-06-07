@@ -1,6 +1,6 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
+import io.swagger.client.StringUtil;
 
 import com.google.gson.annotations.SerializedName;
 

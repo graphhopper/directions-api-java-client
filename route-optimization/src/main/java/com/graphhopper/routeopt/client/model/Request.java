@@ -1,23 +1,23 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import com.graphhopper.routeopt.client.model.Relation;
-import com.graphhopper.routeopt.client.model.Service;
-import com.graphhopper.routeopt.client.model.Algorithm;
-import com.graphhopper.routeopt.client.model.VehicleType;
-import java.util.*;
-import com.graphhopper.routeopt.client.model.Shipment;
-import com.graphhopper.routeopt.client.model.Vehicle;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.client.model.Algorithm;
+import io.swagger.client.model.Relation;
+import io.swagger.client.model.Service;
+import io.swagger.client.model.Shipment;
+import io.swagger.client.model.Vehicle;
+import io.swagger.client.model.VehicleType;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Request   {
   
   @SerializedName("vehicles")
@@ -113,17 +113,50 @@ public class Request   {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Request request = (Request) o;
+    return Objects.equals(this.vehicles, request.vehicles) &&
+        Objects.equals(this.vehicleTypes, request.vehicleTypes) &&
+        Objects.equals(this.services, request.services) &&
+        Objects.equals(this.shipments, request.shipments) &&
+        Objects.equals(this.relations, request.relations) &&
+        Objects.equals(this.algorithm, request.algorithm);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(vehicles, vehicleTypes, services, shipments, relations, algorithm);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Request {\n");
     
-    sb.append("    vehicles: ").append(StringUtil.toIndentedString(vehicles)).append("\n");
-    sb.append("    vehicleTypes: ").append(StringUtil.toIndentedString(vehicleTypes)).append("\n");
-    sb.append("    services: ").append(StringUtil.toIndentedString(services)).append("\n");
-    sb.append("    shipments: ").append(StringUtil.toIndentedString(shipments)).append("\n");
-    sb.append("    relations: ").append(StringUtil.toIndentedString(relations)).append("\n");
-    sb.append("    algorithm: ").append(StringUtil.toIndentedString(algorithm)).append("\n");
+    sb.append("    vehicles: ").append(toIndentedString(vehicles)).append("\n");
+    sb.append("    vehicleTypes: ").append(toIndentedString(vehicleTypes)).append("\n");
+    sb.append("    services: ").append(toIndentedString(services)).append("\n");
+    sb.append("    shipments: ").append(toIndentedString(shipments)).append("\n");
+    sb.append("    relations: ").append(toIndentedString(relations)).append("\n");
+    sb.append("    algorithm: ").append(toIndentedString(algorithm)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

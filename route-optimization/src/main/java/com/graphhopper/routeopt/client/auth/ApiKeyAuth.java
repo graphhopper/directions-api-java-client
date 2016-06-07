@@ -1,11 +1,11 @@
-package com.graphhopper.routeopt.client.auth;
+package io.swagger.client.auth;
 
-import com.graphhopper.routeopt.client.Pair;
+import io.swagger.client.Pair;
 
 import java.util.Map;
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-05-31T10:17:59.069+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-06-07T13:21:27.377+02:00")
 public class ApiKeyAuth implements Authentication {
   private final String location;
   private final String paramName;
@@ -44,6 +44,9 @@ public class ApiKeyAuth implements Authentication {
 
   @Override
   public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams) {
+    if (apiKey == null) {
+      return;
+    }
     String value;
     if (apiKeyPrefix != null) {
       value = apiKeyPrefix + " " + apiKey;

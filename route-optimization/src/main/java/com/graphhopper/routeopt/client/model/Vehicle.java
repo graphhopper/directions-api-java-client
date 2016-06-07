@@ -1,19 +1,19 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import com.graphhopper.routeopt.client.model.Break;
-import com.graphhopper.routeopt.client.model.Address;
-import java.util.*;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.client.model.Address;
+import io.swagger.client.model.ModelBreak;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Vehicle   {
   
   @SerializedName("vehicle_id")
@@ -29,7 +29,7 @@ public class Vehicle   {
   private Address endAddress = null;
   
   @SerializedName("break")
-  private Break _break = null;
+  private ModelBreak _break = null;
   
   @SerializedName("return_to_depot")
   private Boolean returnToDepot = null;
@@ -94,10 +94,10 @@ public class Vehicle   {
   /**
    **/
   @ApiModelProperty(value = "")
-  public Break getBreak() {
+  public ModelBreak getBreak() {
     return _break;
   }
-  public void setBreak(Break _break) {
+  public void setBreak(ModelBreak _break) {
     this._break = _break;
   }
 
@@ -152,20 +152,56 @@ public class Vehicle   {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Vehicle vehicle = (Vehicle) o;
+    return Objects.equals(this.vehicleId, vehicle.vehicleId) &&
+        Objects.equals(this.typeId, vehicle.typeId) &&
+        Objects.equals(this.startAddress, vehicle.startAddress) &&
+        Objects.equals(this.endAddress, vehicle.endAddress) &&
+        Objects.equals(this._break, vehicle._break) &&
+        Objects.equals(this.returnToDepot, vehicle.returnToDepot) &&
+        Objects.equals(this.earliestStart, vehicle.earliestStart) &&
+        Objects.equals(this.latestEnd, vehicle.latestEnd) &&
+        Objects.equals(this.skills, vehicle.skills);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(vehicleId, typeId, startAddress, endAddress, _break, returnToDepot, earliestStart, latestEnd, skills);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Vehicle {\n");
     
-    sb.append("    vehicleId: ").append(StringUtil.toIndentedString(vehicleId)).append("\n");
-    sb.append("    typeId: ").append(StringUtil.toIndentedString(typeId)).append("\n");
-    sb.append("    startAddress: ").append(StringUtil.toIndentedString(startAddress)).append("\n");
-    sb.append("    endAddress: ").append(StringUtil.toIndentedString(endAddress)).append("\n");
-    sb.append("    _break: ").append(StringUtil.toIndentedString(_break)).append("\n");
-    sb.append("    returnToDepot: ").append(StringUtil.toIndentedString(returnToDepot)).append("\n");
-    sb.append("    earliestStart: ").append(StringUtil.toIndentedString(earliestStart)).append("\n");
-    sb.append("    latestEnd: ").append(StringUtil.toIndentedString(latestEnd)).append("\n");
-    sb.append("    skills: ").append(StringUtil.toIndentedString(skills)).append("\n");
+    sb.append("    vehicleId: ").append(toIndentedString(vehicleId)).append("\n");
+    sb.append("    typeId: ").append(toIndentedString(typeId)).append("\n");
+    sb.append("    startAddress: ").append(toIndentedString(startAddress)).append("\n");
+    sb.append("    endAddress: ").append(toIndentedString(endAddress)).append("\n");
+    sb.append("    _break: ").append(toIndentedString(_break)).append("\n");
+    sb.append("    returnToDepot: ").append(toIndentedString(returnToDepot)).append("\n");
+    sb.append("    earliestStart: ").append(toIndentedString(earliestStart)).append("\n");
+    sb.append("    latestEnd: ").append(toIndentedString(latestEnd)).append("\n");
+    sb.append("    skills: ").append(toIndentedString(skills)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

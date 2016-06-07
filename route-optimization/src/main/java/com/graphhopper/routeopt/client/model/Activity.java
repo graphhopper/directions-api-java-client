@@ -1,16 +1,15 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Activity   {
   
 
@@ -121,16 +120,48 @@ public enum TypeEnum {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Activity activity = (Activity) o;
+    return Objects.equals(this.type, activity.type) &&
+        Objects.equals(this.id, activity.id) &&
+        Objects.equals(this.locationId, activity.locationId) &&
+        Objects.equals(this.arrTime, activity.arrTime) &&
+        Objects.equals(this.endTime, activity.endTime);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(type, id, locationId, arrTime, endTime);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Activity {\n");
     
-    sb.append("    type: ").append(StringUtil.toIndentedString(type)).append("\n");
-    sb.append("    id: ").append(StringUtil.toIndentedString(id)).append("\n");
-    sb.append("    locationId: ").append(StringUtil.toIndentedString(locationId)).append("\n");
-    sb.append("    arrTime: ").append(StringUtil.toIndentedString(arrTime)).append("\n");
-    sb.append("    endTime: ").append(StringUtil.toIndentedString(endTime)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    locationId: ").append(toIndentedString(locationId)).append("\n");
+    sb.append("    arrTime: ").append(toIndentedString(arrTime)).append("\n");
+    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

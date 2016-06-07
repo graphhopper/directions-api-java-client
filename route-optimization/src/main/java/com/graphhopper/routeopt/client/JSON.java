@@ -1,4 +1,4 @@
-package com.graphhopper.routeopt.client;
+package io.swagger.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,10 +23,9 @@ public class JSON {
   public JSON(ApiClient apiClient) {
     this.apiClient = apiClient;
     gson = new GsonBuilder()
-      .serializeNulls()
       .registerTypeAdapter(Date.class, new DateAdapter(apiClient))
       .create();
-	}
+  }
 
   public Gson getGson() {
     return gson;

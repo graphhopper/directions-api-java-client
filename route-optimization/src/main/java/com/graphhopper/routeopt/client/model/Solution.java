@@ -1,18 +1,19 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import java.util.*;
-import com.graphhopper.routeopt.client.model.Route;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.client.model.Route;
+import io.swagger.client.model.SolutionUnassigned;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class Solution   {
   
   @SerializedName("costs")
@@ -31,7 +32,7 @@ public class Solution   {
   private List<Route> routes = new ArrayList<Route>();
   
   @SerializedName("unassigned")
-  private Object unassigned = null;
+  private SolutionUnassigned unassigned = null;
   
 
   
@@ -98,27 +99,60 @@ public class Solution   {
   /**
    **/
   @ApiModelProperty(value = "")
-  public Object getUnassigned() {
+  public SolutionUnassigned getUnassigned() {
     return unassigned;
   }
-  public void setUnassigned(Object unassigned) {
+  public void setUnassigned(SolutionUnassigned unassigned) {
     this.unassigned = unassigned;
   }
 
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Solution solution = (Solution) o;
+    return Objects.equals(this.costs, solution.costs) &&
+        Objects.equals(this.distance, solution.distance) &&
+        Objects.equals(this.time, solution.time) &&
+        Objects.equals(this.noUnassigned, solution.noUnassigned) &&
+        Objects.equals(this.routes, solution.routes) &&
+        Objects.equals(this.unassigned, solution.unassigned);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(costs, distance, time, noUnassigned, routes, unassigned);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Solution {\n");
     
-    sb.append("    costs: ").append(StringUtil.toIndentedString(costs)).append("\n");
-    sb.append("    distance: ").append(StringUtil.toIndentedString(distance)).append("\n");
-    sb.append("    time: ").append(StringUtil.toIndentedString(time)).append("\n");
-    sb.append("    noUnassigned: ").append(StringUtil.toIndentedString(noUnassigned)).append("\n");
-    sb.append("    routes: ").append(StringUtil.toIndentedString(routes)).append("\n");
-    sb.append("    unassigned: ").append(StringUtil.toIndentedString(unassigned)).append("\n");
+    sb.append("    costs: ").append(toIndentedString(costs)).append("\n");
+    sb.append("    distance: ").append(toIndentedString(distance)).append("\n");
+    sb.append("    time: ").append(toIndentedString(time)).append("\n");
+    sb.append("    noUnassigned: ").append(toIndentedString(noUnassigned)).append("\n");
+    sb.append("    routes: ").append(toIndentedString(routes)).append("\n");
+    sb.append("    unassigned: ").append(toIndentedString(unassigned)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }

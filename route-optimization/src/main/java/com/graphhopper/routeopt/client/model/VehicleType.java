@@ -1,17 +1,17 @@
-package com.graphhopper.routeopt.client.model;
+package io.swagger.client.model;
 
-import com.graphhopper.routeopt.client.StringUtil;
-import java.util.*;
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
-import io.swagger.annotations.*;
 
 
-
-@ApiModel(description = "")
 public class VehicleType   {
   
   @SerializedName("type_id")
@@ -134,16 +134,48 @@ public enum ProfileEnum {
   
 
   @Override
-  public String toString()  {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    VehicleType vehicleType = (VehicleType) o;
+    return Objects.equals(this.typeId, vehicleType.typeId) &&
+        Objects.equals(this.profile, vehicleType.profile) &&
+        Objects.equals(this.capacity, vehicleType.capacity) &&
+        Objects.equals(this.speedFactor, vehicleType.speedFactor) &&
+        Objects.equals(this.serviceTimeFactor, vehicleType.serviceTimeFactor);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(typeId, profile, capacity, speedFactor, serviceTimeFactor);
+  }
+
+  @Override
+  public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class VehicleType {\n");
     
-    sb.append("    typeId: ").append(StringUtil.toIndentedString(typeId)).append("\n");
-    sb.append("    profile: ").append(StringUtil.toIndentedString(profile)).append("\n");
-    sb.append("    capacity: ").append(StringUtil.toIndentedString(capacity)).append("\n");
-    sb.append("    speedFactor: ").append(StringUtil.toIndentedString(speedFactor)).append("\n");
-    sb.append("    serviceTimeFactor: ").append(StringUtil.toIndentedString(serviceTimeFactor)).append("\n");
+    sb.append("    typeId: ").append(toIndentedString(typeId)).append("\n");
+    sb.append("    profile: ").append(toIndentedString(profile)).append("\n");
+    sb.append("    capacity: ").append(toIndentedString(capacity)).append("\n");
+    sb.append("    speedFactor: ").append(toIndentedString(speedFactor)).append("\n");
+    sb.append("    serviceTimeFactor: ").append(toIndentedString(serviceTimeFactor)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 }
