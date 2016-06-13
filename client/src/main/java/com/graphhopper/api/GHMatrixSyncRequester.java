@@ -24,16 +24,10 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
 
     @Override
     public MatrixResponse route(GHMRequest ghRequest, String key) {
-        StopWatch sw = new StopWatch().start();
-
-        int fromCount, toCount;
         String pointsStr;
         if (ghRequest.identicalLists) {
-            fromCount = toCount = ghRequest.getFromPoints().size();
             pointsStr = createPointQuery(ghRequest.getFromPoints(), "point");
         } else {
-            fromCount = ghRequest.getFromPoints().size();
-            toCount = ghRequest.getToPoints().size();
             pointsStr = createPointQuery(ghRequest.getFromPoints(), "from_point");
             pointsStr += "&" + createPointQuery(ghRequest.getToPoints(), "to_point");
         }
@@ -54,11 +48,13 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
 
         // TODO allow elevation for full path
         boolean hasElevation = false;
-        String url = serviceUrl + "?"
-                + pointsStr
-                + "&" + outArrayStr
-                + "&vehicle=" + ghRequest.getVehicle()
-                + "&key=" + key;
+
+        String tmpServiceURL = ghRequest.getHints().get("service_url", serviceUrl);
+        String url = tmpServiceURL;
+        if (!url.contains("?")) {
+            url += "?";
+        }
+        url += pointsStr + "&" + outArrayStr + "&vehicle=" + ghRequest.getVehicle() + "&key=" + key;
 
         boolean withTimes = outArraysList.contains("times");
         boolean withDistances = outArraysList.contains("distances");

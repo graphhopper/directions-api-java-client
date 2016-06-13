@@ -49,12 +49,16 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
             outArraysList.add("times");
         }
 
-        // bicycling -> bike
-        // car -> car
-        // walking -> foot
-        String url = serviceUrl + "?"
-                + pointsStr
-                + "&mode=" + ghRequest.getVehicle();
+        // do not do the mapping here!
+        // bicycling -> bike, car -> car, walking -> foot
+        //
+        // allow per request service URLs
+        String tmpServiceURL = ghRequest.getHints().get("service_url", serviceUrl);
+        String url = tmpServiceURL;
+        if (!url.contains("?")) {
+            url += "?";
+        }
+        url += pointsStr + "&mode=" + ghRequest.getVehicle();
 
         if (!Helper.isEmpty(key)) {
             url += "&key=" + key;
