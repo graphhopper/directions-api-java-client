@@ -10,7 +10,7 @@ import org.junit.Before;
  */
 public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
 
-    private GraphHopperMatrixWeb ghMatrix;
+    protected GraphHopperMatrixWeb ghMatrix;
 
     abstract GraphHopperMatrixWeb createMatrixWeb();
 
