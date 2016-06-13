@@ -1,6 +1,5 @@
 package com.graphhopper.api;
 
-import com.graphhopper.PathWrapper;
 import static com.graphhopper.api.GraphHopperMatrixWeb.MT_JSON;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -63,74 +62,70 @@ public abstract class GHMatrixAbstractRequester {
     protected void fillResponseFromJson(GHMRequest request, List<String> outArraysList,
             MatrixResponse matrixResponse, JSONObject solution, boolean hasElevation) {
         int fromCount = request.getFromPoints().size(), toCount = request.getToPoints().size();
-        if (outArraysList.contains("paths") && solution.has("paths")) {
-            JSONArray pathArray = solution.getJSONArray("paths");
-            for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
-                matrixResponse.newFromList();
-                JSONArray fromArray = pathArray.getJSONArray(fromIndex);
-                for (int toIndex = 0; toIndex < toCount; toIndex++) {
-                    GHMResponse res = new GHMResponse(fromIndex, toIndex,
-                            request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
 
-                    res.add(GraphHopperWeb.createAltResponse(fromArray.getJSONObject(toIndex),
-                            true, true, hasElevation));
+        boolean readWeights = outArraysList.contains("weights") && solution.has("weights");
+        boolean readDistances = outArraysList.contains("distances") && solution.has("distances");
+        boolean readTimes = outArraysList.contains("times") && solution.has("times");
 
-                    matrixResponse.add(res);
-                }
-            }
-        } else {
-            boolean readWeights = outArraysList.contains("weights") && solution.has("weights");
-            boolean readDistances = outArraysList.contains("distances") && solution.has("distances");
-            boolean readTimes = outArraysList.contains("times") && solution.has("times");
+        JSONArray weightsArray = null;
+        if (readWeights) {
+            weightsArray = solution.getJSONArray("weights");
+        }
+        JSONArray timesArray = null;
+        if (readTimes) {
+            timesArray = solution.getJSONArray("times");
+        }
+        JSONArray distancesArray = null;
+        if (readDistances) {
+            distancesArray = solution.getJSONArray("distances");
+        }
 
-            JSONArray weightsArray = null;
+        for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
+            JSONArray weightsFromArray = null;
+            double[] weights = null;
             if (readWeights) {
-                weightsArray = solution.getJSONArray("weights");
+                weightsFromArray = weightsArray.getJSONArray(fromIndex);
+                weights = new double[toCount];
             }
-            JSONArray timesArray = null;
+
+            JSONArray timesFromArray = null;
+            long[] times = null;
             if (readTimes) {
-                timesArray = solution.getJSONArray("times");
+                timesFromArray = timesArray.getJSONArray(fromIndex);
+                times = new long[toCount];
             }
-            JSONArray distancesArray = null;
+
+            JSONArray distancesFromArray = null;
+            int[] distances = null;
             if (readDistances) {
-                distancesArray = solution.getJSONArray("distances");
+                distancesFromArray = distancesArray.getJSONArray(fromIndex);
+                distances = new int[toCount];
             }
 
-            for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
-                matrixResponse.newFromList();
-
-                JSONArray weightsFromArray = null;
+            for (int toIndex = 0; toIndex < toCount; toIndex++) {
                 if (readWeights) {
-                    weightsFromArray = weightsArray.getJSONArray(fromIndex);
+                    weights[toIndex] = weightsFromArray.getDouble(toIndex);
                 }
-                JSONArray timesFromArray = null;
+
                 if (readTimes) {
-                    timesFromArray = timesArray.getJSONArray(fromIndex);
+                    times[toIndex] = timesFromArray.getLong(toIndex) * 1000;
                 }
-                JSONArray distancesFromArray = null;
+
                 if (readDistances) {
-                    distancesFromArray = distancesArray.getJSONArray(fromIndex);
+                    distances[toIndex] = (int) Math.round(distancesFromArray.getDouble(toIndex));
                 }
+            }
 
-                for (int toIndex = 0; toIndex < toCount; toIndex++) {
-                    GHMResponse singleRsp = new GHMResponse(fromIndex, toIndex,
-                            request.getFromPoints().get(fromIndex).equals(request.getToPoints().get(toIndex)));
-                    PathWrapper alt = new PathWrapper();
-                    singleRsp.add(alt);
-                    if (readWeights) {
-                        alt.setRouteWeight(weightsFromArray.getDouble(toIndex));
-                    }
+            if (readWeights) {
+                matrixResponse.setWeightRow(fromIndex, weights);
+            }
 
-                    if (readTimes) {
-                        alt.setTime(timesFromArray.getLong(toIndex) * 1000);
-                    }
+            if (readTimes) {
+                matrixResponse.setTimeRow(fromIndex, times);
+            }
 
-                    if (readDistances) {
-                        alt.setDistance(distancesFromArray.getDouble(toIndex));
-                    }
-
-                    matrixResponse.add(singleRsp);
-                }
+            if (readDistances) {
+                matrixResponse.setDistanceRow(fromIndex, distances);
             }
         }
     }

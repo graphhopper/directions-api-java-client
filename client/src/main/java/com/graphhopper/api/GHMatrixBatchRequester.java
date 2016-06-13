@@ -62,9 +62,12 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
         requestJson.put("vehicle", ghRequest.getVehicle());
         requestJson.put("elevation", hasElevation);
 
+        boolean withTimes = outArraysList.contains("times");
+        boolean withDistances = outArraysList.contains("distances");
+        boolean withWeights = outArraysList.contains("weights");
         final MatrixResponse matrixResponse = new MatrixResponse(
                 ghRequest.getFromPoints().size(),
-                ghRequest.getToPoints().size());
+                ghRequest.getToPoints().size(), withTimes, withDistances, withWeights);
 
         boolean debug = ghRequest.getHints().getBool("debug", false);
 

@@ -13,49 +13,113 @@ public class MatrixResponse {
 
     private String debugInfo = "";
     private final List<Throwable> errors = new ArrayList<>(4);
-    private int fromCap;
-    private List<GHMResponse> currentFromList;
-    private final List<List<GHMResponse>> rspList;
+    private long[][] times = new long[0][];
+    private int[][] distances = new int[0][];
+    private double[][] weights = new double[0][];
 
     public MatrixResponse() {
-        this(10, 10);
+        this(10, 10, true, true, true);
     }
 
-    public MatrixResponse(int fromCap, int toCap) {
-        this.fromCap = fromCap;
-        rspList = new ArrayList<>(toCap);
-    }
-
-    public void add(GHMResponse rsp) {
-        if (currentFromList == null) {
-            throw new IllegalStateException("call newFromList before adding");
+    public MatrixResponse(int fromCap, int toCap, boolean withTimes, boolean withDistances, boolean withWeights) {
+        if (withTimes) {
+            times = new long[fromCap][toCap];
         }
 
-        currentFromList.add(rsp);
+        if (withDistances) {
+            distances = new int[fromCap][toCap];
+        }
+
+        if (withWeights) {
+            weights = new double[fromCap][toCap];
+        }
+    }
+
+    public void setFromRow(int row, long timeRow[], int distanceRow[], double weightRow[]) {
+        if (times.length > 0) {
+            times[row] = timeRow;
+        }
+
+        if (distances.length > 0) {
+            distances[row] = distanceRow;
+        }
+
+        if (weights.length > 0) {
+            weights[row] = weightRow;
+        }
+    }
+
+    public void setTimeRow(int row, long timeRow[]) {
+        if (times.length > 0) {
+            times[row] = timeRow;
+        } else {
+            throw new UnsupportedOperationException("Cannot call setTimeRow if times are disabled");
+        }
+    }
+
+    public void setDistanceRow(int row, int distanceRow[]) {
+        if (distances.length > 0) {
+            distances[row] = distanceRow;
+        } else {
+            throw new UnsupportedOperationException("Cannot call setDistanceRow if distances are disabled");
+        }
+    }
+
+    public void setWeightRow(int row, double weightRow[]) {
+        if (weights.length > 0) {
+            weights[row] = weightRow;
+        } else {
+            throw new UnsupportedOperationException("Cannot call setWeightRow if weights are disabled");
+        }
     }
 
     /**
-     * This method creates a new from list and needs to be called everytime a
-     * new result for the 'from' points is created.
+     * Returns the time for the specific entry (from->to) in milliseconds.
      */
-    public void newFromList() {
-        rspList.add(currentFromList = new ArrayList<GHMResponse>(fromCap));
+    public long getTime(int from, int to) {
+        if (hasErrors()) {
+            throw new IllegalStateException("Cannot return time (" + from + "," + to + ") if errors occured " + getErrors());
+        }
+
+        if (from >= times.length) {
+            throw new IllegalStateException("Cannot get 'from' " + from + " from times with size " + times.length);
+        } else if (to >= times[from].length) {
+            throw new IllegalStateException("Cannot get 'to' " + to + " from times with size " + times[from].length);
+        }
+        return times[from][to];
     }
 
-    public GHMResponse get(int from, int to) {
+    /**
+     * Returns the distance for the specific entry (from->to) in meter.
+     */
+    public double getDistance(int from, int to) {
         if (hasErrors()) {
-            throw new IllegalStateException("Cannot return response (" + from + "," + to + ") if errors occured " + getErrors());
+            throw new IllegalStateException("Cannot return distance (" + from + "," + to + ") if errors occured " + getErrors());
         }
 
-        if (from >= rspList.size()) {
-            throw new IllegalStateException("Cannot get 'from' " + from + " from list with size " + rspList.size());
+        if (from >= distances.length) {
+            throw new IllegalStateException("Cannot get 'from' " + from + " from distances with size " + distances.length);
+        } else if (to >= distances[from].length) {
+            throw new IllegalStateException("Cannot get 'to' " + to + " from distances with size " + distances[from].length);
+        }
+        return distances[from][to];
+    }
+
+    /**
+     * Returns the weight for the specific entry (from->to) in arbitrary units
+     * ('costs').
+     */
+    public double getWeight(int from, int to) {
+        if (hasErrors()) {
+            throw new IllegalStateException("Cannot return weight (" + from + "," + to + ") if errors occured " + getErrors());
         }
 
-        List<GHMResponse> list = rspList.get(from);
-        if (to >= list.size()) {
-            throw new IllegalStateException("Cannot get 'to' " + to + " from list with size " + list.size());
+        if (from >= weights.length) {
+            throw new IllegalStateException("Cannot get 'from' " + from + " from weights with size " + weights.length);
+        } else if (to >= weights[from].length) {
+            throw new IllegalStateException("Cannot get 'to' " + to + " from weights with size " + weights[from].length);
         }
-        return list.get(to);
+        return weights[from][to];
     }
 
     public String getDebugInfo() {
@@ -93,10 +157,15 @@ public class MatrixResponse {
     @Override
     public String toString() {
         String addInfo = "";
-        if (!rspList.isEmpty()) {
-            addInfo = "," + rspList.get(0).size();
+
+        if (times.length > 0) {
+            addInfo += ", times: " + times.length + "x" + times[0].length;
         }
-        
-        return "[" + rspList.size() + addInfo + "] errors:" + errors.toString();
+
+        if (distances.length > 0) {
+            addInfo += ", distances: " + distances.length + "x" + distances[0].length;
+        }
+
+        return "[" + addInfo + "] errors:" + errors.toString();
     }
 }

@@ -168,7 +168,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 JSONObject path = paths.getJSONObject(index);
                 PathWrapper altRsp = createAltResponse(path, tmpCalcPoints, tmpInstructions, tmpElevation);
                 res.add(altRsp);
-            }            
+            }
             return res;
         } catch (Exception ex) {
             throw new RuntimeException("Problem while fetching path " + ghRequest.getPoints() + ": " + ex.getMessage(), ex);
@@ -231,25 +231,19 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     public static PathWrapper createAltResponse(JSONObject path,
             boolean tmpCalcPoints, boolean tmpInstructions, boolean tmpElevation) {
-        
+
         PathWrapper pathWrapper = new PathWrapper();
         pathWrapper.addErrors(readErrors(path));
         if (pathWrapper.hasErrors()) {
             return pathWrapper;
         }
 
-        double distance = path.getDouble("distance");
-        long time = path.getLong("time");
-        
-        JSONArray snappedPoints = path.getJSONArray("snapped_waypoints");
-        PointList points = new PointList(snappedPoints.length(), tmpElevation);
-        for (int index = 0; index < snappedPoints.length(); index++)
-        {
-            JSONArray point = snappedPoints.getJSONArray(index);
-            points.add(WebHelper.toGHPoint(point));
+        if (path.has("snapped_waypoints")) {
+            String snappedPointStr = path.getString("snapped_waypoints");
+            PointList snappedPoints = WebHelper.decodePolyline(snappedPointStr, 5, tmpElevation);
+            pathWrapper.setWaypoints(snappedPoints);
         }
-        pathWrapper.setWaypoints(points);
-        
+
         if (tmpCalcPoints) {
             String pointStr = path.getString("points");
             PointList pointList = WebHelper.decodePolyline(pointStr, 100, tmpElevation);
@@ -316,6 +310,9 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 pathWrapper.setInstructions(il);
             }
         }
+
+        double distance = path.getDouble("distance");
+        long time = path.getLong("time");
         pathWrapper.setDistance(distance).setTime(time);
         return pathWrapper;
     }

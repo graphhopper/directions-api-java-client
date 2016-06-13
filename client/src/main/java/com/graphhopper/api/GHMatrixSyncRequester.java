@@ -60,9 +60,12 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
                 + "&vehicle=" + ghRequest.getVehicle()
                 + "&key=" + key;
 
+        boolean withTimes = outArraysList.contains("times");
+        boolean withDistances = outArraysList.contains("distances");
+        boolean withWeights = outArraysList.contains("weights");
         MatrixResponse matrixResponse = new MatrixResponse(
                 ghRequest.getFromPoints().size(),
-                ghRequest.getToPoints().size());
+                ghRequest.getToPoints().size(), withTimes, withDistances, withWeights);
 
         try {
             String str = getJson(url);

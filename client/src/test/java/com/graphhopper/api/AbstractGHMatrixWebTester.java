@@ -46,7 +46,13 @@ public abstract class AbstractGHMatrixWebTester {
         MatrixResponse rsp = matrixWeb.route(req);
         assertFalse(rsp.hasErrors());
 
-        assertEquals(0., rsp.get(0, 1).getBest().getDistance(), .1);
+        assertEquals(885.9, rsp.getWeight(0, 1), .1);
+
+        try {
+            assertEquals(0., rsp.getDistance(0, 1), .1);
+            assertTrue(false);
+        } catch (Exception ex) {
+        }
     }
 
     @Test
@@ -62,15 +68,15 @@ public abstract class AbstractGHMatrixWebTester {
 
         assertFalse(rsp.hasErrors());
 
-        assertEquals(9475., rsp.get(0, 1).getBest().getDistance(), .1);
-        assertEquals(9734., rsp.get(1, 2).getBest().getDistance(), .1);
-        assertEquals(0., rsp.get(1, 1).getBest().getDistance(), .1);
+        assertEquals(9475., rsp.getDistance(0, 1), .1);
+        assertEquals(9734., rsp.getDistance(1, 2), .1);
+        assertEquals(0., rsp.getDistance(1, 1), .1);
 
-        assertEquals(885.867, rsp.get(0, 1).getBest().getRouteWeight(), .1);
-        assertEquals(807.167, rsp.get(1, 2).getBest().getRouteWeight(), .1);
-        assertEquals(0., rsp.get(1, 1).getBest().getRouteWeight(), .1);
+        assertEquals(885.867, rsp.getWeight(0, 1), .1);
+        assertEquals(807.167, rsp.getWeight(1, 2), .1);
+        assertEquals(0., rsp.getWeight(1, 1), .1);
 
-        assertEquals(886, rsp.get(0, 1).getBest().getTime() / 1000);
+        assertEquals(886, rsp.getTime(0, 1) / 1000);
     }
 
     public static String readFile(Reader simpleReader) throws IOException {
