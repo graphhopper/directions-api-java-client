@@ -5,7 +5,7 @@ import com.graphhopper.routeopt.client.Pair;
 import java.util.Map;
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-06-07T14:02:44.580+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-06-15T09:56:08.063+02:00")
 public class OAuth implements Authentication {
   private String accessToken;
 

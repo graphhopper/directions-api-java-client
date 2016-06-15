@@ -2,17 +2,18 @@ package com.graphhopper.routeopt.client.model;
 
 import java.util.Objects;
 import com.graphhopper.routeopt.client.model.Address;
-import com.graphhopper.routeopt.client.model.Break;
+import com.graphhopper.routeopt.client.model.ModelBreak;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-@ApiModel(description = "")
+
 public class Vehicle   {
   
   @SerializedName("vehicle_id")
@@ -28,7 +29,7 @@ public class Vehicle   {
   private Address endAddress = null;
   
   @SerializedName("break")
-  private Break _break = null;
+  private ModelBreak _break = null;
   
   @SerializedName("return_to_depot")
   private Boolean returnToDepot = null;
@@ -93,10 +94,10 @@ public class Vehicle   {
   /**
    **/
   @ApiModelProperty(value = "")
-  public Break getBreak() {
+  public ModelBreak getBreak() {
     return _break;
   }
-  public void setBreak(Break _break) {
+  public void setBreak(ModelBreak _break) {
     this._break = _break;
   }
 
@@ -159,15 +160,15 @@ public class Vehicle   {
       return false;
     }
     Vehicle vehicle = (Vehicle) o;
-    return Objects.equals(vehicleId, vehicle.vehicleId) &&
-        Objects.equals(typeId, vehicle.typeId) &&
-        Objects.equals(startAddress, vehicle.startAddress) &&
-        Objects.equals(endAddress, vehicle.endAddress) &&
-        Objects.equals(_break, vehicle._break) &&
-        Objects.equals(returnToDepot, vehicle.returnToDepot) &&
-        Objects.equals(earliestStart, vehicle.earliestStart) &&
-        Objects.equals(latestEnd, vehicle.latestEnd) &&
-        Objects.equals(skills, vehicle.skills);
+    return Objects.equals(this.vehicleId, vehicle.vehicleId) &&
+        Objects.equals(this.typeId, vehicle.typeId) &&
+        Objects.equals(this.startAddress, vehicle.startAddress) &&
+        Objects.equals(this.endAddress, vehicle.endAddress) &&
+        Objects.equals(this._break, vehicle._break) &&
+        Objects.equals(this.returnToDepot, vehicle.returnToDepot) &&
+        Objects.equals(this.earliestStart, vehicle.earliestStart) &&
+        Objects.equals(this.latestEnd, vehicle.latestEnd) &&
+        Objects.equals(this.skills, vehicle.skills);
   }
 
   @Override

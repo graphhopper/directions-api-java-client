@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-@ApiModel(description = "")
+
 public class JobId   {
   
   @SerializedName("job_id")
@@ -39,7 +39,7 @@ public class JobId   {
       return false;
     }
     JobId jobId = (JobId) o;
-    return Objects.equals(jobId, jobId.jobId);
+    return Objects.equals(this.jobId, jobId.jobId);
   }
 
   @Override

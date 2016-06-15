@@ -5,14 +5,15 @@ import com.graphhopper.routeopt.client.model.Address;
 import com.graphhopper.routeopt.client.model.TimeWindow;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-@ApiModel(description = "")
+
 public class Service   {
   
   @SerializedName("id")
@@ -199,16 +200,16 @@ public enum TypeEnum {
       return false;
     }
     Service service = (Service) o;
-    return Objects.equals(id, service.id) &&
-        Objects.equals(type, service.type) &&
-        Objects.equals(priority, service.priority) &&
-        Objects.equals(name, service.name) &&
-        Objects.equals(address, service.address) &&
-        Objects.equals(duration, service.duration) &&
-        Objects.equals(timeWindows, service.timeWindows) &&
-        Objects.equals(size, service.size) &&
-        Objects.equals(requiredSkills, service.requiredSkills) &&
-        Objects.equals(allowedVehicles, service.allowedVehicles);
+    return Objects.equals(this.id, service.id) &&
+        Objects.equals(this.type, service.type) &&
+        Objects.equals(this.priority, service.priority) &&
+        Objects.equals(this.name, service.name) &&
+        Objects.equals(this.address, service.address) &&
+        Objects.equals(this.duration, service.duration) &&
+        Objects.equals(this.timeWindows, service.timeWindows) &&
+        Objects.equals(this.size, service.size) &&
+        Objects.equals(this.requiredSkills, service.requiredSkills) &&
+        Objects.equals(this.allowedVehicles, service.allowedVehicles);
   }
 
   @Override

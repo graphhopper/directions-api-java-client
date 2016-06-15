@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-@ApiModel(description = "")
+
 public class Algorithm   {
   
 
@@ -92,8 +92,8 @@ public enum ObjectiveEnum {
       return false;
     }
     Algorithm algorithm = (Algorithm) o;
-    return Objects.equals(problemType, algorithm.problemType) &&
-        Objects.equals(objective, algorithm.objective);
+    return Objects.equals(this.problemType, algorithm.problemType) &&
+        Objects.equals(this.objective, algorithm.objective);
   }
 
   @Override

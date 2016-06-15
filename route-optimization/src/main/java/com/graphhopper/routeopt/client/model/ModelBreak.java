@@ -9,8 +9,8 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-@ApiModel(description = "")
-public class Break   {
+
+public class ModelBreak   {
   
   @SerializedName("earliest")
   private Long earliest = null;
@@ -68,10 +68,10 @@ public class Break   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Break _break = (Break) o;
-    return Objects.equals(earliest, _break.earliest) &&
-        Objects.equals(latest, _break.latest) &&
-        Objects.equals(duration, _break.duration);
+    ModelBreak _break = (ModelBreak) o;
+    return Objects.equals(this.earliest, _break.earliest) &&
+        Objects.equals(this.latest, _break.latest) &&
+        Objects.equals(this.duration, _break.duration);
   }
 
   @Override
@@ -82,7 +82,7 @@ public class Break   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Break {\n");
+    sb.append("class ModelBreak {\n");
     
     sb.append("    earliest: ").append(toIndentedString(earliest)).append("\n");
     sb.append("    latest: ").append(toIndentedString(latest)).append("\n");

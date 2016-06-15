@@ -5,14 +5,15 @@ import com.graphhopper.routeopt.client.model.Route;
 import com.graphhopper.routeopt.client.model.SolutionUnassigned;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-@ApiModel(description = "")
+
 public class Solution   {
   
   @SerializedName("costs")
@@ -116,12 +117,12 @@ public class Solution   {
       return false;
     }
     Solution solution = (Solution) o;
-    return Objects.equals(costs, solution.costs) &&
-        Objects.equals(distance, solution.distance) &&
-        Objects.equals(time, solution.time) &&
-        Objects.equals(noUnassigned, solution.noUnassigned) &&
-        Objects.equals(routes, solution.routes) &&
-        Objects.equals(unassigned, solution.unassigned);
+    return Objects.equals(this.costs, solution.costs) &&
+        Objects.equals(this.distance, solution.distance) &&
+        Objects.equals(this.time, solution.time) &&
+        Objects.equals(this.noUnassigned, solution.noUnassigned) &&
+        Objects.equals(this.routes, solution.routes) &&
+        Objects.equals(this.unassigned, solution.unassigned);
   }
 
   @Override

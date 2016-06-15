@@ -4,14 +4,15 @@ import java.util.Objects;
 import com.graphhopper.routeopt.client.model.Stop;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-@ApiModel(description = "")
+
 public class Shipment   {
   
   @SerializedName("id")
@@ -144,14 +145,14 @@ public class Shipment   {
       return false;
     }
     Shipment shipment = (Shipment) o;
-    return Objects.equals(id, shipment.id) &&
-        Objects.equals(name, shipment.name) &&
-        Objects.equals(priority, shipment.priority) &&
-        Objects.equals(pickup, shipment.pickup) &&
-        Objects.equals(delivery, shipment.delivery) &&
-        Objects.equals(size, shipment.size) &&
-        Objects.equals(requiredSkills, shipment.requiredSkills) &&
-        Objects.equals(allowedVehicles, shipment.allowedVehicles);
+    return Objects.equals(this.id, shipment.id) &&
+        Objects.equals(this.name, shipment.name) &&
+        Objects.equals(this.priority, shipment.priority) &&
+        Objects.equals(this.pickup, shipment.pickup) &&
+        Objects.equals(this.delivery, shipment.delivery) &&
+        Objects.equals(this.size, shipment.size) &&
+        Objects.equals(this.requiredSkills, shipment.requiredSkills) &&
+        Objects.equals(this.allowedVehicles, shipment.allowedVehicles);
   }
 
   @Override

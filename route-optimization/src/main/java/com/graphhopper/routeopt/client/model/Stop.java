@@ -5,14 +5,15 @@ import com.graphhopper.routeopt.client.model.Address;
 import com.graphhopper.routeopt.client.model.TimeWindow;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-@ApiModel(description = "")
+
 public class Stop   {
   
   @SerializedName("address")
@@ -71,9 +72,9 @@ public class Stop   {
       return false;
     }
     Stop stop = (Stop) o;
-    return Objects.equals(address, stop.address) &&
-        Objects.equals(duration, stop.duration) &&
-        Objects.equals(timeWindows, stop.timeWindows);
+    return Objects.equals(this.address, stop.address) &&
+        Objects.equals(this.duration, stop.duration) &&
+        Objects.equals(this.timeWindows, stop.timeWindows);
   }
 
   @Override

@@ -21,7 +21,10 @@ import com.graphhopper.routeopt.client.model.JobId;
 import com.graphhopper.routeopt.client.model.Request;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class VrpApi {
   private ApiClient apiClient;
@@ -45,7 +48,7 @@ public class VrpApi {
   
   /* Build call for postVrp */
   private Call postVrpCall(String key, Request body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-    Object postBody = body;
+    Object localVarPostBody = body;
     
     // verify the required parameter 'key' is set
     if (key == null) {
@@ -59,27 +62,27 @@ public class VrpApi {
     
 
     // create path and map variables
-    String path = "/optimize".replaceAll("\\{format\\}","json");
+    String localVarPath = "/optimize".replaceAll("\\{format\\}","json");
 
-    List<Pair> queryParams = new ArrayList<Pair>();
+    List<Pair> localVarQueryParams = new ArrayList<Pair>();
     if (key != null)
-      queryParams.addAll(apiClient.parameterToPairs("", "key", key));
+      localVarQueryParams.addAll(apiClient.parameterToPairs("", "key", key));
 
-    Map<String, String> headerParams = new HashMap<String, String>();
+    Map<String, String> localVarHeaderParams = new HashMap<String, String>();
 
-    Map<String, Object> formParams = new HashMap<String, Object>();
+    Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    final String[] accepts = {
+    final String[] localVarAccepts = {
       "application/json"
     };
-    final String accept = apiClient.selectHeaderAccept(accepts);
-    if (accept != null) headerParams.put("Accept", accept);
+    final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
 
-    final String[] contentTypes = {
+    final String[] localVarContentTypes = {
       "application/json"
     };
-    final String contentType = apiClient.selectHeaderContentType(contentTypes);
-    headerParams.put("Content-Type", contentType);
+    final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    localVarHeaderParams.put("Content-Type", localVarContentType);
 
     if(progressListener != null) {
       apiClient.getHttpClient().networkInterceptors().add(new Interceptor() {
@@ -93,15 +96,15 @@ public class VrpApi {
       });
     }
 
-    String[] authNames = new String[] { "api_key" };
-    return apiClient.buildCall(path, "POST", queryParams, postBody, headerParams, formParams, authNames, progressRequestListener);
+    String[] localVarAuthNames = new String[] { "api_key" };
+    return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
   }
 
   /**
    * Solves large routing problems
-   * This endpoint solves large problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.
-   * @param key your API key
-   * @param body Request object that contains the problem to be solved
+   * This endpoint solves large problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.\n
+   * @param key your API key (required)
+   * @param body Request object that contains the problem to be solved (required)
    * @return JobId
    * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
    */
@@ -112,23 +115,23 @@ public class VrpApi {
 
   /**
    * Solves large routing problems
-   * This endpoint solves large problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.
-   * @param key your API key
-   * @param body Request object that contains the problem to be solved
+   * This endpoint solves large problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.\n
+   * @param key your API key (required)
+   * @param body Request object that contains the problem to be solved (required)
    * @return ApiResponse<JobId>
    * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
    */
   public ApiResponse<JobId> postVrpWithHttpInfo(String key, Request body) throws ApiException {
     Call call = postVrpCall(key, body, null, null);
-    Type returnType = new TypeToken<JobId>(){}.getType();
-    return apiClient.execute(call, returnType);
+    Type localVarReturnType = new TypeToken<JobId>(){}.getType();
+    return apiClient.execute(call, localVarReturnType);
   }
 
   /**
    * Solves large routing problems (asynchronously)
-   * This endpoint solves large problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.
-   * @param key your API key
-   * @param body Request object that contains the problem to be solved
+   * This endpoint solves large problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.\n
+   * @param key your API key (required)
+   * @param body Request object that contains the problem to be solved (required)
    * @param callback The callback to be executed when the API call finishes
    * @return The request call
    * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -143,7 +146,7 @@ public class VrpApi {
         @Override
         public void update(long bytesRead, long contentLength, boolean done) {
           callback.onDownloadProgress(bytesRead, contentLength, done);
-        } 
+        }
       };
 
       progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
@@ -155,8 +158,8 @@ public class VrpApi {
     }
 
     Call call = postVrpCall(key, body, progressListener, progressRequestListener);
-    Type returnType = new TypeToken<JobId>(){}.getType();
-    apiClient.executeAsync(call, returnType, callback);
+    Type localVarReturnType = new TypeToken<JobId>(){}.getType();
+    apiClient.executeAsync(call, localVarReturnType, callback);
     return call;
   }
   

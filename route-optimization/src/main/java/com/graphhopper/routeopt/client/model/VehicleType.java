@@ -3,14 +3,15 @@ package com.graphhopper.routeopt.client.model;
 import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-@ApiModel(description = "")
+
 public class VehicleType   {
   
   @SerializedName("type_id")
@@ -141,11 +142,11 @@ public enum ProfileEnum {
       return false;
     }
     VehicleType vehicleType = (VehicleType) o;
-    return Objects.equals(typeId, vehicleType.typeId) &&
-        Objects.equals(profile, vehicleType.profile) &&
-        Objects.equals(capacity, vehicleType.capacity) &&
-        Objects.equals(speedFactor, vehicleType.speedFactor) &&
-        Objects.equals(serviceTimeFactor, vehicleType.serviceTimeFactor);
+    return Objects.equals(this.typeId, vehicleType.typeId) &&
+        Objects.equals(this.profile, vehicleType.profile) &&
+        Objects.equals(this.capacity, vehicleType.capacity) &&
+        Objects.equals(this.speedFactor, vehicleType.speedFactor) &&
+        Objects.equals(this.serviceTimeFactor, vehicleType.serviceTimeFactor);
   }
 
   @Override

@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-@ApiModel(description = "")
+
 public class TimeWindow   {
   
   @SerializedName("earliest")
@@ -54,8 +54,8 @@ public class TimeWindow   {
       return false;
     }
     TimeWindow timeWindow = (TimeWindow) o;
-    return Objects.equals(earliest, timeWindow.earliest) &&
-        Objects.equals(latest, timeWindow.latest);
+    return Objects.equals(this.earliest, timeWindow.earliest) &&
+        Objects.equals(this.latest, timeWindow.latest);
   }
 
   @Override

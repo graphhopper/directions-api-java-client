@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-@ApiModel(description = "")
+
 public class Address   {
   
   @SerializedName("location_id")
@@ -69,9 +69,9 @@ public class Address   {
       return false;
     }
     Address address = (Address) o;
-    return Objects.equals(locationId, address.locationId) &&
-        Objects.equals(lon, address.lon) &&
-        Objects.equals(lat, address.lat);
+    return Objects.equals(this.locationId, address.locationId) &&
+        Objects.equals(this.lon, address.lon) &&
+        Objects.equals(this.lat, address.lat);
   }
 
   @Override

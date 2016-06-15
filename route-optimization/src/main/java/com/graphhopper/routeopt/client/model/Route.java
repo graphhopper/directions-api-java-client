@@ -4,14 +4,15 @@ import java.util.Objects;
 import com.graphhopper.routeopt.client.model.Activity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-@ApiModel(description = "")
+
 public class Route   {
   
   @SerializedName("vehicle_id")
@@ -56,8 +57,8 @@ public class Route   {
       return false;
     }
     Route route = (Route) o;
-    return Objects.equals(vehicleId, route.vehicleId) &&
-        Objects.equals(activities, route.activities);
+    return Objects.equals(this.vehicleId, route.vehicleId) &&
+        Objects.equals(this.activities, route.activities);
   }
 
   @Override
