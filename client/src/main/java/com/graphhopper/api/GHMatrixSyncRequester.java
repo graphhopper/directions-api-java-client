@@ -1,11 +1,12 @@
 package com.graphhopper.api;
 
-import com.graphhopper.util.StopWatch;
 import com.graphhopper.util.shapes.GHPoint;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
 import org.json.JSONObject;
 
 /**
@@ -19,7 +20,9 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
     }
 
     public GHMatrixSyncRequester(String serviceUrl) {
-        super(serviceUrl);
+        super(serviceUrl, new OkHttpClient.Builder().
+                connectTimeout(15, TimeUnit.SECONDS).
+                readTimeout(15, TimeUnit.SECONDS).build());
     }
 
     @Override

@@ -23,14 +23,14 @@ import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopperAPI;
 import com.graphhopper.util.*;
 import com.graphhopper.util.shapes.GHPoint;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
 public class GraphHopperWeb implements GraphHopperAPI {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private OkHttpClient downloader = new OkHttpClient();
+    private OkHttpClient downloader;
     private String serviceUrl;
     private String key = "";
     private boolean instructions = true;
@@ -60,7 +60,10 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     public GraphHopperWeb(String serviceUrl) {
         this.serviceUrl = serviceUrl;
-        downloader.setConnectTimeout(5, TimeUnit.SECONDS);
+        downloader = new OkHttpClient.Builder().
+                connectTimeout(5, TimeUnit.SECONDS).
+                readTimeout(5, TimeUnit.SECONDS).
+                build();
 
         // some parameters are supported directly via Java API so ignore them when writing the getHints map
         ignoreSet = new HashSet<String>();
