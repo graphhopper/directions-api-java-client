@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.graphhopper</groupId>
             <artifactId>graphhopper</artifactId>
-            <version>${project.version}</version>
+            <version>0.7.0</version>
             <exclusions>
                 <!-- We cannot yet exclude this as e.g. Helper class uses trove classes
                      and Helper is used e.g. in PointList
@@ -50,9 +50,9 @@
         </dependency>   
         
         <dependency>
-            <groupId>com.squareup.okhttp</groupId>
+            <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>2.7.5</version>            
+            <version>3.2.0</version>            
         </dependency>
         
         <dependency>

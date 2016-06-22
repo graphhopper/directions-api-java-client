@@ -1,12 +1,13 @@
 package com.graphhopper.api;
 
 import static com.graphhopper.api.GraphHopperMatrixWeb.MT_JSON;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,18 +18,24 @@ import org.json.JSONObject;
 public abstract class GHMatrixAbstractRequester {
 
     protected final String serviceUrl;
-    private OkHttpClient downloader = new OkHttpClient();
+    private OkHttpClient downloader;
 
     public GHMatrixAbstractRequester() {
         this("https://graphhopper.com/api/1/matrix");
     }
 
     public GHMatrixAbstractRequester(String serviceUrl) {
+        this(serviceUrl, new OkHttpClient.Builder().
+                connectTimeout(5, TimeUnit.SECONDS).
+                readTimeout(5, TimeUnit.SECONDS).build());
+    }
+
+    public GHMatrixAbstractRequester(String serviceUrl, OkHttpClient downloader) {
         if (serviceUrl.endsWith("/")) {
             serviceUrl = serviceUrl.substring(0, serviceUrl.length() - 1);
         }
+        this.downloader = downloader;
         this.serviceUrl = serviceUrl;
-        downloader.setConnectTimeout(5, TimeUnit.SECONDS);
     }
 
     public abstract MatrixResponse route(GHMRequest request, String key);

@@ -1,6 +1,6 @@
 package com.graphhopper.api;
 
-import com.squareup.okhttp.MediaType;
+import okhttp3.MediaType;
 
 /**
  *

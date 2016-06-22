@@ -1,8 +1,8 @@
 package com.graphhopper.api;
 
-import com.graphhopper.util.StopWatch;
 import com.graphhopper.util.shapes.GHPoint;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
@@ -97,7 +97,15 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                     Thread.sleep(sleepAfterGET);
                 }
                 String getUrl = serviceUrl + "/solution/" + id + "?key=" + key;
-                String getResponseStr = getJson(getUrl);
+
+                String getResponseStr;
+                try {
+                    getResponseStr = getJson(getUrl);
+                } catch (SocketTimeoutException ex) {
+                    // if timeout exception try once again:
+                    getResponseStr = getJson(getUrl);
+                }
+
                 JSONObject getResponseJson = toJSON(getUrl, getResponseStr);
                 if (debug) {
                     logger.info(i + " GET URL:" + getUrl + ", response: " + getResponseStr);
