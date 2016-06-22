@@ -5,11 +5,11 @@ You can refer to this client in your pom.xml via
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client</artifactId>
-  <version>0.6.0-RC1</version>
+  <version>0.7.0.1</version>
 </dependency>
 ```
 
-The latest development version is 0.7-SNAPSHOT
+The latest development version is 0.8-SNAPSHOT
 
 ## License
 
@@ -22,13 +22,15 @@ GraphHopperWeb gh = new GraphHopperWeb();
 // insert your key here
 gh.setKey("YOUR_KEY");
 // change timeout, default is 5 seconds
-gh.getDownloader().setConnectTimeout(10, TimeUnit.SECONDS);
+gh.setDownloader(new OkHttpClient.Builder().
+                connectTimeout(5, TimeUnit.SECONDS).
+                readTimeout(5, TimeUnit.SECONDS).build());
 
 // specify at least two coordinates
 GHRequest req = new GHRequest().
    addPoint(new GHPoint(49.6724, 11.3494)).
    addPoint(new GHPoint(49.6550, 11.4180));
-// Set vehicle like car, bike and foot
+// Set vehicle like car, bike, foot, ...
 req.setVehicle("bike");
 // Optionally enable/disable elevation in output PointList, currently bike and foot support elevation, default is false
 req.getHints().put("elevation", false);
@@ -50,7 +52,7 @@ if(res.hasErrors()) {
    return;
 }
 
-AltResponse res = fullRes.getFirst();
+PathWrapper res = fullRes.getBest();
 // get path geometry information (latitude, longitude and optionally elevation)
 PointList pl = res.getPoints();
 // distance of the full path, in meter
@@ -130,22 +132,10 @@ The route optimization client is in the maven central repository, thus you can j
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client-route-opt</artifactId>
-  <version>CURRENT-VERSION</version>
+  <version>[CURRENT-VERSION]</version>
 </dependency>
 ```
 
 ## Customization
 
-If you want to build it from source do:
-```
-git clone https://github.com/graphhopper/directions-api-java-client/
-cd directions-api-java-client/route-optimization
-mvn install
-```
-
-To update the sources from your spec follow [this guide](https://github.com/swagger-api/swagger-codegen) to create the Java 
-sources from [this spec](https://graphhopper.com/api/1/vrp/swagger.json). Use swagger codegen v2.1.6 via:
-```java
-cd swagger-codegen
-java -jar modules/swagger-codegen-cli/target/swagger-codegen-cli.jar generate -i https://graphhopper.com/api/1/vrp/swagger.json -l java -c bin/java-petstore-okhttp-gson.json -o ../route-optimization-tmp
-```
+If you want to build it from source please follow the guide for java [here](https://github.com/graphhopper/directions-api-clients-route-optimization).
