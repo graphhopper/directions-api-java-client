@@ -40,8 +40,9 @@ public abstract class GHMatrixAbstractRequester {
 
     public abstract MatrixResponse route(GHMRequest request, String key);
 
-    public void setDownloader(OkHttpClient downloader) {
+    public GHMatrixAbstractRequester setDownloader(OkHttpClient downloader) {
         this.downloader = downloader;
+        return this;
     }
 
     public OkHttpClient getDownloader() {

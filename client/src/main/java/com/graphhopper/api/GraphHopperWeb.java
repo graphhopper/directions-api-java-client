@@ -86,8 +86,9 @@ public class GraphHopperWeb implements GraphHopperAPI {
         ignoreSet.add("type");
     }
 
-    public void setDownloader(OkHttpClient downloader) {
+    public GraphHopperWeb setDownloader(OkHttpClient downloader) {
         this.downloader = downloader;
+        return this;
     }
 
     public OkHttpClient getDownloader() {

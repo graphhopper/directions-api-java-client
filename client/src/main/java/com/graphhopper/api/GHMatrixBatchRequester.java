@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import okhttp3.OkHttpClient;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,10 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
 
     public GHMatrixBatchRequester(String serviceUrl) {
         super(serviceUrl);
+    }
+
+    public GHMatrixBatchRequester(String serviceUrl, OkHttpClient client) {
+        super(serviceUrl, client);
     }
 
     /**

@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.graphhopper</groupId>
             <artifactId>graphhopper</artifactId>
-            <version>0.7.0</version>
+            <version>0.8-SNAPSHOT</version>
             <exclusions>
                 <!-- We cannot yet exclude this as e.g. Helper class uses trove classes
                      and Helper is used e.g. in PointList
@@ -34,14 +34,6 @@
                     <artifactId>trove4j</artifactId>
                 </exclusion>
                 -->
-                <exclusion>
-                    <groupId>com.google.protobuf</groupId>
-                    <artifactId>protobuf-java</artifactId>                    
-                </exclusion>
-                <exclusion>
-                    <groupId>org.openstreetmap.osmosis</groupId>
-                    <artifactId>osmosis-osm-binary</artifactId>                    
-                </exclusion>
                 <exclusion>
                     <groupId>org.apache.xmlgraphics</groupId>
                     <artifactId>xmlgraphics-commons</artifactId>

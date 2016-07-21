@@ -19,6 +19,10 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
         super();
     }
 
+    public GHMatrixSyncRequester(String serviceUrl, OkHttpClient client) {
+        super(serviceUrl, client);
+    }
+
     public GHMatrixSyncRequester(String serviceUrl) {
         super(serviceUrl, new OkHttpClient.Builder().
                 connectTimeout(15, TimeUnit.SECONDS).
