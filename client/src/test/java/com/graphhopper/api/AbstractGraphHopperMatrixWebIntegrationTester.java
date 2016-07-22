@@ -32,7 +32,7 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
             assertTrue(false);
         } catch (Exception ex) {
         }
-        
+
         // ... only weight:
         assertEquals(1056, res.getWeight(1, 2), 5);
 

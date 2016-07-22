@@ -1,14 +1,9 @@
 package com.graphhopper.api;
 
-import com.graphhopper.util.Helper;
 import com.graphhopper.util.shapes.GHPoint;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,17 +13,18 @@ import org.json.JSONObject;
  */
 public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
 
-    private final Set<String> ignoreSet = new HashSet<String>(10);
-
     public GoogleMatrixSyncRequester() {
         super();
+        initIgnore();
     }
 
     public GoogleMatrixSyncRequester(String serviceUrl) {
         super(serviceUrl);
+        initIgnore();
+    }
 
+    private void initIgnore() {
         ignoreSet.add("mode");
-        ignoreSet.add("key");
         ignoreSet.add("units");
         ignoreSet.add("destinations");
         ignoreSet.add("origins");
@@ -36,7 +32,7 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
     }
 
     @Override
-    public MatrixResponse route(GHMRequest ghRequest, String key) {
+    public MatrixResponse route(GHMRequest ghRequest) {
         String pointsStr;
 
         pointsStr = createGoogleQuery(ghRequest.getFromPoints(), "origins");
@@ -52,25 +48,8 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
         // do not do the mapping here!
         // bicycling -> bike, car -> car, walking -> foot
         //
-        // allow per request service URLs
-        String tmpServiceURL = ghRequest.getHints().get("service_url", serviceUrl);
-        String url = tmpServiceURL;
-        if (!url.contains("?")) {
-            url += "?";
-        }
-        url += pointsStr + "&mode=" + ghRequest.getVehicle();
-
-        if (!Helper.isEmpty(key)) {
-            url += "&key=" + key;
-        }
-
-        for (Entry<String, String> entry : ghRequest.getHints().toMap().entrySet()) {
-            if (ignoreSet.contains(entry.getKey())) {
-                continue;
-            }
-
-            url += "&" + entry.getKey() + "=" + encode(entry.getValue());
-        }
+        String url = buildURL("", ghRequest);
+        url += "&" + pointsStr + "&mode=" + ghRequest.getVehicle();
 
         boolean withTimes = outArraysList.contains("times");
         boolean withDistances = outArraysList.contains("distances");
@@ -111,14 +90,6 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
             pointsStr += encode(p.lat + "," + p.lon);
         }
         return pointName + "=" + pointsStr;
-    }
-
-    public String encode(String str) {
-        try {
-            return URLEncoder.encode(str, "UTF-8");
-        } catch (Exception ex) {
-            return str;
-        }
     }
 
     private void fillResponseFromGoogleJson(MatrixResponse matrixResponse, JSONObject responseJson) {

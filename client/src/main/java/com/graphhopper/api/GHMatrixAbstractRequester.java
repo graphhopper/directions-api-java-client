@@ -1,9 +1,14 @@
 package com.graphhopper.api;
 
 import static com.graphhopper.api.GraphHopperMatrixWeb.MT_JSON;
+import com.graphhopper.util.Helper;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,7 +22,9 @@ import org.json.JSONObject;
  */
 public abstract class GHMatrixAbstractRequester {
 
+    protected final Set<String> ignoreSet = new HashSet<String>(10);
     protected final String serviceUrl;
+    private String key;
     private OkHttpClient downloader;
 
     public GHMatrixAbstractRequester() {
@@ -36,9 +43,16 @@ public abstract class GHMatrixAbstractRequester {
         }
         this.downloader = downloader;
         this.serviceUrl = serviceUrl;
+
+        ignoreSet.add("key");
     }
 
-    public abstract MatrixResponse route(GHMRequest request, String key);
+    public GHMatrixAbstractRequester setKey(String key) {
+        this.key = key;
+        return this;
+    }
+
+    public abstract MatrixResponse route(GHMRequest request);
 
     public GHMatrixAbstractRequester setDownloader(OkHttpClient downloader) {
         this.downloader = downloader;
@@ -135,6 +149,34 @@ public abstract class GHMatrixAbstractRequester {
             if (readDistances) {
                 matrixResponse.setDistanceRow(fromIndex, distances);
             }
+        }
+    }
+
+    protected String buildURL(String path, GHMRequest ghRequest) {
+        // allow per request service URLs
+        String tmpServiceURL = ghRequest.getHints().get("service_url", serviceUrl);
+        String url = tmpServiceURL;
+        url += path + "?";
+
+        if (!Helper.isEmpty(key)) {
+            url += "key=" + key;
+        }
+
+        for (Map.Entry<String, String> entry : ghRequest.getHints().toMap().entrySet()) {
+            if (ignoreSet.contains(entry.getKey())) {
+                continue;
+            }
+
+            url += "&" + encode(entry.getKey()) + "=" + encode(entry.getValue());
+        }
+        return url;
+    }
+
+    protected static String encode(String str) {
+        try {
+            return URLEncoder.encode(str, "UTF-8");
+        } catch (Exception ex) {
+            return str;
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.graphhopper.api;
 
+import static com.graphhopper.api.GHMatrixAbstractRequester.encode;
 import com.graphhopper.util.shapes.GHPoint;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,20 +17,31 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
 
     public GHMatrixSyncRequester() {
         super();
+        initIgnore();
     }
 
     public GHMatrixSyncRequester(String serviceUrl, OkHttpClient client) {
         super(serviceUrl, client);
+        initIgnore();
     }
 
     public GHMatrixSyncRequester(String serviceUrl) {
         super(serviceUrl, new OkHttpClient.Builder().
                 connectTimeout(15, TimeUnit.SECONDS).
                 readTimeout(15, TimeUnit.SECONDS).build());
+        initIgnore();
+    }
+
+    private void initIgnore() {
+        ignoreSet.add("vehicle");
+        ignoreSet.add("point");
+        ignoreSet.add("from_point");
+        ignoreSet.add("to_point");
+        ignoreSet.add("add_array");
     }
 
     @Override
-    public MatrixResponse route(GHMRequest ghRequest, String key) {
+    public MatrixResponse route(GHMRequest ghRequest) {
         String pointsStr;
         if (ghRequest.identicalLists) {
             pointsStr = createPointQuery(ghRequest.getFromPoints(), "point");
@@ -56,12 +67,8 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
         // TODO allow elevation for full path
         boolean hasElevation = false;
 
-        String tmpServiceURL = ghRequest.getHints().get("service_url", serviceUrl);
-        String url = tmpServiceURL;
-        if (!url.contains("?")) {
-            url += "?";
-        }
-        url += pointsStr + "&" + outArrayStr + "&vehicle=" + ghRequest.getVehicle() + "&key=" + key;
+        String url = buildURL("", ghRequest);
+        url += "&" + pointsStr + "&" + outArrayStr + "&vehicle=" + ghRequest.getVehicle();
 
         boolean withTimes = outArraysList.contains("times");
         boolean withDistances = outArraysList.contains("distances");
@@ -102,13 +109,5 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
             pointsStr += pointName + "=" + encode(p.lat + "," + p.lon);
         }
         return pointsStr;
-    }
-
-    public String encode(String str) {
-        try {
-            return URLEncoder.encode(str, "UTF-8");
-        } catch (Exception ex) {
-            return str;
-        }
     }
 }

@@ -10,7 +10,6 @@ public class GraphHopperMatrixWeb {
 
     public static final MediaType MT_JSON = MediaType.parse("application/json; charset=utf-8");
     private final GHMatrixAbstractRequester requester;
-    private String key = "";
 
     public GraphHopperMatrixWeb() {
         this(new GHMatrixBatchRequester());
@@ -29,11 +28,11 @@ public class GraphHopperMatrixWeb {
             throw new IllegalStateException("Key cannot be empty");
         }
 
-        this.key = key;
+        this.requester.setKey(key);
         return this;
     }
 
     public MatrixResponse route(GHMRequest request) {
-        return requester.route(request, key);
+        return requester.route(request);
     }
 }
