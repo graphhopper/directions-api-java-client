@@ -75,9 +75,9 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 ghRequest.getToPoints().size(), withTimes, withDistances, withWeights);
 
         boolean debug = ghRequest.getHints().getBool("debug", false);
-        String postUrl = buildURL("/calculate", ghRequest);        
+        String postUrl = buildURLNoHints("/calculate", ghRequest);
 
-        try {            
+        try {
             String postResponseStr = postJson(postUrl, requestJson);
 
             if (debug) {
@@ -85,7 +85,7 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
             }
 
             JSONObject responseJson = toJSON(postUrl, postResponseStr);
-            if (responseJson.has("message")) {
+            if (responseJson.has("message")) {                
                 matrixResponse.addError(new RuntimeException(responseJson.getString("message")));
                 return matrixResponse;
             }
@@ -101,7 +101,7 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 if (sleepAfterGET > 0) {
                     Thread.sleep(sleepAfterGET);
                 }
-                String getUrl = buildURL("/solution/" + id, ghRequest);
+                String getUrl = buildURLNoHints("/solution/" + id, ghRequest);
 
                 String getResponseStr;
                 try {

@@ -152,7 +152,7 @@ public abstract class GHMatrixAbstractRequester {
         }
     }
 
-    protected String buildURL(String path, GHMRequest ghRequest) {
+    protected String buildURLNoHints(String path, GHMRequest ghRequest) {
         // allow per request service URLs
         String tmpServiceURL = ghRequest.getHints().get("service_url", serviceUrl);
         String url = tmpServiceURL;
@@ -161,7 +161,11 @@ public abstract class GHMatrixAbstractRequester {
         if (!Helper.isEmpty(key)) {
             url += "key=" + key;
         }
+        return url;
+    }
 
+    protected String buildURL(String path, GHMRequest ghRequest) {
+        String url = buildURLNoHints(path, ghRequest);
         for (Map.Entry<String, String> entry : ghRequest.getHints().toMap().entrySet()) {
             if (ignoreSet.contains(entry.getKey())) {
                 continue;
