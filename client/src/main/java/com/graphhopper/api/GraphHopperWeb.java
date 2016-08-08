@@ -151,9 +151,10 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     @Override
     public GHResponse route(GHRequest ghRequest) {
+        String str = "Creating request failed";
         try {
             Request okRequest = createRequest(ghRequest);
-            String str = downloader.newCall(okRequest).execute().body().string();
+            str = downloader.newCall(okRequest).execute().body().string();
 
             JSONObject json = new JSONObject(str);
             GHResponse res = new GHResponse();
@@ -175,7 +176,8 @@ public class GraphHopperWeb implements GraphHopperAPI {
             }
             return res;
         } catch (Exception ex) {
-            throw new RuntimeException("Problem while fetching path " + ghRequest.getPoints() + ": " + ex.getMessage(), ex);
+            throw new RuntimeException("Problem while fetching path " + ghRequest.getPoints()
+                    + ", error: " + ex.getMessage() + " response: " + str, ex);
         }
     }
 
@@ -193,7 +195,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
         String places = "";
         for (GHPoint p : request.getPoints()) {
-            places += "point=" + p.lat + "," + p.lon + "&";
+            places += "point=" + Helper.round6(p.lat) + "," + Helper.round6(p.lon) + "&";
         }
 
         String url = serviceUrl
