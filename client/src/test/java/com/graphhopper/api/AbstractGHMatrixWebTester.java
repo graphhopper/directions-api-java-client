@@ -21,7 +21,7 @@ public abstract class AbstractGHMatrixWebTester {
         req.addPoint(new GHPoint(51.534377, -0.087891));
         req.addPoint(new GHPoint(51.467697, -0.090637));
         req.addPoint(new GHPoint(51.521241, -0.171833));
-        req.addPoint(new GHPoint(51.473685, -0.211487));
+        req.addPoint(new GHPoint(51.473685, -0.211487));        
         return req;
     }
 

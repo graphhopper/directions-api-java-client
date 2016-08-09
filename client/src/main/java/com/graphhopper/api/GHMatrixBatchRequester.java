@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import okhttp3.OkHttpClient;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,10 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
         super(serviceUrl);
     }
 
+    public GHMatrixBatchRequester(String serviceUrl, OkHttpClient client) {
+        super(serviceUrl, client);
+    }
+
     /**
      * Internal parameter. Increase only if you have very large matrices.
      */
@@ -44,7 +49,7 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
     }
 
     @Override
-    public MatrixResponse route(GHMRequest ghRequest, String key) {
+    public MatrixResponse route(GHMRequest ghRequest) {
         JSONObject requestJson = new JSONObject();
         List<Double[]> fromPointList = createPointList(ghRequest.getFromPoints());
         List<Double[]> toPointList = createPointList(ghRequest.getToPoints());
@@ -70,9 +75,9 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 ghRequest.getToPoints().size(), withTimes, withDistances, withWeights);
 
         boolean debug = ghRequest.getHints().getBool("debug", false);
+        String postUrl = buildURLNoHints("/calculate", ghRequest);
 
         try {
-            String postUrl = serviceUrl + "/calculate?key=" + key;
             String postResponseStr = postJson(postUrl, requestJson);
 
             if (debug) {
@@ -80,7 +85,7 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
             }
 
             JSONObject responseJson = toJSON(postUrl, postResponseStr);
-            if (responseJson.has("message")) {
+            if (responseJson.has("message")) {                
                 matrixResponse.addError(new RuntimeException(responseJson.getString("message")));
                 return matrixResponse;
             }
@@ -96,7 +101,7 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 if (sleepAfterGET > 0) {
                     Thread.sleep(sleepAfterGET);
                 }
-                String getUrl = serviceUrl + "/solution/" + id + "?key=" + key;
+                String getUrl = buildURLNoHints("/solution/" + id, ghRequest);
 
                 String getResponseStr;
                 try {

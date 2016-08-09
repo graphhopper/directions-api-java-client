@@ -32,7 +32,7 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
             assertTrue(false);
         } catch (Exception ex) {
         }
-        
+
         // ... only weight:
         assertEquals(1056, res.getWeight(1, 2), 5);
 
@@ -43,5 +43,15 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
 
         assertEquals(9637, res.getDistance(1, 2), 5);
         assertEquals(1056, res.getWeight(1, 2), 5);
+    }
+
+    @Test
+    public void testBikeMatrix() {
+        GHMRequest req = AbstractGHMatrixWebTester.createRequest();
+        req.setVehicle("bike");
+        req.addOutArray("times");
+
+        MatrixResponse res = ghMatrix.route(req);
+        assertEquals(2297, res.getTime(1, 2) / 1000, 5);
     }
 }
