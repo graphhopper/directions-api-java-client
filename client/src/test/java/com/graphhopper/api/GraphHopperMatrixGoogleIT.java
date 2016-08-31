@@ -27,7 +27,7 @@ public class GraphHopperMatrixGoogleIT {
         GHMRequest req = AbstractGHMatrixWebTester.createRequest();
         MatrixResponse res = ghMatrix.route(req);
 
-        assertEquals(12000, res.getDistance(1, 2), 800);
+        assertEquals(11000, res.getDistance(1, 2), 2000);
         assertEquals(2500, res.getTime(1, 2) / 1000, 1000);
     }
 }
