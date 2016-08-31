@@ -122,7 +122,7 @@ The client for the Route Optimization API is located in the folder "route-optimi
 
 ## Usage
 
-See the [examples](./tree/master/route-optimization/src/main/java/com/graphhopper/routeopt/examples) on how to use this client.
+See the [examples](./route-optimization/src/main/java/com/graphhopper/routeopt/examples) on how to use this client.
 
 ## Maven
 
