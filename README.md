@@ -13,7 +13,7 @@ The latest development version is 0.8-SNAPSHOT
 
 ## License
 
-We chose the Apache License 2.0 to make it easy for you to embed GraphHopper in your products. We suggest to contribute back your changes, as GraphHopper will evolves fast, but of course this is not necessary.
+Apache License 2.0
 
 ## Usage
 
