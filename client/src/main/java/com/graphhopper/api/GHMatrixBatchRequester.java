@@ -85,7 +85,7 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
             }
 
             JSONObject responseJson = toJSON(postUrl, postResponseStr);
-            if (responseJson.has("message")) {                
+            if (responseJson.has("message")) {
                 matrixResponse.addError(new RuntimeException(responseJson.getString("message")));
                 return matrixResponse;
             }
@@ -118,12 +118,26 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 matrixResponse.addErrors(GraphHopperWeb.readErrors(getResponseJson));
                 if (matrixResponse.hasErrors()) {
                     break;
-                } else if ("finished".equals(getResponseJson.getString("status"))) {
-                    fillResponseFromJson(ghRequest, outArraysList,
-                            matrixResponse, getResponseJson.getJSONObject("solution"),
-                            hasElevation);
+                }
+                String status = getResponseJson.getString("status");
+
+                if ("processing".equals(status) || "waiting".equals(status)) {
+                    continue;
+                }
+
+                if ("finished".equals(status)) {
+                    JSONObject solution = getResponseJson.getJSONObject("solution");
+                    matrixResponse.addErrors(readUsableEntityError(outArraysList, solution));
+                    if (!matrixResponse.hasErrors()) {
+                        fillResponseFromJson(ghRequest, outArraysList,
+                                matrixResponse, solution,
+                                hasElevation);
+                    }
                     break;
                 }
+
+                matrixResponse.addError(new RuntimeException("Status not supported: " + status + " - illegal JSON format?"));
+                break;
             }
 
             if (i >= maxIterations) {

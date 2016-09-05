@@ -88,6 +88,10 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
 
             matrixResponse.addErrors(GraphHopperWeb.readErrors(getResponseJson));
             if (!matrixResponse.hasErrors()) {
+                matrixResponse.addErrors(readUsableEntityError(outArraysList, getResponseJson));
+            }
+
+            if (!matrixResponse.hasErrors()) {
                 fillResponseFromJson(ghRequest, outArraysList,
                         matrixResponse, getResponseJson, hasElevation);
             }
