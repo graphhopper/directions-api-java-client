@@ -93,9 +93,10 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
     }
 
     private void fillResponseFromGoogleJson(MatrixResponse matrixResponse, JSONObject responseJson) {
-        if ("OK".equals(responseJson.getString("status"))) {
+        String status = responseJson.getString("status");
+        if ("OK".equals(status)) {
             if (!responseJson.has("rows")) {
-                matrixResponse.addError(new RuntimeException("No 'rows' entry found for Google Matrix"));
+                matrixResponse.addError(new RuntimeException("No 'rows' entry found in Google Matrix response. status:OK"));
                 return;
             }
 
@@ -131,7 +132,7 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
             if (responseJson.has("error_message")) {
                 matrixResponse.addError(new RuntimeException(responseJson.getString("error_message")));
             } else {
-                matrixResponse.addError(new RuntimeException("Something went wrong with Google response " + responseJson.toString()));
+                matrixResponse.addError(new RuntimeException("Something went wrong with Google Matrix response. status:" + status));
             }
         }
     }

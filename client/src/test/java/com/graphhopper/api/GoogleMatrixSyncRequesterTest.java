@@ -1,10 +1,8 @@
 package com.graphhopper.api;
 
 import static com.graphhopper.api.AbstractGHMatrixWebTester.createRequest;
-import com.graphhopper.util.shapes.GHPoint;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import org.json.JSONObject;
 import org.junit.Test;
 import static org.junit.Assert.*;
