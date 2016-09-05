@@ -3,3 +3,8 @@
 nbactions.xml
 /route-optimization/target/
 /client/target/
+.idea/
+*iml
+.settings/
+.classpath
+.project
