@@ -5,6 +5,7 @@ import com.graphhopper.util.Helper;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,18 @@ public abstract class GHMatrixAbstractRequester {
             return new JSONObject(str);
         } catch (Exception ex) {
             throw new RuntimeException("Cannot parse json " + str + " from " + url);
+        }
+    }
+
+    public List<Throwable> readUsableEntityError(List<String> outArraysList, JSONObject solution) {
+        boolean readWeights = outArraysList.contains("weights") && solution.has("weights");
+        boolean readDistances = outArraysList.contains("distances") && solution.has("distances");
+        boolean readTimes = outArraysList.contains("times") && solution.has("times");
+
+        if (!readWeights && !readDistances && !readTimes) {
+            return Collections.<Throwable>singletonList(new RuntimeException("Cannot find usable entity like weights, distances or times in JSON"));
+        } else {
+            return Collections.emptyList();
         }
     }
 
