@@ -45,6 +45,7 @@ public abstract class GHMatrixAbstractRequester {
         this.serviceUrl = serviceUrl;
 
         ignoreSet.add("key");
+        ignoreSet.add("service_url");
     }
 
     public GHMatrixAbstractRequester setKey(String key) {

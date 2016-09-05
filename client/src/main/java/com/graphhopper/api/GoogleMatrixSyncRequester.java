@@ -93,33 +93,46 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
     }
 
     private void fillResponseFromGoogleJson(MatrixResponse matrixResponse, JSONObject responseJson) {
-        JSONArray rows = responseJson.getJSONArray("rows");
-        int fromCount = rows.length();
-
-        for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
-            JSONObject elementsObj = rows.getJSONObject(fromIndex);
-            JSONArray elements = elementsObj.getJSONArray("elements");
-            int toCount = elements.length();
-            long[] times = new long[toCount];
-            int[] distances = new int[toCount];
-
-            for (int toIndex = 0; toIndex < toCount; toIndex++) {
-                JSONObject element = elements.getJSONObject(toIndex);
-
-                if ("OK".equals(element.getString("status"))) {
-
-                    JSONObject distance = element.getJSONObject("distance");
-                    JSONObject duration = element.getJSONObject("duration");
-
-                    times[toIndex] = duration.getInt("value") * 1000;
-                    distances[toIndex] = (int) Math.round(distance.getInt("value"));
-                } else {
-                    matrixResponse.addError(new IllegalArgumentException("Cannot find route " + fromIndex + "->" + toIndex));
-                }
+        if ("OK".equals(responseJson.getString("status"))) {
+            if (!responseJson.has("rows")) {
+                matrixResponse.addError(new RuntimeException("No 'rows' entry found for Google Matrix"));
+                return;
             }
 
-            matrixResponse.setTimeRow(fromIndex, times);
-            matrixResponse.setDistanceRow(fromIndex, distances);
+            JSONArray rows = responseJson.getJSONArray("rows");
+            int fromCount = rows.length();
+
+            for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
+                JSONObject elementsObj = rows.getJSONObject(fromIndex);
+                JSONArray elements = elementsObj.getJSONArray("elements");
+                int toCount = elements.length();
+                long[] times = new long[toCount];
+                int[] distances = new int[toCount];
+
+                for (int toIndex = 0; toIndex < toCount; toIndex++) {
+                    JSONObject element = elements.getJSONObject(toIndex);
+
+                    if ("OK".equals(element.getString("status"))) {
+
+                        JSONObject distance = element.getJSONObject("distance");
+                        JSONObject duration = element.getJSONObject("duration");
+
+                        times[toIndex] = duration.getInt("value") * 1000;
+                        distances[toIndex] = (int) Math.round(distance.getInt("value"));
+                    } else {
+                        matrixResponse.addError(new IllegalArgumentException("Cannot find route " + fromIndex + "->" + toIndex));
+                    }
+                }
+
+                matrixResponse.setTimeRow(fromIndex, times);
+                matrixResponse.setDistanceRow(fromIndex, distances);
+            }
+        } else {
+            if (responseJson.has("error_message")) {
+                matrixResponse.addError(new RuntimeException(responseJson.getString("error_message")));
+            } else {
+                matrixResponse.addError(new RuntimeException("Something went wrong with Google response " + responseJson.toString()));
+            }
         }
     }
 }
