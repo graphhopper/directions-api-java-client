@@ -24,7 +24,7 @@
     <dependencies>
         <dependency>
             <groupId>com.graphhopper</groupId>
-            <artifactId>graphhopper</artifactId>
+            <artifactId>graphhopper-core</artifactId>
             <version>0.8-SNAPSHOT</version>
             <exclusions>
                 <!-- We cannot yet exclude this as e.g. Helper class uses trove classes
