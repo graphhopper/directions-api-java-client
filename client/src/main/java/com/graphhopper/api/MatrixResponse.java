@@ -74,7 +74,7 @@ public class MatrixResponse {
     }
 
     /**
-     * Returns the time for the specific entry (from -&gt to) in milliseconds.
+     * Returns the time for the specific entry (from -&gt; to) in milliseconds.
      */
     public long getTime(int from, int to) {
         if (hasErrors()) {
@@ -90,7 +90,7 @@ public class MatrixResponse {
     }
 
     /**
-     * Returns the distance for the specific entry (from -&gt to) in meter.
+     * Returns the distance for the specific entry (from -&gt; to) in meter.
      */
     public double getDistance(int from, int to) {
         if (hasErrors()) {
@@ -106,7 +106,7 @@ public class MatrixResponse {
     }
 
     /**
-     * Returns the weight for the specific entry (from -&gt to) in arbitrary units
+     * Returns the weight for the specific entry (from -&gt; to) in arbitrary units
      * ('costs').
      */
     public double getWeight(int from, int to) {
