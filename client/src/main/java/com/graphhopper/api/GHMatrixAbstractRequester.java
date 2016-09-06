@@ -1,6 +1,8 @@
 package com.graphhopper.api;
 
+import static com.graphhopper.api.GraphHopperMatrixWeb.KEY;
 import static com.graphhopper.api.GraphHopperMatrixWeb.MT_JSON;
+import static com.graphhopper.api.GraphHopperMatrixWeb.SERVICE_URL;
 import com.graphhopper.util.Helper;
 
 import java.io.IOException;
@@ -25,7 +27,6 @@ public abstract class GHMatrixAbstractRequester {
 
     protected final Set<String> ignoreSet = new HashSet<String>(10);
     protected final String serviceUrl;
-    private String key;
     private OkHttpClient downloader;
 
     public GHMatrixAbstractRequester() {
@@ -47,11 +48,6 @@ public abstract class GHMatrixAbstractRequester {
 
         ignoreSet.add("key");
         ignoreSet.add("service_url");
-    }
-
-    public GHMatrixAbstractRequester setKey(String key) {
-        this.key = key;
-        return this;
     }
 
     public abstract MatrixResponse route(GHMRequest request);
@@ -168,10 +164,11 @@ public abstract class GHMatrixAbstractRequester {
 
     protected String buildURLNoHints(String path, GHMRequest ghRequest) {
         // allow per request service URLs
-        String tmpServiceURL = ghRequest.getHints().get("service_url", serviceUrl);
+        String tmpServiceURL = ghRequest.getHints().get(SERVICE_URL, serviceUrl);
         String url = tmpServiceURL;
         url += path + "?";
 
+        String key = ghRequest.getHints().get(KEY, "");
         if (!Helper.isEmpty(key)) {
             url += "key=" + key;
         }

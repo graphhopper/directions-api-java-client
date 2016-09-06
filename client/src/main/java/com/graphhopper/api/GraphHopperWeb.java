@@ -215,7 +215,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
         }
 
         if (!key.isEmpty()) {
-            url += "&key=" + key;
+            url += "&key=" + WebHelper.encodeURL(key);
         }
 
         for (Map.Entry<String, String> entry : request.getHints().toMap().entrySet()) {

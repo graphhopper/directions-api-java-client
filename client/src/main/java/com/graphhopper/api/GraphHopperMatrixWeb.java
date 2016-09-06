@@ -1,5 +1,6 @@
 package com.graphhopper.api;
 
+import com.graphhopper.util.Helper;
 import okhttp3.MediaType;
 
 /**
@@ -8,8 +9,11 @@ import okhttp3.MediaType;
  */
 public class GraphHopperMatrixWeb {
 
+    public static final String SERVICE_URL = "service_url";
+    public static final String KEY = "key";
     public static final MediaType MT_JSON = MediaType.parse("application/json; charset=utf-8");
     private final GHMatrixAbstractRequester requester;
+    private String key;
 
     public GraphHopperMatrixWeb() {
         this(new GHMatrixBatchRequester());
@@ -28,11 +32,15 @@ public class GraphHopperMatrixWeb {
             throw new IllegalStateException("Key cannot be empty");
         }
 
-        this.requester.setKey(key);
+        this.key = key;
         return this;
     }
 
     public MatrixResponse route(GHMRequest request) {
+        if (!Helper.isEmpty(key)) {
+            request.getHints().put(KEY, key);
+        }
+
         return requester.route(request);
     }
 }
