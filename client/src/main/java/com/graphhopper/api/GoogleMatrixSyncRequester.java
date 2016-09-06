@@ -1,5 +1,6 @@
 package com.graphhopper.api;
 
+import com.graphhopper.util.Helper;
 import com.graphhopper.util.shapes.GHPoint;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
                 pointsStr += "|";
             }
 
-            pointsStr += encode(p.lat + "," + p.lon);
+            pointsStr += encode(Helper.round6(p.lat) + "," + Helper.round6(p.lon));
         }
         return pointName + "=" + pointsStr;
     }
@@ -128,12 +129,10 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
                 matrixResponse.setTimeRow(fromIndex, times);
                 matrixResponse.setDistanceRow(fromIndex, distances);
             }
+        } else if (responseJson.has("error_message")) {
+            matrixResponse.addError(new RuntimeException(responseJson.getString("error_message")));
         } else {
-            if (responseJson.has("error_message")) {
-                matrixResponse.addError(new RuntimeException(responseJson.getString("error_message")));
-            } else {
-                matrixResponse.addError(new RuntimeException("Something went wrong with Google Matrix response. status:" + status));
-            }
+            matrixResponse.addError(new RuntimeException("Something went wrong with Google Matrix response. status:" + status));
         }
     }
 }
