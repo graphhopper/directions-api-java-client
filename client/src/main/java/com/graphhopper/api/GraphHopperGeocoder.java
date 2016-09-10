@@ -45,7 +45,7 @@ public class GraphHopperGeocoder
             }
 
             if (locale != null || !locale.isEmpty()) {
-                url += "&key=" + WebHelper.encodeURL(locale);
+                url += "&locale=" + WebHelper.encodeURL(locale);
             }
 
             if (!key.isEmpty()) {
