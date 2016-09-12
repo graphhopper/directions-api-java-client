@@ -22,6 +22,8 @@ import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopperAPI;
 import com.graphhopper.util.*;
+import com.graphhopper.util.exceptions.CannotFindPointException;
+import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -356,6 +358,13 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 errors.add(new RuntimeException(exMessage));
             } else if (exClass.equals(IllegalArgumentException.class.getName())) {
                 errors.add(new IllegalArgumentException(exMessage));
+            }else if (exClass.equals(CannotFindPointException.class.getName())) {
+                // TODO: this should be point_index but the GH API returns not_found_point_index
+                int pointIndex = error.getInt("not_found_point_index");
+                errors.add(new CannotFindPointException(exMessage, pointIndex));
+            }else if (exClass.equals(PointOutOfBoundsException.class.getName())){
+                int pointIndex = error.getInt("point_index");
+                errors.add(new PointOutOfBoundsException(exMessage, pointIndex));
             } else if (exClass.isEmpty()) {
                 errors.add(new RuntimeException(exMessage));
             } else {
