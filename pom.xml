@@ -14,6 +14,14 @@
         Super pom of the GraphHopper Directions API client component
     </description>
 
+    <!-- Used for retrieving snapshot builds of graphhopper-core -->
+    <repositories>
+        <repository>
+            <id>sonatype-oss-public-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
