@@ -303,7 +303,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
                         viaCount++;
                         instr = tmpInstr;
                     } else if (sign == Instruction.FINISH) {
-                        instr = new FinishInstruction(instPL, 0);
+                        instr = new FinishInstruction(text, instPL, 0);
                     } else {
                         instr = new Instruction(sign, text, ia, instPL);
                     }
