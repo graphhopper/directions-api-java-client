@@ -4,6 +4,7 @@ import com.graphhopper.PathWrapper;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.util.Instruction;
+import com.graphhopper.util.InstructionList;
 import com.graphhopper.util.RoundaboutInstruction;
 import com.graphhopper.util.shapes.GHPoint;
 import org.junit.Test;
@@ -80,6 +81,18 @@ public class GraphHopperWebIT {
             }
         }
         assertTrue("no roundabout in route?", counter > 0);
+    }
+
+    @Test
+    public void readFinishInstruction() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(52.261434, 13.485718)).
+                addPoint(new GHPoint(52.399067, 13.469238));
+
+        GHResponse res = gh.route(req);
+        InstructionList instructions = res.getBest().getInstructions();
+        String finishInstructionName = instructions.get(instructions.getSize()-1).getName();
+        assertEquals("Finish!", finishInstructionName);
     }
 
     void isBetween(double from, double to, double expected) {
