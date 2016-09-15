@@ -6,6 +6,8 @@ import com.graphhopper.GHResponse;
 import com.graphhopper.util.Instruction;
 import com.graphhopper.util.InstructionList;
 import com.graphhopper.util.RoundaboutInstruction;
+import com.graphhopper.util.exceptions.CannotFindPointException;
+import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -81,6 +83,29 @@ public class GraphHopperWebIT {
             }
         }
         assertTrue("no roundabout in route?", counter > 0);
+    }
+
+    @Test
+    public void testCannotFindPointException() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(-4.214943, -130.078125)).
+                addPoint(new GHPoint(39.909736, -91.054687));
+
+        GHResponse res = gh.route(req);
+        assertTrue("no erros found?", res.hasErrors());
+        assertTrue(res.getErrors().get(0) instanceof CannotFindPointException);
+    }
+
+
+    @Test
+    public void testOutOfBoundsException() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(-400.214943, -130.078125)).
+                addPoint(new GHPoint(39.909736, -91.054687));
+
+        GHResponse res = gh.route(req);
+        assertTrue("no erros found?", res.hasErrors());
+        assertTrue(res.getErrors().get(0) instanceof PointOutOfBoundsException);
     }
 
     @Test
