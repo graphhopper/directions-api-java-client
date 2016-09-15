@@ -359,8 +359,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
             } else if (exClass.equals(IllegalArgumentException.class.getName())) {
                 errors.add(new IllegalArgumentException(exMessage));
             }else if (exClass.equals(CannotFindPointException.class.getName())) {
-                // TODO: this should be point_index but the GH API returns not_found_point_index
-                int pointIndex = error.getInt("not_found_point_index");
+                int pointIndex = error.getInt("point_index");
                 errors.add(new CannotFindPointException(exMessage, pointIndex));
             }else if (exClass.equals(PointOutOfBoundsException.class.getName())){
                 int pointIndex = error.getInt("point_index");
