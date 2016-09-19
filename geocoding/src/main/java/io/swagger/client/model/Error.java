@@ -34,34 +34,10 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Error
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-19T17:18:21.046+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-19T17:27:49.719+02:00")
 public class Error   {
-  @SerializedName("code")
-  private Integer code = null;
-
   @SerializedName("message")
   private String message = null;
-
-  @SerializedName("fields")
-  private String fields = null;
-
-  public Error code(Integer code) {
-    this.code = code;
-    return this;
-  }
-
-   /**
-   * Get code
-   * @return code
-  **/
-  @ApiModelProperty(example = "null", value = "")
-  public Integer getCode() {
-    return code;
-  }
-
-  public void setCode(Integer code) {
-    this.code = code;
-  }
 
   public Error message(String message) {
     this.message = message;
@@ -81,24 +57,6 @@ public class Error   {
     this.message = message;
   }
 
-  public Error fields(String fields) {
-    this.fields = fields;
-    return this;
-  }
-
-   /**
-   * Get fields
-   * @return fields
-  **/
-  @ApiModelProperty(example = "null", value = "")
-  public String getFields() {
-    return fields;
-  }
-
-  public void setFields(String fields) {
-    this.fields = fields;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -109,14 +67,12 @@ public class Error   {
       return false;
     }
     Error error = (Error) o;
-    return Objects.equals(this.code, error.code) &&
-        Objects.equals(this.message, error.message) &&
-        Objects.equals(this.fields, error.fields);
+    return Objects.equals(this.message, error.message);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, message, fields);
+    return Objects.hash(message);
   }
 
   @Override
@@ -124,9 +80,7 @@ public class Error   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Error {\n");
     
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("}");
     return sb.toString();
   }

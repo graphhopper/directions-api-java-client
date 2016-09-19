@@ -35,7 +35,7 @@ import io.swagger.client.model.Point;
 /**
  * Location
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-19T17:18:21.046+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-19T17:27:49.719+02:00")
 public class Location   {
   @SerializedName("point")
   private Point point = null;
