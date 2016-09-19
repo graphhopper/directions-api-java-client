@@ -139,3 +139,11 @@ The route optimization client is in the maven central repository, thus you can j
 ## Customization
 
 If you want to build it from source please follow the guide for java [here](https://github.com/graphhopper/directions-api-clients-route-optimization).
+
+# Geocoding
+
+## Generate from Swagger
+
+```
+java -jar ../swagger-codegen-cli.jar generate -i geocoding_swagger.yaml -l java -o geocoding -c geocoding-config.json
+```

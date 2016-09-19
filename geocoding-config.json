@@ -1,0 +1,6 @@
+{
+  "groupId":"com.graphhopper",
+  "artifactVersion":"0.8-SNAPSHOT",
+  "library": "okhttp-gson",
+  "artifactId": "directions-api-java-client-geocoding"
+}

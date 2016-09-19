@@ -14,6 +14,11 @@ schemes:
 basePath: /api/1
 produces:
   - application/json
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: key
+    in: query
 paths:
   /geocode:
     get:
@@ -21,10 +26,36 @@ paths:
       description: |
         This endpoint provides forward and reverse geocoding
       parameters:
-        - name: point
+        - name: q
           in: query
           description: If you do forward geocoding, then this would be a textual description of the adress you are looking for. If you do reverse geocoding this would be in lat,lon.
-          required: true
+          required: false
+          type: string
+        - name: locale
+          in: query
+          required: false
+          type: string
+        - name: limit
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: debug
+          in: query
+          required: false
+          type: boolean
+        - name: reverse
+          in: query
+          required: false
+          type: boolean
+        - name: point
+          in: query
+          description: The location bias in the format 'latitude,longitude' e.g. point=45.93272,11.58803
+          required: false
+          type: string
+        - name: provider
+          in: query
+          required: false
           type: string
         - name: key
           in: query
