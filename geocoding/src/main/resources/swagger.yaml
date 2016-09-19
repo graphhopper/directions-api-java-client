@@ -1,0 +1,91 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: GraphHopper Geocoding API
+  description: GraphHopper Geocoding API
+  version: "1.0.0"
+# the domain of the service
+host: graphhopper.com
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /api/1
+produces:
+  - application/json
+paths:
+  /geocode:
+    get:
+      summary: Execute a Geocoding request
+      description: |
+        This endpoint provides forward and reverse geocoding
+      parameters:
+        - name: point
+          in: query
+          description: If you do forward geocoding, then this would be a textual description of the adress you are looking for. If you do reverse geocoding this would be in lat,lon.
+          required: true
+          type: string
+        - name: key
+          in: query
+          description: Get your key at graphhopper.com
+          required: true
+          type: string
+      tags:
+        - Geocoding
+      responses:
+        200:
+          description: An array found locations
+          schema:
+            $ref: '#/definitions/GeocodingResult'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  GeocodingResult:
+    properties:
+      hits:
+        type: array
+        items:  
+          $ref: '#/definitions/Location'
+      locale:
+        type: string
+  Location:
+    type: object
+    properties:
+      point:
+        $ref: '#/definitions/Point'
+      osm_id:
+        type: string
+        description: OSM Id
+      name:
+        type: string
+        description: Name of the location
+      country:
+        type: string
+        description: Country of the location
+      city:
+        type: string
+        description: City of the location
+  Point:
+    type: object
+    properties:
+      lat:
+        type: number
+        format: double
+        description: Latitude
+      lng:
+        type: number
+        format: double
+        description: Longitude
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string

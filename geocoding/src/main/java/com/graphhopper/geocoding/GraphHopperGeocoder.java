@@ -1,6 +1,6 @@
-package com.graphhopper.api;
+package com.graphhopper.geocoding;
 
-import com.graphhopper.PathWrapper;
+import com.graphhopper.api.WebHelper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.json.JSONArray;
@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**

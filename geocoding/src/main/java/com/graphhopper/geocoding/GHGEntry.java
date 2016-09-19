@@ -1,5 +1,4 @@
-package com.graphhopper.api;
-
+package com.graphhopper.geocoding;
 
 /**
  * @author Robin Boldt
