@@ -377,5 +377,4 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
         return errors;
     }
-
 }
