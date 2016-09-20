@@ -90,15 +90,22 @@ definitions:
       osm_id:
         type: string
         description: OSM Id
+      osm_type:
+        type: string
+        description: N = node, R = relation, W = way
       name:
         type: string
-        description: Name of the location
       country:
         type: string
-        description: Country of the location
       city:
         type: string
-        description: City of the location
+      state:
+        type: string
+      street:
+        type: string
+      housenumber:
+        type: integer
+        format: int32
   Point:
     type: object
     properties:

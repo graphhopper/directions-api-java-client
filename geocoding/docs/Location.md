@@ -6,9 +6,13 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **point** | [**Point**](Point.md) |  |  [optional]
 **osmId** | **String** | OSM Id |  [optional]
-**name** | **String** | Name of the location |  [optional]
-**country** | **String** | Country of the location |  [optional]
-**city** | **String** | City of the location |  [optional]
+**osmType** | **String** | N &#x3D; node, R &#x3D; relation, W &#x3D; way |  [optional]
+**name** | **String** |  |  [optional]
+**country** | **String** |  |  [optional]
+**city** | **String** |  |  [optional]
+**state** | **String** |  |  [optional]
+**street** | **String** |  |  [optional]
+**housenumber** | **Integer** |  |  [optional]
 
 
 

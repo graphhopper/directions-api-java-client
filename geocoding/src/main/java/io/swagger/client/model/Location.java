@@ -35,13 +35,16 @@ import io.swagger.client.model.Point;
 /**
  * Location
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-19T17:27:49.719+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-20T15:09:11.756+02:00")
 public class Location   {
   @SerializedName("point")
   private Point point = null;
 
   @SerializedName("osm_id")
   private String osmId = null;
+
+  @SerializedName("osm_type")
+  private String osmType = null;
 
   @SerializedName("name")
   private String name = null;
@@ -51,6 +54,15 @@ public class Location   {
 
   @SerializedName("city")
   private String city = null;
+
+  @SerializedName("state")
+  private String state = null;
+
+  @SerializedName("street")
+  private String street = null;
+
+  @SerializedName("housenumber")
+  private Integer housenumber = null;
 
   public Location point(Point point) {
     this.point = point;
@@ -88,16 +100,34 @@ public class Location   {
     this.osmId = osmId;
   }
 
+  public Location osmType(String osmType) {
+    this.osmType = osmType;
+    return this;
+  }
+
+   /**
+   * N = node, R = relation, W = way
+   * @return osmType
+  **/
+  @ApiModelProperty(example = "null", value = "N = node, R = relation, W = way")
+  public String getOsmType() {
+    return osmType;
+  }
+
+  public void setOsmType(String osmType) {
+    this.osmType = osmType;
+  }
+
   public Location name(String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Name of the location
+   * Get name
    * @return name
   **/
-  @ApiModelProperty(example = "null", value = "Name of the location")
+  @ApiModelProperty(example = "null", value = "")
   public String getName() {
     return name;
   }
@@ -112,10 +142,10 @@ public class Location   {
   }
 
    /**
-   * Country of the location
+   * Get country
    * @return country
   **/
-  @ApiModelProperty(example = "null", value = "Country of the location")
+  @ApiModelProperty(example = "null", value = "")
   public String getCountry() {
     return country;
   }
@@ -130,16 +160,70 @@ public class Location   {
   }
 
    /**
-   * City of the location
+   * Get city
    * @return city
   **/
-  @ApiModelProperty(example = "null", value = "City of the location")
+  @ApiModelProperty(example = "null", value = "")
   public String getCity() {
     return city;
   }
 
   public void setCity(String city) {
     this.city = city;
+  }
+
+  public Location state(String state) {
+    this.state = state;
+    return this;
+  }
+
+   /**
+   * Get state
+   * @return state
+  **/
+  @ApiModelProperty(example = "null", value = "")
+  public String getState() {
+    return state;
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
+
+  public Location street(String street) {
+    this.street = street;
+    return this;
+  }
+
+   /**
+   * Get street
+   * @return street
+  **/
+  @ApiModelProperty(example = "null", value = "")
+  public String getStreet() {
+    return street;
+  }
+
+  public void setStreet(String street) {
+    this.street = street;
+  }
+
+  public Location housenumber(Integer housenumber) {
+    this.housenumber = housenumber;
+    return this;
+  }
+
+   /**
+   * Get housenumber
+   * @return housenumber
+  **/
+  @ApiModelProperty(example = "null", value = "")
+  public Integer getHousenumber() {
+    return housenumber;
+  }
+
+  public void setHousenumber(Integer housenumber) {
+    this.housenumber = housenumber;
   }
 
 
@@ -154,14 +238,18 @@ public class Location   {
     Location location = (Location) o;
     return Objects.equals(this.point, location.point) &&
         Objects.equals(this.osmId, location.osmId) &&
+        Objects.equals(this.osmType, location.osmType) &&
         Objects.equals(this.name, location.name) &&
         Objects.equals(this.country, location.country) &&
-        Objects.equals(this.city, location.city);
+        Objects.equals(this.city, location.city) &&
+        Objects.equals(this.state, location.state) &&
+        Objects.equals(this.street, location.street) &&
+        Objects.equals(this.housenumber, location.housenumber);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(point, osmId, name, country, city);
+    return Objects.hash(point, osmId, osmType, name, country, city, state, street, housenumber);
   }
 
   @Override
@@ -171,9 +259,13 @@ public class Location   {
     
     sb.append("    point: ").append(toIndentedString(point)).append("\n");
     sb.append("    osmId: ").append(toIndentedString(osmId)).append("\n");
+    sb.append("    osmType: ").append(toIndentedString(osmType)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    country: ").append(toIndentedString(country)).append("\n");
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
+    sb.append("    state: ").append(toIndentedString(state)).append("\n");
+    sb.append("    street: ").append(toIndentedString(street)).append("\n");
+    sb.append("    housenumber: ").append(toIndentedString(housenumber)).append("\n");
     sb.append("}");
     return sb.toString();
   }
