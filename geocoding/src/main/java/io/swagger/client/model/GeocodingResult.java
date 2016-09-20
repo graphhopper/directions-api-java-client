@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * GeocodingResult
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-20T15:11:20.238+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-20T15:25:48.860+02:00")
 public class GeocodingResult   {
   @SerializedName("hits")
   private List<Location> hits = new ArrayList<Location>();

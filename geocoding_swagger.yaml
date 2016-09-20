@@ -5,6 +5,10 @@ info:
   title: GraphHopper Geocoding API
   description: GraphHopper Geocoding API
   version: "1.0.0"
+  termsOfService: https://graphhopper.com/terms.html
+  contact:
+    name: GraphHopper GmbH
+    url: https://graphhopper.com/#contact
 # the domain of the service
 host: graphhopper.com
 # array of all schemes that your API supports
@@ -24,7 +28,7 @@ paths:
     get:
       summary: Execute a Geocoding request
       description: |
-        This endpoint provides forward and reverse geocoding
+        This endpoint provides forward and reverse geocoding. For more details, review the official documentation at: https://graphhopper.com/api/1/docs/geocoding/
       parameters:
         - name: q
           in: query
@@ -33,19 +37,23 @@ paths:
           type: string
         - name: locale
           in: query
+          description: Display the search results for the specified locale. Currently French (fr), English (en), German (de) and Italian (it) are supported. If the locale wasn't found the default (en) is used.
           required: false
           type: string
         - name: limit
           in: query
+          description: Specify the maximum number of returned results
           required: false
           type: integer
           format: int32
         - name: debug
           in: query
+          description: If true the output will be formated.
           required: false
           type: boolean
         - name: reverse
           in: query
+          description: Set to true to do a reverse Geocoding request
           required: false
           type: boolean
         - name: point
@@ -55,6 +63,7 @@ paths:
           type: string
         - name: provider
           in: query
+          description: Can be either, default, nominatim, opencagedata
           required: false
           type: string
         - name: key
