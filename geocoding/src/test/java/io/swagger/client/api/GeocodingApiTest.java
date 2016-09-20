@@ -129,5 +129,47 @@ public class GeocodingApiTest {
         assertEquals("Wernau (Neckar), Baden-Württemberg, Deutschland",response.getHits().get(0).getName());
         assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
     }
+
+    @Test(expected = ApiException.class)
+    public void geocodeGetTestNoKey() throws ApiException {
+        String key = null;
+        String q = "Wernau Neckar";
+        String locale = null;
+        Integer limit = null;
+        Boolean debug = null;
+        Boolean reverse = null;
+        String point = null;
+        String provider = null;
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        fail("No excpetion?");
+    }
+
+    @Test(expected = ApiException.class)
+    public void geocodeGetTestNoQ() throws ApiException {
+        String key = this.ghKey;
+        String q = null;
+        String locale = null;
+        Integer limit = null;
+        Boolean debug = null;
+        Boolean reverse = null;
+        String point = null;
+        String provider = null;
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        fail("No excpetion?");
+    }
+
+    @Test(expected = ApiException.class)
+    public void geocodeGetTestNoPointException() throws ApiException {
+        String key = this.ghKey;
+        String q = null;
+        String locale = null;
+        Integer limit = null;
+        Boolean debug = null;
+        Boolean reverse = true;
+        String point = null;
+        String provider = null;
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        fail("No excpetion?");
+    }
     
 }
