@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 <a name="geocodeGet"></a>
 # **geocodeGet**
-> GeocodingResult geocodeGet(key, q, locale, limit, debug, reverse, point, provider)
+> GeocodingResult geocodeGet(key, q, locale, limit, reverse, point, provider)
 
 Execute a Geocoding request
 
@@ -27,12 +27,11 @@ String key = "key_example"; // String | Get your key at graphhopper.com
 String q = "q_example"; // String | If you do forward geocoding, then this would be a textual description of the adress you are looking for. If you do reverse geocoding this would be in lat,lon.
 String locale = "locale_example"; // String | Display the search results for the specified locale. Currently French (fr), English (en), German (de) and Italian (it) are supported. If the locale wasn't found the default (en) is used.
 Integer limit = 56; // Integer | Specify the maximum number of returned results
-Boolean debug = true; // Boolean | If true the output will be formated.
 Boolean reverse = true; // Boolean | Set to true to do a reverse Geocoding request
 String point = "point_example"; // String | The location bias in the format 'latitude,longitude' e.g. point=45.93272,11.58803
 String provider = "provider_example"; // String | Can be either, default, nominatim, opencagedata
 try {
-    GeocodingResult result = apiInstance.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+    GeocodingResult result = apiInstance.geocodeGet(key, q, locale, limit, reverse, point, provider);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling GeocodingApi#geocodeGet");
@@ -48,7 +47,6 @@ Name | Type | Description  | Notes
  **q** | **String**| If you do forward geocoding, then this would be a textual description of the adress you are looking for. If you do reverse geocoding this would be in lat,lon. | [optional]
  **locale** | **String**| Display the search results for the specified locale. Currently French (fr), English (en), German (de) and Italian (it) are supported. If the locale wasn&#39;t found the default (en) is used. | [optional]
  **limit** | **Integer**| Specify the maximum number of returned results | [optional]
- **debug** | **Boolean**| If true the output will be formated. | [optional]
  **reverse** | **Boolean**| Set to true to do a reverse Geocoding request | [optional]
  **point** | **String**| The location bias in the format &#39;latitude,longitude&#39; e.g. point&#x3D;45.93272,11.58803 | [optional]
  **provider** | **String**| Can be either, default, nominatim, opencagedata | [optional]

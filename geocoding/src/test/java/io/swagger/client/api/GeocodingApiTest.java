@@ -52,11 +52,10 @@ public class GeocodingApiTest {
         String q = "Wernau Neckar";
         String locale = null;
         Integer limit = null;
-        Boolean debug = null;
         Boolean reverse = null;
         String point = null;
         String provider = null;
-        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
         // Default Limit and Locale
         // TODO: Why is default limit 15? Documentation says it's 10
         // see: https://graphhopper.com/api/1/docs/geocoding/
@@ -73,11 +72,10 @@ public class GeocodingApiTest {
         String q = null;
         String locale = null;
         Integer limit = null;
-        Boolean debug = null;
         Boolean reverse = true;
         String point = "48.68825915,9.419370517109815";
         String provider = null;
-        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
 
         // Default Limit and Locale
         // TODO: Why is it 5 in this case?
@@ -94,11 +92,10 @@ public class GeocodingApiTest {
         String q = "Wernau Neckar";
         String locale = "de";
         Integer limit = 1;
-        Boolean debug = true;
         Boolean reverse = false;
         String point = "48.68825915,9.419370517109815";
         String provider = "default";
-        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
 
         // Default Limit and Locale
         assertEquals(1,response.getHits().size());
@@ -114,12 +111,11 @@ public class GeocodingApiTest {
         String q = "Wernau Neckar";
         String locale = "de";
         Integer limit = 1;
-        Boolean debug = true;
         Boolean reverse = false;
         String point = "48.68825915,9.419370517109815";
         // TODO: With this provider (and opencagedata) we return a copyrights array, but we don't provide one for the default provider
         String provider = "nominatim";
-        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
 
         // Default Limit and Locale
         assertEquals(1,response.getHits().size());
@@ -136,11 +132,10 @@ public class GeocodingApiTest {
         String q = "Wernau Neckar";
         String locale = null;
         Integer limit = null;
-        Boolean debug = null;
         Boolean reverse = null;
         String point = null;
         String provider = null;
-        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
         fail("No excpetion?");
     }
 
@@ -150,11 +145,10 @@ public class GeocodingApiTest {
         String q = null;
         String locale = null;
         Integer limit = null;
-        Boolean debug = null;
         Boolean reverse = null;
         String point = null;
         String provider = null;
-        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
         fail("No excpetion?");
     }
 
@@ -164,11 +158,10 @@ public class GeocodingApiTest {
         String q = null;
         String locale = null;
         Integer limit = null;
-        Boolean debug = null;
         Boolean reverse = true;
         String point = null;
         String provider = null;
-        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
         fail("No excpetion?");
     }
     
