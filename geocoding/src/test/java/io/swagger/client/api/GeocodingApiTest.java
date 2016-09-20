@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.*;
+
 /**
  * API tests for GeocodingApi
  */
@@ -42,28 +44,90 @@ public class GeocodingApiTest {
 
     private final GeocodingApi api = new GeocodingApi();
 
-    
-    /**
-     * Execute a Geocoding request
-     *
-     * This endpoint provides forward and reverse geocoding 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
+    private final String ghKey = "369dc982-86a6-484e-95ad-669331663ca4";
+
     @Test
-    public void geocodeGetTest() throws ApiException {
-        String key = null;
-        String q = null;
+    public void geocodeGetTestMinimal() throws ApiException {
+        String key = this.ghKey;
+        String q = "Wernau Neckar";
         String locale = null;
         Integer limit = null;
         Boolean debug = null;
         Boolean reverse = null;
         String point = null;
         String provider = null;
-        // GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+        // Default Limit and Locale
+        // TODO: Why is default limit 15? Documentation says it's 10
+        // see: https://graphhopper.com/api/1/docs/geocoding/
+        assertEquals(15,response.getHits().size());
+        assertEquals("en",response.getLocale());
 
-        // TODO: test validations
+        assertEquals("Wernau (Neckar)",response.getHits().get(0).getName());
+        assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
+    }
+
+    @Test
+    public void geocodeGetTestReverse() throws ApiException {
+        String key = this.ghKey;
+        String q = null;
+        String locale = null;
+        Integer limit = null;
+        Boolean debug = null;
+        Boolean reverse = true;
+        String point = "48.68825915,9.419370517109815";
+        String provider = null;
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+
+        // Default Limit and Locale
+        // TODO: Why is it 5 in this case?
+        assertEquals(5,response.getHits().size());
+        assertEquals("en",response.getLocale());
+
+        assertEquals("Wernau (Neckar)",response.getHits().get(0).getName());
+        assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
+    }
+
+    @Test
+    public void geocodeGetTestFullParameter() throws ApiException {
+        String key = this.ghKey;
+        String q = "Wernau Neckar";
+        String locale = "de";
+        Integer limit = 1;
+        Boolean debug = true;
+        Boolean reverse = false;
+        String point = "48.68825915,9.419370517109815";
+        String provider = "default";
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+
+        // Default Limit and Locale
+        assertEquals(1,response.getHits().size());
+        assertEquals("de",response.getLocale());
+
+        assertEquals("Wernau (Neckar)",response.getHits().get(0).getName());
+        assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
+    }
+
+    @Test
+    public void geocodeGetTestNominatim() throws ApiException {
+        String key = this.ghKey;
+        String q = "Wernau Neckar";
+        String locale = "de";
+        Integer limit = 3;
+        Boolean debug = true;
+        Boolean reverse = false;
+        String point = "48.68825915,9.419370517109815";
+        // TODO: With this provider (and opencagedata) we return a copyrights array, but we don't provide one for the default provider
+        String provider = "nominatim";
+        GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
+
+        // Default Limit and Locale
+        assertEquals(3,response.getHits().size());
+        // TODO Why is locale null here?
+        assertEquals(null,response.getLocale());
+
+        assertEquals("Wernau (Neckar), Baden-Württemberg, Deutschland",response.getHits().get(0).getName());
+        assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
     }
     
 }
