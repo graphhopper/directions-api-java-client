@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **city** | **String** |  |  [optional]
 **state** | **String** |  |  [optional]
 **street** | **String** |  |  [optional]
-**housenumber** | **Integer** |  |  [optional]
+**housenumber** | **String** |  |  [optional]
 
 
 

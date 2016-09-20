@@ -104,8 +104,7 @@ definitions:
       street:
         type: string
       housenumber:
-        type: integer
-        format: int32
+        type: string
   Point:
     type: object
     properties:

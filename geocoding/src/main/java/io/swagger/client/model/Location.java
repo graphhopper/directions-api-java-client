@@ -35,7 +35,7 @@ import io.swagger.client.model.Point;
 /**
  * Location
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-20T15:09:11.756+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-20T15:11:20.238+02:00")
 public class Location   {
   @SerializedName("point")
   private Point point = null;
@@ -62,7 +62,7 @@ public class Location   {
   private String street = null;
 
   @SerializedName("housenumber")
-  private Integer housenumber = null;
+  private String housenumber = null;
 
   public Location point(Point point) {
     this.point = point;
@@ -208,7 +208,7 @@ public class Location   {
     this.street = street;
   }
 
-  public Location housenumber(Integer housenumber) {
+  public Location housenumber(String housenumber) {
     this.housenumber = housenumber;
     return this;
   }
@@ -218,11 +218,11 @@ public class Location   {
    * @return housenumber
   **/
   @ApiModelProperty(example = "null", value = "")
-  public Integer getHousenumber() {
+  public String getHousenumber() {
     return housenumber;
   }
 
-  public void setHousenumber(Integer housenumber) {
+  public void setHousenumber(String housenumber) {
     this.housenumber = housenumber;
   }
 

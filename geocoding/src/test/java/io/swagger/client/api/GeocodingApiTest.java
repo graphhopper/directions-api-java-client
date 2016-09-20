@@ -113,7 +113,7 @@ public class GeocodingApiTest {
         String key = this.ghKey;
         String q = "Wernau Neckar";
         String locale = "de";
-        Integer limit = 3;
+        Integer limit = 1;
         Boolean debug = true;
         Boolean reverse = false;
         String point = "48.68825915,9.419370517109815";
@@ -122,7 +122,7 @@ public class GeocodingApiTest {
         GeocodingResult response = api.geocodeGet(key, q, locale, limit, debug, reverse, point, provider);
 
         // Default Limit and Locale
-        assertEquals(3,response.getHits().size());
+        assertEquals(1,response.getHits().size());
         // TODO Why is locale null here?
         assertEquals(null,response.getLocale());
 
