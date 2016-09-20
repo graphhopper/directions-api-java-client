@@ -67,7 +67,7 @@ public class GeocodingApi {
     }
 
     /* Build call for geocodeGet */
-    private com.squareup.okhttp.Call geocodeGetCall(String key, String q, String locale, Integer limit, Boolean debug, Boolean reverse, String point, String provider, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call geocodeGetCall(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // verify the required parameter 'key' is set
@@ -86,8 +86,6 @@ public class GeocodingApi {
         localVarQueryParams.addAll(apiClient.parameterToPairs("", "locale", locale));
         if (limit != null)
         localVarQueryParams.addAll(apiClient.parameterToPairs("", "limit", limit));
-        if (debug != null)
-        localVarQueryParams.addAll(apiClient.parameterToPairs("", "debug", debug));
         if (reverse != null)
         localVarQueryParams.addAll(apiClient.parameterToPairs("", "reverse", reverse));
         if (point != null)
@@ -136,15 +134,14 @@ public class GeocodingApi {
      * @param q If you do forward geocoding, then this would be a textual description of the adress you are looking for. If you do reverse geocoding this would be in lat,lon. (optional)
      * @param locale Display the search results for the specified locale. Currently French (fr), English (en), German (de) and Italian (it) are supported. If the locale wasn&#39;t found the default (en) is used. (optional)
      * @param limit Specify the maximum number of returned results (optional)
-     * @param debug If true the output will be formated. (optional)
      * @param reverse Set to true to do a reverse Geocoding request (optional)
      * @param point The location bias in the format &#39;latitude,longitude&#39; e.g. point&#x3D;45.93272,11.58803 (optional)
      * @param provider Can be either, default, nominatim, opencagedata (optional)
      * @return GeocodingResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public GeocodingResult geocodeGet(String key, String q, String locale, Integer limit, Boolean debug, Boolean reverse, String point, String provider) throws ApiException {
-        ApiResponse<GeocodingResult> resp = geocodeGetWithHttpInfo(key, q, locale, limit, debug, reverse, point, provider);
+    public GeocodingResult geocodeGet(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider) throws ApiException {
+        ApiResponse<GeocodingResult> resp = geocodeGetWithHttpInfo(key, q, locale, limit, reverse, point, provider);
         return resp.getData();
     }
 
@@ -155,15 +152,14 @@ public class GeocodingApi {
      * @param q If you do forward geocoding, then this would be a textual description of the adress you are looking for. If you do reverse geocoding this would be in lat,lon. (optional)
      * @param locale Display the search results for the specified locale. Currently French (fr), English (en), German (de) and Italian (it) are supported. If the locale wasn&#39;t found the default (en) is used. (optional)
      * @param limit Specify the maximum number of returned results (optional)
-     * @param debug If true the output will be formated. (optional)
      * @param reverse Set to true to do a reverse Geocoding request (optional)
      * @param point The location bias in the format &#39;latitude,longitude&#39; e.g. point&#x3D;45.93272,11.58803 (optional)
      * @param provider Can be either, default, nominatim, opencagedata (optional)
      * @return ApiResponse&lt;GeocodingResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<GeocodingResult> geocodeGetWithHttpInfo(String key, String q, String locale, Integer limit, Boolean debug, Boolean reverse, String point, String provider) throws ApiException {
-        com.squareup.okhttp.Call call = geocodeGetCall(key, q, locale, limit, debug, reverse, point, provider, null, null);
+    public ApiResponse<GeocodingResult> geocodeGetWithHttpInfo(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider) throws ApiException {
+        com.squareup.okhttp.Call call = geocodeGetCall(key, q, locale, limit, reverse, point, provider, null, null);
         Type localVarReturnType = new TypeToken<GeocodingResult>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -175,7 +171,6 @@ public class GeocodingApi {
      * @param q If you do forward geocoding, then this would be a textual description of the adress you are looking for. If you do reverse geocoding this would be in lat,lon. (optional)
      * @param locale Display the search results for the specified locale. Currently French (fr), English (en), German (de) and Italian (it) are supported. If the locale wasn&#39;t found the default (en) is used. (optional)
      * @param limit Specify the maximum number of returned results (optional)
-     * @param debug If true the output will be formated. (optional)
      * @param reverse Set to true to do a reverse Geocoding request (optional)
      * @param point The location bias in the format &#39;latitude,longitude&#39; e.g. point&#x3D;45.93272,11.58803 (optional)
      * @param provider Can be either, default, nominatim, opencagedata (optional)
@@ -183,7 +178,7 @@ public class GeocodingApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call geocodeGetAsync(String key, String q, String locale, Integer limit, Boolean debug, Boolean reverse, String point, String provider, final ApiCallback<GeocodingResult> callback) throws ApiException {
+    public com.squareup.okhttp.Call geocodeGetAsync(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider, final ApiCallback<GeocodingResult> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -204,7 +199,7 @@ public class GeocodingApi {
             };
         }
 
-        com.squareup.okhttp.Call call = geocodeGetCall(key, q, locale, limit, debug, reverse, point, provider, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = geocodeGetCall(key, q, locale, limit, reverse, point, provider, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<GeocodingResult>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;

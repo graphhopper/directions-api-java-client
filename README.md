@@ -142,6 +142,10 @@ If you want to build it from source please follow the guide for java [here](http
 
 # Geocoding
 
+## Usage
+
+See the [tests](./geocoding/src/test/java/io/swagger/client/api) on how to use this client.
+
 ## Generate from Swagger
 
 ```

@@ -46,11 +46,6 @@ paths:
           required: false
           type: integer
           format: int32
-        - name: debug
-          in: query
-          description: If true the output will be formated.
-          required: false
-          type: boolean
         - name: reverse
           in: query
           description: Set to true to do a reverse Geocoding request
