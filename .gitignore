@@ -2,6 +2,7 @@
 /target/
 nbactions.xml
 /route-optimization/target/
+/geocoding/target/
 /client/target/
 .idea/
 *iml
