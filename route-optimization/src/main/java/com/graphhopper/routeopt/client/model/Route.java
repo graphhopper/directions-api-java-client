@@ -37,10 +37,22 @@ import java.util.List;
 /**
  * Route
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-08-31T10:35:10.244+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-22T09:15:07.913+02:00")
 public class Route   {
   @SerializedName("vehicle_id")
   private String vehicleId = null;
+
+  @SerializedName("distance")
+  private Long distance = null;
+
+  @SerializedName("transport_time")
+  private Long transportTime = null;
+
+  @SerializedName("completion_time")
+  private Long completionTime = null;
+
+  @SerializedName("waiting_time")
+  private Long waitingTime = null;
 
   @SerializedName("activities")
   private List<Activity> activities = new ArrayList<Activity>();
@@ -61,6 +73,78 @@ public class Route   {
 
   public void setVehicleId(String vehicleId) {
     this.vehicleId = vehicleId;
+  }
+
+  public Route distance(Long distance) {
+    this.distance = distance;
+    return this;
+  }
+
+   /**
+   * distance of route in meter
+   * @return distance
+  **/
+  @ApiModelProperty(example = "null", value = "distance of route in meter")
+  public Long getDistance() {
+    return distance;
+  }
+
+  public void setDistance(Long distance) {
+    this.distance = distance;
+  }
+
+  public Route transportTime(Long transportTime) {
+    this.transportTime = transportTime;
+    return this;
+  }
+
+   /**
+   * transport time of route in ms
+   * @return transportTime
+  **/
+  @ApiModelProperty(example = "null", value = "transport time of route in ms")
+  public Long getTransportTime() {
+    return transportTime;
+  }
+
+  public void setTransportTime(Long transportTime) {
+    this.transportTime = transportTime;
+  }
+
+  public Route completionTime(Long completionTime) {
+    this.completionTime = completionTime;
+    return this;
+  }
+
+   /**
+   * completion time of route in ms
+   * @return completionTime
+  **/
+  @ApiModelProperty(example = "null", value = "completion time of route in ms")
+  public Long getCompletionTime() {
+    return completionTime;
+  }
+
+  public void setCompletionTime(Long completionTime) {
+    this.completionTime = completionTime;
+  }
+
+  public Route waitingTime(Long waitingTime) {
+    this.waitingTime = waitingTime;
+    return this;
+  }
+
+   /**
+   * waiting time of route in ms
+   * @return waitingTime
+  **/
+  @ApiModelProperty(example = "null", value = "waiting time of route in ms")
+  public Long getWaitingTime() {
+    return waitingTime;
+  }
+
+  public void setWaitingTime(Long waitingTime) {
+    this.waitingTime = waitingTime;
   }
 
   public Route activities(List<Activity> activities) {
@@ -97,12 +181,16 @@ public class Route   {
     }
     Route route = (Route) o;
     return Objects.equals(this.vehicleId, route.vehicleId) &&
+        Objects.equals(this.distance, route.distance) &&
+        Objects.equals(this.transportTime, route.transportTime) &&
+        Objects.equals(this.completionTime, route.completionTime) &&
+        Objects.equals(this.waitingTime, route.waitingTime) &&
         Objects.equals(this.activities, route.activities);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(vehicleId, activities);
+    return Objects.hash(vehicleId, distance, transportTime, completionTime, waitingTime, activities);
   }
 
   @Override
@@ -111,6 +199,10 @@ public class Route   {
     sb.append("class Route {\n");
     
     sb.append("    vehicleId: ").append(toIndentedString(vehicleId)).append("\n");
+    sb.append("    distance: ").append(toIndentedString(distance)).append("\n");
+    sb.append("    transportTime: ").append(toIndentedString(transportTime)).append("\n");
+    sb.append("    completionTime: ").append(toIndentedString(completionTime)).append("\n");
+    sb.append("    waitingTime: ").append(toIndentedString(waitingTime)).append("\n");
     sb.append("    activities: ").append(toIndentedString(activities)).append("\n");
     sb.append("}");
     return sb.toString();

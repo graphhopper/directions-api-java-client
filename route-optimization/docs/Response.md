@@ -4,6 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**copyrights** | **List&lt;String&gt;** |  |  [optional]
 **jobId** | **String** | unique identify of job - which you get when posting your request to the large problem solver |  [optional]
 **status** | [**StatusEnum**](#StatusEnum) | indicates the current status of the job |  [optional]
 **waitingInQueue** | **Long** | waiting time in ms |  [optional]

@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * Solution
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-08-31T10:35:10.244+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-22T09:15:07.913+02:00")
 public class Solution   {
   @SerializedName("costs")
   private Integer costs = null;
@@ -48,6 +48,18 @@ public class Solution   {
 
   @SerializedName("time")
   private Long time = null;
+
+  @SerializedName("transport_time")
+  private Long transportTime = null;
+
+  @SerializedName("max_operation_time")
+  private Long maxOperationTime = null;
+
+  @SerializedName("waiting_time")
+  private Long waitingTime = null;
+
+  @SerializedName("no_vehicles")
+  private Integer noVehicles = null;
 
   @SerializedName("no_unassigned")
   private Integer noUnassigned = null;
@@ -100,16 +112,88 @@ public class Solution   {
   }
 
    /**
-   * overall travel time in ms
+   * overall transport time in ms
    * @return time
   **/
-  @ApiModelProperty(example = "null", value = "overall travel time in ms")
+  @ApiModelProperty(example = "null", value = "overall transport time in ms")
   public Long getTime() {
     return time;
   }
 
   public void setTime(Long time) {
     this.time = time;
+  }
+
+  public Solution transportTime(Long transportTime) {
+    this.transportTime = transportTime;
+    return this;
+  }
+
+   /**
+   * overall transport time in ms
+   * @return transportTime
+  **/
+  @ApiModelProperty(example = "null", value = "overall transport time in ms")
+  public Long getTransportTime() {
+    return transportTime;
+  }
+
+  public void setTransportTime(Long transportTime) {
+    this.transportTime = transportTime;
+  }
+
+  public Solution maxOperationTime(Long maxOperationTime) {
+    this.maxOperationTime = maxOperationTime;
+    return this;
+  }
+
+   /**
+   * operation time of the longest route in ms
+   * @return maxOperationTime
+  **/
+  @ApiModelProperty(example = "null", value = "operation time of the longest route in ms")
+  public Long getMaxOperationTime() {
+    return maxOperationTime;
+  }
+
+  public void setMaxOperationTime(Long maxOperationTime) {
+    this.maxOperationTime = maxOperationTime;
+  }
+
+  public Solution waitingTime(Long waitingTime) {
+    this.waitingTime = waitingTime;
+    return this;
+  }
+
+   /**
+   * total waiting time in ms
+   * @return waitingTime
+  **/
+  @ApiModelProperty(example = "null", value = "total waiting time in ms")
+  public Long getWaitingTime() {
+    return waitingTime;
+  }
+
+  public void setWaitingTime(Long waitingTime) {
+    this.waitingTime = waitingTime;
+  }
+
+  public Solution noVehicles(Integer noVehicles) {
+    this.noVehicles = noVehicles;
+    return this;
+  }
+
+   /**
+   * number of employed vehicles
+   * @return noVehicles
+  **/
+  @ApiModelProperty(example = "null", value = "number of employed vehicles")
+  public Integer getNoVehicles() {
+    return noVehicles;
+  }
+
+  public void setNoVehicles(Integer noVehicles) {
+    this.noVehicles = noVehicles;
   }
 
   public Solution noUnassigned(Integer noUnassigned) {
@@ -184,6 +268,10 @@ public class Solution   {
     return Objects.equals(this.costs, solution.costs) &&
         Objects.equals(this.distance, solution.distance) &&
         Objects.equals(this.time, solution.time) &&
+        Objects.equals(this.transportTime, solution.transportTime) &&
+        Objects.equals(this.maxOperationTime, solution.maxOperationTime) &&
+        Objects.equals(this.waitingTime, solution.waitingTime) &&
+        Objects.equals(this.noVehicles, solution.noVehicles) &&
         Objects.equals(this.noUnassigned, solution.noUnassigned) &&
         Objects.equals(this.routes, solution.routes) &&
         Objects.equals(this.unassigned, solution.unassigned);
@@ -191,7 +279,7 @@ public class Solution   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(costs, distance, time, noUnassigned, routes, unassigned);
+    return Objects.hash(costs, distance, time, transportTime, maxOperationTime, waitingTime, noVehicles, noUnassigned, routes, unassigned);
   }
 
   @Override
@@ -202,6 +290,10 @@ public class Solution   {
     sb.append("    costs: ").append(toIndentedString(costs)).append("\n");
     sb.append("    distance: ").append(toIndentedString(distance)).append("\n");
     sb.append("    time: ").append(toIndentedString(time)).append("\n");
+    sb.append("    transportTime: ").append(toIndentedString(transportTime)).append("\n");
+    sb.append("    maxOperationTime: ").append(toIndentedString(maxOperationTime)).append("\n");
+    sb.append("    waitingTime: ").append(toIndentedString(waitingTime)).append("\n");
+    sb.append("    noVehicles: ").append(toIndentedString(noVehicles)).append("\n");
     sb.append("    noUnassigned: ").append(toIndentedString(noUnassigned)).append("\n");
     sb.append("    routes: ").append(toIndentedString(routes)).append("\n");
     sb.append("    unassigned: ").append(toIndentedString(unassigned)).append("\n");

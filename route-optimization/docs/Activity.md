@@ -9,6 +9,11 @@ Name | Type | Description | Notes
 **locationId** | **String** | id that refers to address |  [optional]
 **arrTime** | **Long** | arrival time at this activity in ms |  [optional]
 **endTime** | **Long** | end time of and thus departure time at this activity |  [optional]
+**waitingTime** | **Long** | waiting time at this activity in ms |  [optional]
+**distance** | **Long** | cumulated distance from start to this activity in m |  [optional]
+**drivingTime** | **Long** | driving time of driver in ms |  [optional]
+**loadBefore** | **List&lt;Integer&gt;** | Array with size/capacity dimensions before this activity |  [optional]
+**loadAfter** | **List&lt;Integer&gt;** | Array with size/capacity dimensions after this activity |  [optional]
 
 
 <a name="TypeEnum"></a>
@@ -20,6 +25,8 @@ END | &quot;end&quot;
 SERVICE | &quot;service&quot;
 PICKUPSHIPMENT | &quot;pickupShipment&quot;
 DELIVERSHIPMENT | &quot;deliverShipment&quot;
+PICKUP | &quot;pickup&quot;
+DELIVERY | &quot;delivery&quot;
 
 
 

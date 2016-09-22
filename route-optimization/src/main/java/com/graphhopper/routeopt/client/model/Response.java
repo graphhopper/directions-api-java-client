@@ -30,13 +30,18 @@ import com.google.gson.annotations.SerializedName;
 import com.graphhopper.routeopt.client.model.Solution;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Response
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-08-31T10:35:10.244+02:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2016-09-22T09:15:07.913+02:00")
 public class Response   {
+  @SerializedName("copyrights")
+  private List<String> copyrights = new ArrayList<String>();
+
   @SerializedName("job_id")
   private String jobId = null;
 
@@ -76,6 +81,29 @@ public class Response   {
 
   @SerializedName("solution")
   private Solution solution = null;
+
+  public Response copyrights(List<String> copyrights) {
+    this.copyrights = copyrights;
+    return this;
+  }
+
+  public Response addCopyrightsItem(String copyrightsItem) {
+    this.copyrights.add(copyrightsItem);
+    return this;
+  }
+
+   /**
+   * Get copyrights
+   * @return copyrights
+  **/
+  @ApiModelProperty(example = "null", value = "")
+  public List<String> getCopyrights() {
+    return copyrights;
+  }
+
+  public void setCopyrights(List<String> copyrights) {
+    this.copyrights = copyrights;
+  }
 
   public Response jobId(String jobId) {
     this.jobId = jobId;
@@ -177,7 +205,8 @@ public class Response   {
       return false;
     }
     Response response = (Response) o;
-    return Objects.equals(this.jobId, response.jobId) &&
+    return Objects.equals(this.copyrights, response.copyrights) &&
+        Objects.equals(this.jobId, response.jobId) &&
         Objects.equals(this.status, response.status) &&
         Objects.equals(this.waitingInQueue, response.waitingInQueue) &&
         Objects.equals(this.processingTime, response.processingTime) &&
@@ -186,7 +215,7 @@ public class Response   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(jobId, status, waitingInQueue, processingTime, solution);
+    return Objects.hash(copyrights, jobId, status, waitingInQueue, processingTime, solution);
   }
 
   @Override
@@ -194,6 +223,7 @@ public class Response   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Response {\n");
     
+    sb.append("    copyrights: ").append(toIndentedString(copyrights)).append("\n");
     sb.append("    jobId: ").append(toIndentedString(jobId)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    waitingInQueue: ").append(toIndentedString(waitingInQueue)).append("\n");
