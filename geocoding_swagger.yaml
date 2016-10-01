@@ -109,6 +109,8 @@ definitions:
         type: string
       housenumber:
         type: string
+      postcode:
+        type: string
   Point:
     type: object
     properties:
