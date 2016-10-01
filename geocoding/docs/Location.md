@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **state** | **String** |  |  [optional]
 **street** | **String** |  |  [optional]
 **housenumber** | **String** |  |  [optional]
+**postcode** | **String** |  |  [optional]
 
 
 
