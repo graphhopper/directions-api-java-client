@@ -63,6 +63,7 @@
     <modules>
         <module>client</module>
         <module>route-optimization</module>
+        <module>geocoding</module>
     </modules>
         
     <build>        
