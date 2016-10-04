@@ -6,7 +6,7 @@ import com.graphhopper.GHResponse;
 import com.graphhopper.util.Instruction;
 import com.graphhopper.util.InstructionList;
 import com.graphhopper.util.RoundaboutInstruction;
-import com.graphhopper.util.exceptions.CannotFindPointException;
+import com.graphhopper.util.exceptions.PointNotFoundException;
 import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
 import org.junit.Test;
@@ -93,7 +93,7 @@ public class GraphHopperWebIT {
 
         GHResponse res = gh.route(req);
         assertTrue("no erros found?", res.hasErrors());
-        assertTrue(res.getErrors().get(0) instanceof CannotFindPointException);
+        assertTrue(res.getErrors().get(0) instanceof PointNotFoundException);
     }
 
 

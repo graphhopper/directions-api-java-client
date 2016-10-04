@@ -22,10 +22,14 @@ import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopperAPI;
 import com.graphhopper.util.*;
-import com.graphhopper.util.exceptions.CannotFindPointException;
+import com.graphhopper.util.exceptions.ConnectionNotFoundException;
+import com.graphhopper.util.exceptions.DetailedIllegalArgumentException;
+import com.graphhopper.util.exceptions.DetailedRuntimeException;
+import com.graphhopper.util.exceptions.PointNotFoundException;
 import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -325,9 +330,36 @@ public class GraphHopperWeb implements GraphHopperAPI {
         return pathWrapper;
     }
 
-    public static List<Throwable> readErrors(JSONObject json) {
-        List<Throwable> errors = new ArrayList<Throwable>();
+    // Credits to: http://stackoverflow.com/a/24012023/194609
+    private static Map<String, Object> toMap(JSONObject object) throws JSONException {
+        Map<String, Object> map = new HashMap<>(object.keySet().size());
+        for (String key : object.keySet()) {
+            Object value = object.get(key);
+            if (value instanceof JSONArray) {
+                value = toList((JSONArray) value);
+            } else if (value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            map.put(key, value);
+        }
+        return map;
+    }
 
+    private static List<Object> toList(JSONArray array) throws JSONException {
+        List<Object> list = new ArrayList<>();
+        for (Object value : array) {
+            if (value instanceof JSONArray) {
+                value = toList((JSONArray) value);
+            } else if (value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            list.add(value);
+        }
+        return list;
+    }
+
+    public static List<Throwable> readErrors(JSONObject json) {
+        List<Throwable> errors = new ArrayList<>();
         JSONArray errorJson;
 
         if (json.has("message")) {
@@ -348,6 +380,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
             if (error.has("details")) {
                 exClass = error.getString("details");
             }
+
             String exMessage = error.getString("message");
 
             if (exClass.equals(UnsupportedOperationException.class.getName())) {
@@ -355,19 +388,21 @@ public class GraphHopperWeb implements GraphHopperAPI {
             } else if (exClass.equals(IllegalStateException.class.getName())) {
                 errors.add(new IllegalStateException(exMessage));
             } else if (exClass.equals(RuntimeException.class.getName())) {
-                errors.add(new RuntimeException(exMessage));
+                errors.add(new DetailedRuntimeException(exMessage, toMap(error)));
             } else if (exClass.equals(IllegalArgumentException.class.getName())) {
-                errors.add(new IllegalArgumentException(exMessage));
-            }else if (exClass.equals(CannotFindPointException.class.getName())) {
+                errors.add(new DetailedIllegalArgumentException(exMessage, toMap(error)));
+            } else if (exClass.equals(ConnectionNotFoundException.class.getName())) {
+                errors.add(new ConnectionNotFoundException(exMessage, toMap(error)));
+            } else if (exClass.equals(PointNotFoundException.class.getName())) {
                 int pointIndex = error.getInt("point_index");
-                errors.add(new CannotFindPointException(exMessage, pointIndex));
-            }else if (exClass.equals(PointOutOfBoundsException.class.getName())){
+                errors.add(new PointNotFoundException(exMessage, pointIndex));
+            } else if (exClass.equals(PointOutOfBoundsException.class.getName())) {
                 int pointIndex = error.getInt("point_index");
                 errors.add(new PointOutOfBoundsException(exMessage, pointIndex));
             } else if (exClass.isEmpty()) {
-                errors.add(new RuntimeException(exMessage));
+                errors.add(new DetailedRuntimeException(exMessage, toMap(error)));
             } else {
-                errors.add(new RuntimeException(exClass + " " + exMessage));
+                errors.add(new DetailedRuntimeException(exClass + " " + exMessage, toMap(error)));
             }
         }
 
