@@ -24,7 +24,7 @@ public class GraphHopperWebIT {
 
     @Before
     public void setUp() {
-        String key = System.getProperty("graphhopper.key", "");
+        String key = System.getProperty("graphhopper.key", "369dc982-86a6-484e-95ad-669331663ca4");
         gh.setKey(key);
         ghMatrix.setKey(key);
     }
@@ -118,6 +118,22 @@ public class GraphHopperWebIT {
         InstructionList instructions = res.getBest().getInstructions();
         String finishInstructionName = instructions.get(instructions.getSize()-1).getName();
         assertEquals("Finish!", finishInstructionName);
+    }
+
+    @Test
+    public void testSimpleExport() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(49.6724, 11.3494)).
+                addPoint(new GHPoint(49.6550, 11.4180));
+        req.getHints().put("elevation", false);
+        req.getHints().put("instructions", true);
+        req.getHints().put("calc_points", true);
+        req.getHints().put("type", "gpx");
+        String res = gh.export(req);
+        assertTrue(res.contains("<gpx"));
+        assertTrue(res.contains("<rtept lat="));
+        assertTrue(res.contains("<trk><name>GraphHopper Track</name><trkseg>"));
+        assertTrue(res.endsWith("</gpx>"));
     }
 
     void isBetween(double from, double to, double expected) {
