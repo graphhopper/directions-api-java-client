@@ -19,12 +19,14 @@ import org.junit.Before;
  */
 public class GraphHopperWebIT {
 
+    public static final String KEY = "369dc982-86a6-484e-95ad-669331663ca4";
+
     private final GraphHopperWeb gh = new GraphHopperWeb();
     private final GraphHopperMatrixWeb ghMatrix = new GraphHopperMatrixWeb();
 
     @Before
     public void setUp() {
-        String key = System.getProperty("graphhopper.key", "369dc982-86a6-484e-95ad-669331663ca4");
+        String key = System.getProperty("graphhopper.key", KEY);
         gh.setKey(key);
         ghMatrix.setKey(key);
     }
