@@ -136,6 +136,23 @@ public class GraphHopperWebIT {
         assertTrue(res.endsWith("</gpx>"));
     }
 
+    @Test
+    public void testExportWithoutTrack() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(49.6724, 11.3494)).
+                addPoint(new GHPoint(49.6550, 11.4180));
+        req.getHints().put("elevation", false);
+        req.getHints().put("instructions", true);
+        req.getHints().put("calc_points", true);
+        req.getHints().put("type", "gpx");
+        req.getHints().put("gpx.track", "false");
+        String res = gh.export(req);
+        assertTrue(res.contains("<gpx"));
+        assertTrue(res.contains("<rtept lat="));
+        assertTrue(!res.contains("<trk><name>GraphHopper Track</name><trkseg>"));
+        assertTrue(res.endsWith("</gpx>"));
+    }
+
     void isBetween(double from, double to, double expected) {
         assertTrue("expected value " + expected + " was smaller than limit " + from, expected >= from);
         assertTrue("expected value " + expected + " was bigger than limit " + to, expected <= to);
