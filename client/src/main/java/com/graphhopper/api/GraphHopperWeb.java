@@ -188,7 +188,6 @@ public class GraphHopperWeb implements GraphHopperAPI {
         }
     }
 
-    // TODO Should we add this method to the GraphHopperApi?
     public String export(GHRequest ghRequest) {
         String str = "Creating request failed";
         try {
