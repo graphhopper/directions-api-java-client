@@ -16,7 +16,7 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
 
     @Before
     public void setUp() {
-        String key = System.getProperty("graphhopper.key", "");
+        String key = System.getProperty("graphhopper.key", "369dc982-86a6-484e-95ad-669331663ca4");
         ghMatrix = createMatrixWeb();
         ghMatrix.setKey(key);
     }
