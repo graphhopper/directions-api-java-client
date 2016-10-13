@@ -2,7 +2,7 @@ language: java
 jdk:
   - oraclejdk8
 script:
-  - mvn -Dgraphhopper.key=369dc982-86a6-484e-95ad-669331663ca4 clean test verify
+  - mvn clean test verify
 notifications:
   email:
     - github@graphhopper.com
