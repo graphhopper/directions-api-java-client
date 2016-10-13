@@ -5,7 +5,14 @@
   <artifactId>directions-api-java-client-geocoding</artifactId>
   <packaging>jar</packaging>
   <name>directions-api-java-client-geocoding</name>
-  <version>0.8-SNAPSHOT</version>
+  <version>0.9-SNAPSHOT</version>
+  
+  <parent>
+     <groupId>com.graphhopper</groupId>
+     <artifactId>directions-api-java-client-parent</artifactId>
+     <version>0.9-SNAPSHOT</version>
+  </parent>
+                                  
   <scm>
     <connection>scm:git:git@github.com:swagger-api/swagger-mustache.git</connection>
     <developerConnection>scm:git:git@github.com:swagger-api/swagger-codegen.git</developerConnection>
