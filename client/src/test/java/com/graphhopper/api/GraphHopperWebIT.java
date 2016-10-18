@@ -19,12 +19,14 @@ import org.junit.Before;
  */
 public class GraphHopperWebIT {
 
+    public static final String KEY = "369dc982-86a6-484e-95ad-669331663ca4";
+
     private final GraphHopperWeb gh = new GraphHopperWeb();
     private final GraphHopperMatrixWeb ghMatrix = new GraphHopperMatrixWeb();
 
     @Before
     public void setUp() {
-        String key = System.getProperty("graphhopper.key", "");
+        String key = System.getProperty("graphhopper.key", KEY);
         gh.setKey(key);
         ghMatrix.setKey(key);
     }
@@ -118,6 +120,39 @@ public class GraphHopperWebIT {
         InstructionList instructions = res.getBest().getInstructions();
         String finishInstructionName = instructions.get(instructions.getSize()-1).getName();
         assertEquals("Finish!", finishInstructionName);
+    }
+
+    @Test
+    public void testSimpleExport() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(49.6724, 11.3494)).
+                addPoint(new GHPoint(49.6550, 11.4180));
+        req.getHints().put("elevation", false);
+        req.getHints().put("instructions", true);
+        req.getHints().put("calc_points", true);
+        req.getHints().put("type", "gpx");
+        String res = gh.export(req);
+        assertTrue(res.contains("<gpx"));
+        assertTrue(res.contains("<rtept lat="));
+        assertTrue(res.contains("<trk><name>GraphHopper Track</name><trkseg>"));
+        assertTrue(res.endsWith("</gpx>"));
+    }
+
+    @Test
+    public void testExportWithoutTrack() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(49.6724, 11.3494)).
+                addPoint(new GHPoint(49.6550, 11.4180));
+        req.getHints().put("elevation", false);
+        req.getHints().put("instructions", true);
+        req.getHints().put("calc_points", true);
+        req.getHints().put("type", "gpx");
+        req.getHints().put("gpx.track", "false");
+        String res = gh.export(req);
+        assertTrue(res.contains("<gpx"));
+        assertTrue(res.contains("<rtept lat="));
+        assertTrue(!res.contains("<trk><name>GraphHopper Track</name><trkseg>"));
+        assertTrue(res.endsWith("</gpx>"));
     }
 
     void isBetween(double from, double to, double expected) {

@@ -4,7 +4,7 @@ package com.graphhopper.api;
  *
  * @author Peter Karich
  */
-public class GraphHopperMatrixSynchIT extends AbstractGraphHopperMatrixWebIntegrationTester {
+public class GraphHopperMatrixSyncIT extends AbstractGraphHopperMatrixWebIntegrationTester {
 
     @Override
     GraphHopperMatrixWeb createMatrixWeb() {

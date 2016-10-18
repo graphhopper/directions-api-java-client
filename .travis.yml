@@ -1,0 +1,8 @@
+language: java
+jdk:
+  - oraclejdk8
+script:
+  - mvn clean test verify
+notifications:
+  email:
+    - github@graphhopper.com

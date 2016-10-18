@@ -188,6 +188,19 @@ public class GraphHopperWeb implements GraphHopperAPI {
         }
     }
 
+    public String export(GHRequest ghRequest) {
+        String str = "Creating request failed";
+        try {
+            Request okRequest = createRequest(ghRequest);
+            str = downloader.newCall(okRequest).execute().body().string();
+
+            return str;
+        } catch (Exception ex) {
+            throw new RuntimeException("Problem while fetching export " + ghRequest.getPoints()
+                    + ", error: " + ex.getMessage() + " response: " + str, ex);
+        }
+    }
+
     public Request createRequest(GHRequest request) {
         boolean tmpInstructions = request.getHints().getBool("instructions", instructions);
         boolean tmpCalcPoints = request.getHints().getBool("calc_points", calcPoints);
@@ -205,10 +218,12 @@ public class GraphHopperWeb implements GraphHopperAPI {
             places += "point=" + Helper.round6(p.lat) + "," + Helper.round6(p.lon) + "&";
         }
 
+        String type = request.getHints().get("type", "json");
+
         String url = serviceUrl
                 + "?"
                 + places
-                + "&type=json"
+                + "&type=" + type
                 + "&instructions=" + tmpInstructions
                 + "&points_encoded=true"
                 + "&calc_points=" + tmpCalcPoints
