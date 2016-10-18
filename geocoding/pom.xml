@@ -5,12 +5,12 @@
   <artifactId>directions-api-java-client-geocoding</artifactId>
   <packaging>jar</packaging>
   <name>directions-api-java-client-geocoding</name>
-  <version>0.8.0-RC2</version>
+  <version>0.8.0</version>
   
   <parent>
      <groupId>com.graphhopper</groupId>
      <artifactId>directions-api-java-client-parent</artifactId>
-     <version>0.8.0-RC2</version>
+     <version>0.8.0</version>
   </parent>
                                   
   <scm>
