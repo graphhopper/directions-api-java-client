@@ -44,7 +44,7 @@ public class GeocodingApiTest {
 
     private final GeocodingApi api = new GeocodingApi();
 
-    private final String ghKey = "369dc982-86a6-484e-95ad-669331663ca4";
+    private final String ghKey = "614b8305-b4db-48c9-bf4a-40de90919939";
 
     @Test
     public void geocodeGetTestMinimal() throws ApiException {
