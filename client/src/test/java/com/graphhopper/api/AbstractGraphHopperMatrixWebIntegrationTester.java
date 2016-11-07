@@ -52,6 +52,6 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
         req.addOutArray("times");
 
         MatrixResponse res = ghMatrix.route(req);
-        assertEquals(2300, res.getTime(1, 2) / 1000, 10);
+        assertEquals(2310, res.getTime(1, 2) / 1000, 20);
     }
 }
