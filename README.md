@@ -5,11 +5,11 @@ You can refer to this client in your pom.xml via
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client</artifactId>
-  <version>0.8.2</version>
+  <version>[CURRENT-VERSION]/version>
 </dependency>
 ```
 
-The latest development version is 0.8-SNAPSHOT
+Please [search maven](https://search.maven.org/#search%7Cga%7C1%7Cdirections-api-java-client-parent) for the latest version.
 
 ## License
 
