@@ -15,6 +15,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 
+import java.net.SocketTimeoutException;
+
 /**
  * @author Peter Karich
  */
@@ -64,14 +66,12 @@ public class GraphHopperWebIT {
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
 
         req.getHints().put(GraphHopperWeb.TIMEOUT, 1);
-        try{
+        try {
             res = gh.route(req);
-        } catch (RuntimeException e){
-            return;
+            fail();
+        } catch (RuntimeException e) {
+            assertEquals(SocketTimeoutException.class, e.getCause().getClass());
         }
-
-
-        fail();
     }
 
     @Test
