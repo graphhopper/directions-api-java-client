@@ -28,6 +28,7 @@ import com.graphhopper.util.exceptions.DetailedRuntimeException;
 import com.graphhopper.util.exceptions.PointNotFoundException;
 import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.json.JSONArray;
@@ -61,6 +63,9 @@ public class GraphHopperWeb implements GraphHopperAPI {
     private String optimize = "false";
     private final Set<String> ignoreSet;
 
+    public static final String TIMEOUT = "timeout";
+    private final long DEFAULT_TIMEOUT = 5000;
+
     public GraphHopperWeb() {
         this("https://graphhopper.com/api/1/route");
     }
@@ -68,8 +73,8 @@ public class GraphHopperWeb implements GraphHopperAPI {
     public GraphHopperWeb(String serviceUrl) {
         this.serviceUrl = serviceUrl;
         downloader = new OkHttpClient.Builder().
-                connectTimeout(5, TimeUnit.SECONDS).
-                readTimeout(5, TimeUnit.SECONDS).
+                connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS).
+                readTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS).
                 build();
 
         // some parameters are supported directly via Java API so ignore them when writing the getHints map
@@ -144,12 +149,12 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     /**
      * @param optimize "false" if the order of the locations should be left
-     * unchanged, this is the default. Or if "true" then the order of the
-     * location is optimized according to the overall best route and returned
-     * this way i.e. the traveling salesman problem is solved under the hood.
-     * Note that in this case the request takes longer and costs more credits.
-     * For more details see:
-     * https://github.com/graphhopper/directions-api/blob/master/FAQ.md#what-is-one-credit
+     *                 unchanged, this is the default. Or if "true" then the order of the
+     *                 location is optimized according to the overall best route and returned
+     *                 this way i.e. the traveling salesman problem is solved under the hood.
+     *                 Note that in this case the request takes longer and costs more credits.
+     *                 For more details see:
+     *                 https://github.com/graphhopper/directions-api/blob/master/FAQ.md#what-is-one-credit
      */
     public GraphHopperWeb setOptimize(String optimize) {
         this.optimize = optimize;
@@ -161,7 +166,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
         String str = "Creating request failed";
         try {
             Request okRequest = createRequest(ghRequest);
-            str = downloader.newCall(okRequest).execute().body().string();
+            str = getClientForRequest(ghRequest).newCall(okRequest).execute().body().string();
 
             JSONObject json = new JSONObject(str);
             GHResponse res = new GHResponse();
@@ -192,7 +197,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
         String str = "Creating request failed";
         try {
             Request okRequest = createRequest(ghRequest);
-            str = downloader.newCall(okRequest).execute().body().string();
+            str = getClientForRequest(ghRequest).newCall(okRequest).execute().body().string();
 
             return str;
         } catch (Exception ex) {
@@ -258,7 +263,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
     }
 
     public static PathWrapper createAltResponse(JSONObject path,
-            boolean tmpCalcPoints, boolean tmpInstructions, boolean tmpElevation) {
+                                                boolean tmpCalcPoints, boolean tmpInstructions, boolean tmpElevation) {
 
         PathWrapper pathWrapper = new PathWrapper();
         pathWrapper.addErrors(readErrors(path));
@@ -371,6 +376,19 @@ public class GraphHopperWeb implements GraphHopperAPI {
             list.add(value);
         }
         return list;
+    }
+
+    private OkHttpClient getClientForRequest(GHRequest request) {
+        OkHttpClient client = this.downloader;
+        if (request.getHints().has(TIMEOUT)) {
+            long timeout = request.getHints().getLong(TIMEOUT, DEFAULT_TIMEOUT);
+            client = client.newBuilder()
+                    .connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                    .readTimeout(timeout, TimeUnit.MILLISECONDS)
+                    .build();
+        }
+
+        return client;
     }
 
     public static List<Throwable> readErrors(JSONObject json) {
