@@ -148,6 +148,11 @@ See the [tests](./geocoding/src/test/java/io/swagger/client/api) on how to use t
 
 ## Generate from Swagger
 
+Download Swagger Codegen CLI
 ```
-java -jar ../swagger-codegen-cli.jar generate -i geocoding_swagger.yaml -l java -o geocoding -c geocoding-config.json
+get https://oss.sonatype.org/content/repositories/releases/io/swagger/swagger-codegen-cli/2.2.1/swagger-codegen-cli-2.2.1.jar
+```
+
+```
+java -jar swagger-codegen-cli-2.2.1.jar generate -i geocoding_swagger.yaml -l java -o geocoding -c geocoding-config.json
 ```

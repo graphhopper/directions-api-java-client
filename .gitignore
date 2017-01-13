@@ -9,3 +9,7 @@ nbactions.xml
 .settings/
 .classpath
 .project
+
+swagger-codegen/
+swagger-codegen-cli.jar
+swagger-codegen-cli*.jar

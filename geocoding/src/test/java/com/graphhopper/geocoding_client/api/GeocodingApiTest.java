@@ -23,19 +23,14 @@
  */
 
 
-package io.swagger.client.api;
+package com.graphhopper.geocoding_client.api;
 
-import io.swagger.client.ApiException;
-import io.swagger.client.model.GeocodingResult;
-import io.swagger.client.model.Error;
+import com.graphhopper.geocoding_client.ApiException;
+import com.graphhopper.geocoding_client.model.GeocodingResult;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * API tests for GeocodingApi
@@ -119,8 +114,7 @@ public class GeocodingApiTest {
 
         // Default Limit and Locale
         assertEquals(1,response.getHits().size());
-        // TODO Why is locale null here? Maybe we should add it to the geocoding-converter?
-        assertEquals(null,response.getLocale());
+        assertEquals("de",response.getLocale());
 
         assertEquals("Wernau (Neckar), Baden-Württemberg, Deutschland",response.getHits().get(0).getName());
         assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
@@ -164,5 +158,5 @@ public class GeocodingApiTest {
         GeocodingResult response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
         fail("No excpetion?");
     }
-    
+
 }
