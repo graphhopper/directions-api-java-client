@@ -10,11 +10,14 @@ import com.graphhopper.util.exceptions.PointNotFoundException;
 import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 
+import java.net.SocketTimeoutException;
+
 /**
- *
  * @author Peter Karich
  */
 public class GraphHopperWebIT {
@@ -52,6 +55,23 @@ public class GraphHopperWebIT {
         alt = res.getBest();
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         isBetween(9000, 10000, alt.getDistance());
+    }
+
+    @Test
+    public void testTimeout() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(49.6724, 11.3494)).
+                addPoint(new GHPoint(49.6550, 11.4180));
+        GHResponse res = gh.route(req);
+        assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
+
+        req.getHints().put(GraphHopperWeb.TIMEOUT, 1);
+        try {
+            res = gh.route(req);
+            fail();
+        } catch (RuntimeException e) {
+            assertEquals(SocketTimeoutException.class, e.getCause().getClass());
+        }
     }
 
     @Test
@@ -118,7 +138,7 @@ public class GraphHopperWebIT {
 
         GHResponse res = gh.route(req);
         InstructionList instructions = res.getBest().getInstructions();
-        String finishInstructionName = instructions.get(instructions.getSize()-1).getName();
+        String finishInstructionName = instructions.get(instructions.getSize() - 1).getName();
         assertEquals("Finish!", finishInstructionName);
     }
 
