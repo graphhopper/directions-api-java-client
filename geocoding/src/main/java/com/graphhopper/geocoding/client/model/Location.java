@@ -23,11 +23,11 @@
  */
 
 
-package com.graphhopper.geocoding_client.model;
+package com.graphhopper.geocoding.client.model;
 
 import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
-import com.graphhopper.geocoding_client.model.Point;
+import com.graphhopper.geocoding.client.model.Point;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Location
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-13T11:07:07.312+11:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-14T10:01:55.314+11:00")
 public class Location   {
   @SerializedName("point")
   private Point point = null;

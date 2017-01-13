@@ -23,7 +23,7 @@
  */
 
 
-package com.graphhopper.geocoding_client.model;
+package com.graphhopper.geocoding.client.model;
 
 import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Error
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-13T11:07:07.312+11:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-14T10:01:55.314+11:00")
 public class Error   {
   @SerializedName("message")
   private String message = null;

@@ -23,29 +23,29 @@
  */
 
 
-package com.graphhopper.geocoding_client.auth;
+package com.graphhopper.geocoding.client;
 
-import com.graphhopper.geocoding_client.Pair;
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-14T10:01:55.314+11:00")
+public class Configuration {
+    private static ApiClient defaultApiClient = new ApiClient();
 
-import java.util.Map;
-import java.util.List;
-
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-13T11:07:07.312+11:00")
-public class OAuth implements Authentication {
-  private String accessToken;
-
-  public String getAccessToken() {
-    return accessToken;
-  }
-
-  public void setAccessToken(String accessToken) {
-    this.accessToken = accessToken;
-  }
-
-  @Override
-  public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams) {
-    if (accessToken != null) {
-      headerParams.put("Authorization", "Bearer " + accessToken);
+    /**
+     * Get the default API client, which would be used when creating API
+     * instances without providing an API client.
+     *
+     * @return Default API client
+     */
+    public static ApiClient getDefaultApiClient() {
+        return defaultApiClient;
     }
-  }
+
+    /**
+     * Set the default API client, which would be used when creating API
+     * instances without providing an API client.
+     *
+     * @param apiClient API client
+     */
+    public static void setDefaultApiClient(ApiClient apiClient) {
+        defaultApiClient = apiClient;
+    }
 }

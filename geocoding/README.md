@@ -28,7 +28,7 @@ Add this dependency to your project's POM:
 <dependency>
     <groupId>com.graphhopper</groupId>
     <artifactId>directions-api-java-client-geocoding</artifactId>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.9-SNAPSHOT</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -38,7 +38,7 @@ Add this dependency to your project's POM:
 Add this dependency to your project's build file:
 
 ```groovy
-compile "com.graphhopper:directions-api-java-client-geocoding:0.8-SNAPSHOT"
+compile "com.graphhopper:directions-api-java-client-geocoding:0.9-SNAPSHOT"
 ```
 
 ### Others
@@ -49,7 +49,7 @@ At first generate the JAR by executing:
 
 Then manually install the following JARs:
 
-* target/directions-api-java-client-geocoding-0.8-SNAPSHOT.jar
+* target/directions-api-java-client-geocoding-0.9-SNAPSHOT.jar
 * target/lib/*.jar
 
 ## Getting Started
@@ -58,10 +58,10 @@ Please follow the [installation](#installation) instruction and execute the foll
 
 ```java
 
-import com.graphhopper.geocoding_client.*;
-import com.graphhopper.geocoding_client.auth.*;
-import com.graphhopper.geocoding_client.model.*;
-import com.graphhopper.geocoding_client.api.GeocodingApi;
+import com.graphhopper.geocoding.client.*;
+import com.graphhopper.geocoding.client.auth.*;
+import com.graphhopper.geocoding.client.model.*;
+import com.graphhopper.geocoding.client.api.GeocodingApi;
 
 import java.io.File;
 import java.util.*;

@@ -23,29 +23,19 @@
  */
 
 
-package com.graphhopper.geocoding_client;
+package com.graphhopper.geocoding.client.auth;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-13T11:07:07.312+11:00")
-public class Configuration {
-    private static ApiClient defaultApiClient = new ApiClient();
+import com.graphhopper.geocoding.client.Pair;
 
+import java.util.Map;
+import java.util.List;
+
+public interface Authentication {
     /**
-     * Get the default API client, which would be used when creating API
-     * instances without providing an API client.
+     * Apply authentication settings to header and query params.
      *
-     * @return Default API client
+     * @param queryParams List of query parameters
+     * @param headerParams Map of header parameters
      */
-    public static ApiClient getDefaultApiClient() {
-        return defaultApiClient;
-    }
-
-    /**
-     * Set the default API client, which would be used when creating API
-     * instances without providing an API client.
-     *
-     * @param apiClient API client
-     */
-    public static void setDefaultApiClient(ApiClient apiClient) {
-        defaultApiClient = apiClient;
-    }
+    void applyToParams(List<Pair> queryParams, Map<String, String> headerParams);
 }

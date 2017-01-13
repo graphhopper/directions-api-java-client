@@ -23,59 +23,67 @@
  */
 
 
-package com.graphhopper.geocoding_client.model;
+package com.graphhopper.geocoding.client.model;
 
 import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
+import com.graphhopper.geocoding.client.model.Location;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
- * Point
+ * GeocodingResult
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-13T11:07:07.312+11:00")
-public class Point   {
-  @SerializedName("lat")
-  private Double lat = null;
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-14T10:01:55.314+11:00")
+public class GeocodingResult   {
+  @SerializedName("hits")
+  private List<Location> hits = new ArrayList<Location>();
 
-  @SerializedName("lng")
-  private Double lng = null;
+  @SerializedName("locale")
+  private String locale = null;
 
-  public Point lat(Double lat) {
-    this.lat = lat;
+  public GeocodingResult hits(List<Location> hits) {
+    this.hits = hits;
+    return this;
+  }
+
+  public GeocodingResult addHitsItem(Location hitsItem) {
+    this.hits.add(hitsItem);
     return this;
   }
 
    /**
-   * Latitude
-   * @return lat
+   * Get hits
+   * @return hits
   **/
-  @ApiModelProperty(example = "null", value = "Latitude")
-  public Double getLat() {
-    return lat;
+  @ApiModelProperty(example = "null", value = "")
+  public List<Location> getHits() {
+    return hits;
   }
 
-  public void setLat(Double lat) {
-    this.lat = lat;
+  public void setHits(List<Location> hits) {
+    this.hits = hits;
   }
 
-  public Point lng(Double lng) {
-    this.lng = lng;
+  public GeocodingResult locale(String locale) {
+    this.locale = locale;
     return this;
   }
 
    /**
-   * Longitude
-   * @return lng
+   * Get locale
+   * @return locale
   **/
-  @ApiModelProperty(example = "null", value = "Longitude")
-  public Double getLng() {
-    return lng;
+  @ApiModelProperty(example = "null", value = "")
+  public String getLocale() {
+    return locale;
   }
 
-  public void setLng(Double lng) {
-    this.lng = lng;
+  public void setLocale(String locale) {
+    this.locale = locale;
   }
 
 
@@ -87,23 +95,23 @@ public class Point   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Point point = (Point) o;
-    return Objects.equals(this.lat, point.lat) &&
-        Objects.equals(this.lng, point.lng);
+    GeocodingResult geocodingResult = (GeocodingResult) o;
+    return Objects.equals(this.hits, geocodingResult.hits) &&
+        Objects.equals(this.locale, geocodingResult.locale);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(lat, lng);
+    return Objects.hash(hits, locale);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Point {\n");
+    sb.append("class GeocodingResult {\n");
     
-    sb.append("    lat: ").append(toIndentedString(lat)).append("\n");
-    sb.append("    lng: ").append(toIndentedString(lng)).append("\n");
+    sb.append("    hits: ").append(toIndentedString(hits)).append("\n");
+    sb.append("    locale: ").append(toIndentedString(locale)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -23,11 +23,17 @@
  */
 
 
-package com.graphhopper.geocoding_client.api;
+package com.graphhopper.geocoding.client.api;
 
-import com.graphhopper.geocoding_client.ApiException;
-import com.graphhopper.geocoding_client.model.GeocodingResult;
+import com.graphhopper.geocoding.client.ApiException;
+import com.graphhopper.geocoding.client.model.GeocodingResult;
+import com.graphhopper.geocoding.client.model.Error;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

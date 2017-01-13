@@ -23,9 +23,9 @@
  */
 
 
-package com.graphhopper.geocoding_client;
+package com.graphhopper.geocoding.client;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-13T11:07:07.312+11:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-14T10:01:55.314+11:00")
 public class StringUtil {
   /**
    * Check if the given array contains the given value (with case-insensitive comparison).

@@ -23,14 +23,14 @@
  */
 
 
-package com.graphhopper.geocoding_client.auth;
+package com.graphhopper.geocoding.client.auth;
 
-import com.graphhopper.geocoding_client.Pair;
+import com.graphhopper.geocoding.client.Pair;
 
 import java.util.Map;
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-13T11:07:07.312+11:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-14T10:01:55.314+11:00")
 public class ApiKeyAuth implements Authentication {
   private final String location;
   private final String paramName;

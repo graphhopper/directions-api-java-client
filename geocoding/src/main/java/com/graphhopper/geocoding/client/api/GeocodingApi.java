@@ -23,23 +23,23 @@
  */
 
 
-package com.graphhopper.geocoding_client.api;
+package com.graphhopper.geocoding.client.api;
 
-import com.graphhopper.geocoding_client.ApiCallback;
-import com.graphhopper.geocoding_client.ApiClient;
-import com.graphhopper.geocoding_client.ApiException;
-import com.graphhopper.geocoding_client.ApiResponse;
-import com.graphhopper.geocoding_client.Configuration;
-import com.graphhopper.geocoding_client.Pair;
-import com.graphhopper.geocoding_client.ProgressRequestBody;
-import com.graphhopper.geocoding_client.ProgressResponseBody;
+import com.graphhopper.geocoding.client.ApiCallback;
+import com.graphhopper.geocoding.client.ApiClient;
+import com.graphhopper.geocoding.client.ApiException;
+import com.graphhopper.geocoding.client.ApiResponse;
+import com.graphhopper.geocoding.client.Configuration;
+import com.graphhopper.geocoding.client.Pair;
+import com.graphhopper.geocoding.client.ProgressRequestBody;
+import com.graphhopper.geocoding.client.ProgressResponseBody;
 
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 
-import com.graphhopper.geocoding_client.model.GeocodingResult;
-import com.graphhopper.geocoding_client.model.Error;
+import com.graphhopper.geocoding.client.model.GeocodingResult;
+import com.graphhopper.geocoding.client.model.Error;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

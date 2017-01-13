@@ -23,7 +23,7 @@
  */
 
 
-package com.graphhopper.geocoding_client;
+package com.graphhopper.geocoding.client;
 
 import java.io.IOException;
 

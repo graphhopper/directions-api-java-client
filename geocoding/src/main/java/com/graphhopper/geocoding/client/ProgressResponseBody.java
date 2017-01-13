@@ -23,7 +23,7 @@
  */
 
 
-package com.graphhopper.geocoding_client;
+package com.graphhopper.geocoding.client;
 
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.ResponseBody;

@@ -23,7 +23,7 @@
  */
 
 
-package com.graphhopper.geocoding_client;
+package com.graphhopper.geocoding.client;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -86,10 +86,10 @@ import javax.net.ssl.X509TrustManager;
 import okio.BufferedSink;
 import okio.Okio;
 
-import com.graphhopper.geocoding_client.auth.Authentication;
-import com.graphhopper.geocoding_client.auth.HttpBasicAuth;
-import com.graphhopper.geocoding_client.auth.ApiKeyAuth;
-import com.graphhopper.geocoding_client.auth.OAuth;
+import com.graphhopper.geocoding.client.auth.Authentication;
+import com.graphhopper.geocoding.client.auth.HttpBasicAuth;
+import com.graphhopper.geocoding.client.auth.ApiKeyAuth;
+import com.graphhopper.geocoding.client.auth.OAuth;
 
 public class ApiClient {
     public static final double JAVA_VERSION;
@@ -169,7 +169,7 @@ public class ApiClient {
         this.lenientDatetimeFormat = true;
 
         // Set default User-Agent.
-        setUserAgent("Swagger-Codegen/0.8-SNAPSHOT/java");
+        setUserAgent("Swagger-Codegen/0.9-SNAPSHOT/java");
 
         // Setup authentications (key: authentication name, value: authentication).
         authentications = new HashMap<String, Authentication>();

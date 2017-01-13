@@ -23,9 +23,9 @@
  */
 
 
-package com.graphhopper.geocoding_client.auth;
+package com.graphhopper.geocoding.client.auth;
 
-import com.graphhopper.geocoding_client.Pair;
+import com.graphhopper.geocoding.client.Pair;
 
 import com.squareup.okhttp.Credentials;
 

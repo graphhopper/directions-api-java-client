@@ -23,7 +23,7 @@
  */
 
 
-package com.graphhopper.geocoding_client.auth;
+package com.graphhopper.geocoding.client.auth;
 
 public enum OAuthFlow {
     accessCode, implicit, password, application
