@@ -119,8 +119,7 @@ public class GeocodingApiTest {
 
         // Default Limit and Locale
         assertEquals(1,response.getHits().size());
-        // TODO Why is locale null here? Maybe we should add it to the geocoding-converter?
-        assertEquals(null,response.getLocale());
+        assertEquals("de",response.getLocale());
 
         assertEquals("Wernau (Neckar), Baden-Württemberg, Deutschland",response.getHits().get(0).getName());
         assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
