@@ -102,6 +102,8 @@ public class GraphHopperWebIT {
                 counter++;
                 RoundaboutInstruction ri = (RoundaboutInstruction) i;
                 assertEquals("turn_angle was incorrect:" + ri.getTurnAngle(), -1.5, ri.getTurnAngle(), 0.1);
+                // This route contains only one roundabout and no (via) point in a roundabout
+                assertEquals("exited was incorrect:" + ri.isExited(), true);
             }
         }
         assertTrue("no roundabout in route?", counter > 0);
