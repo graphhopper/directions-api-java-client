@@ -18,8 +18,8 @@ This endpoint provides forward and reverse geocoding. For more details, review t
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiException;
-//import io.swagger.client.api.GeocodingApi;
+//import com.graphhopper.geocoding.client.ApiException;
+//import com.graphhopper.geocoding.client.api.GeocodingApi;
 
 
 GeocodingApi apiInstance = new GeocodingApi();
