@@ -5,7 +5,7 @@ You can refer to this client in your pom.xml via
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client</artifactId>
-  <version>[CURRENT-VERSION]/version>
+  <version>[CURRENT-VERSION]</version>
 </dependency>
 ```
 
