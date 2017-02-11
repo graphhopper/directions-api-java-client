@@ -92,6 +92,12 @@ singleRsp.getDistance();
 ...
 ```
 
+For small matrices like 20x20 or less locations you can use synchronous calls to reduce latency:
+
+```java
+GraphHopperMatrixWeb ghMatrix = new GraphHopperMatrixWeb(new GHMatrixSyncRequester());
+```
+
 ## Build Latest Development Version
 
 ```bash
