@@ -18,6 +18,7 @@ Apache License 2.0
 ## Usage
 
 ```java
+// Hint: create this thread safe instance only once in your application to allow the underlying library to cache the costly https handshake
 GraphHopperWeb gh = new GraphHopperWeb();
 // insert your key here
 gh.setKey("YOUR_KEY");
@@ -66,6 +67,7 @@ InstructionList il = res.getInstructions();
 ### Matrix API
 
 ```java
+// Hint: create this thread safe instance only once in your application to allow the underlying library to cache the costly https handshake
 GraphHopperMatrixWeb matrixClient = new GraphHopperMatrixWeb();
 matrixClient.setKey("[YOUR_KEY]");
 
