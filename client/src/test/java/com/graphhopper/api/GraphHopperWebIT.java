@@ -47,14 +47,14 @@ public class GraphHopperWebIT {
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         PathWrapper alt = res.getBest();
         isBetween(200, 250, alt.getPoints().size());
-        isBetween(11000, 12000, alt.getDistance());
+        isBetween(9500, 10000, alt.getDistance());
 
         // change vehicle
         res = gh.route(new GHRequest(49.6724, 11.3494, 49.6550, 11.4180).
                 setVehicle("bike"));
         alt = res.getBest();
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
-        isBetween(9000, 10000, alt.getDistance());
+        isBetween(9000, 9500, alt.getDistance());
     }
 
     @Test
@@ -86,7 +86,7 @@ public class GraphHopperWebIT {
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         PathWrapper alt = res.getBest();
         assertEquals(0, alt.getPoints().size());
-        isBetween(11000, 12000, alt.getDistance());
+        isBetween(9500, 10000, alt.getDistance());
     }
 
     @Test
@@ -195,7 +195,7 @@ public class GraphHopperWebIT {
         }
 
         // ... only weight:
-        assertEquals(1160, res.getWeight(1, 2), 5);
+        assertEquals(1680, res.getWeight(1, 2), 5);
 
         req = AbstractGHMatrixWebTester.createRequest();
         req.addOutArray("weights");
@@ -203,6 +203,6 @@ public class GraphHopperWebIT {
         res = ghMatrix.route(req);
 
         assertEquals(9637, res.getDistance(1, 2), 5);
-        assertEquals(1160, res.getWeight(1, 2), 5);
+        assertEquals(1680, res.getWeight(1, 2), 5);
     }
 }
