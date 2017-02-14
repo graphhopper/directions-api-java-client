@@ -110,6 +110,20 @@ public class GraphHopperWebIT {
     }
 
     @Test
+    public void testRetrieveOnlyStreetname() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(52.261434, 13.485718)).
+                addPoint(new GHPoint(52.399067, 13.469238));
+
+        GHResponse res = gh.route(req);
+        assertEquals("Turn right onto B 246", res.getBest().getInstructions().get(1).getName());
+
+        req.getHints().put("turn_description", false);
+        res = gh.route(req);
+        assertEquals("B 246", res.getBest().getInstructions().get(1).getName());
+    }
+
+    @Test
     public void testCannotFindPointException() {
         GHRequest req = new GHRequest().
                 addPoint(new GHPoint(-4.214943, -130.078125)).
