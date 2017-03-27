@@ -3,6 +3,7 @@ package com.graphhopper.api;
 import static com.graphhopper.api.GraphHopperMatrixWeb.KEY;
 import static com.graphhopper.api.GraphHopperMatrixWeb.MT_JSON;
 import static com.graphhopper.api.GraphHopperMatrixWeb.SERVICE_URL;
+
 import com.graphhopper.util.Helper;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -20,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- *
  * @author Peter Karich
  */
 public abstract class GHMatrixAbstractRequester {
@@ -91,47 +92,57 @@ public abstract class GHMatrixAbstractRequester {
         }
     }
 
-    protected void fillResponseFromJson(GHMRequest request, List<String> outArraysList,
-            MatrixResponse matrixResponse, JSONObject solution, boolean hasElevation) {
-        int fromCount = request.getFromPoints().size(), toCount = request.getToPoints().size();
+    public static void fillResponseFromJson(MatrixResponse matrixResponse, String responseAsString) {
+        fillResponseFromJson(matrixResponse, new JSONObject(responseAsString));
+    }
 
-        boolean readWeights = outArraysList.contains("weights") && solution.has("weights");
-        boolean readDistances = outArraysList.contains("distances") && solution.has("distances");
-        boolean readTimes = outArraysList.contains("times") && solution.has("times");
+    protected static void fillResponseFromJson(MatrixResponse matrixResponse, JSONObject solution) {
 
+        final boolean readWeights = solution.has("weights");
+        final boolean readDistances = solution.has("distances");
+        final boolean readTimes = solution.has("times");
+
+        int fromCount = 0;
         JSONArray weightsArray = null;
         if (readWeights) {
             weightsArray = solution.getJSONArray("weights");
+            fromCount = checkArraySizes("weights", weightsArray.length());
         }
         JSONArray timesArray = null;
         if (readTimes) {
             timesArray = solution.getJSONArray("times");
+            fromCount = checkArraySizes("times", timesArray.length(), weightsArray);
         }
         JSONArray distancesArray = null;
         if (readDistances) {
             distancesArray = solution.getJSONArray("distances");
+            fromCount = checkArraySizes("distances", distancesArray.length(), weightsArray, timesArray);
         }
 
         for (int fromIndex = 0; fromIndex < fromCount; fromIndex++) {
+            int toCount = 0;
             JSONArray weightsFromArray = null;
             double[] weights = null;
             if (readWeights) {
                 weightsFromArray = weightsArray.getJSONArray(fromIndex);
-                weights = new double[toCount];
+                weights = new double[weightsFromArray.length()];
+                toCount = checkArraySizes("weights", weightsFromArray.length());
             }
 
             JSONArray timesFromArray = null;
             long[] times = null;
             if (readTimes) {
                 timesFromArray = timesArray.getJSONArray(fromIndex);
-                times = new long[toCount];
+                times = new long[timesArray.length()];
+                toCount = checkArraySizes("times", timesFromArray.length(), weightsFromArray);
             }
 
             JSONArray distancesFromArray = null;
             int[] distances = null;
             if (readDistances) {
                 distancesFromArray = distancesArray.getJSONArray(fromIndex);
-                distances = new int[toCount];
+                distances = new int[distancesArray.length()];
+                toCount = checkArraySizes("distances", distancesFromArray.length(), weightsFromArray, timesFromArray);
             }
 
             for (int toIndex = 0; toIndex < toCount; toIndex++) {
@@ -160,6 +171,17 @@ public abstract class GHMatrixAbstractRequester {
                 matrixResponse.setDistanceRow(fromIndex, distances);
             }
         }
+    }
+
+    private static int checkArraySizes(String msg, int len, JSONArray... arrays) {
+        for (JSONArray other : arrays) {
+            if (len <= 0)
+                throw new IllegalArgumentException("Size " + len + " of '" + msg + "' array is too small");
+
+            if (other != null && len != other.length())
+                throw new IllegalArgumentException("Size " + len + " of '" + msg + "' array is has to be equal to other arrays but wasn't");
+        }
+        return len;
     }
 
     protected String buildURLNoHints(String path, GHMRequest ghRequest) {

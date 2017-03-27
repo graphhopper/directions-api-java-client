@@ -2,14 +2,15 @@ package com.graphhopper.api;
 
 import com.graphhopper.util.Helper;
 import com.graphhopper.util.shapes.GHPoint;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- *
  * @author Peter Karich
  */
 public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
@@ -93,7 +94,11 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
         return pointName + "=" + pointsStr;
     }
 
-    private void fillResponseFromGoogleJson(MatrixResponse matrixResponse, JSONObject responseJson) {
+    public static void fillResponseFromGoogleJson(MatrixResponse matrixResponse, String responseAsString) {
+        fillResponseFromGoogleJson(matrixResponse, new JSONObject(responseAsString));
+    }
+
+    private static void fillResponseFromGoogleJson(MatrixResponse matrixResponse, JSONObject responseJson) {
         String status = responseJson.getString("status");
         if ("OK".equals(status)) {
             if (!responseJson.has("rows")) {
@@ -120,7 +125,7 @@ public class GoogleMatrixSyncRequester extends GHMatrixAbstractRequester {
                         JSONObject duration = element.getJSONObject("duration");
 
                         times[toIndex] = duration.getInt("value") * 1000;
-                        distances[toIndex] = (int) Math.round(distance.getInt("value"));
+                        distances[toIndex] = Math.round(distance.getInt("value"));
                     } else {
                         matrixResponse.addError(new IllegalArgumentException("Cannot find route " + fromIndex + "->" + toIndex));
                     }

@@ -1,15 +1,17 @@
 package com.graphhopper.api;
 
 import com.graphhopper.util.shapes.GHPoint;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 /**
- *
  * @author Peter Karich
  */
 public abstract class AbstractGHMatrixWebTester {
@@ -39,7 +41,7 @@ public abstract class AbstractGHMatrixWebTester {
 
     @Test
     public void testReadingWeights() throws IOException {
-        String ghMatrix = readFile(new InputStreamReader(getClass().getResourceAsStream("matrix.json")));
+        String ghMatrix = readFile(new InputStreamReader(getClass().getResourceAsStream("matrix-weights-only.json")));
         GraphHopperMatrixWeb matrixWeb = createMatrixClient(ghMatrix);
 
         GHMRequest req = createRequest();

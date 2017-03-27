@@ -2,6 +2,7 @@ package com.graphhopper.api;
 
 import com.graphhopper.GHRequest;
 import com.graphhopper.util.shapes.GHPoint;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,8 +33,9 @@ public class GHMRequest extends GHRequest {
      * the most expensive to calculate and limited to maximum 10*10 points (via
      * API end point).
      */
-    public void addOutArray(String type) {
+    public GHMRequest addOutArray(String type) {
         outArrays.add(type);
+        return this;
     }
 
     public Set<String> getOutArrays() {

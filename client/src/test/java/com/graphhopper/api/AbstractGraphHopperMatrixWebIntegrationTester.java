@@ -41,8 +41,8 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
         req.addOutArray("distances");
         res = ghMatrix.route(req);
 
-        assertEquals(9637, res.getDistance(1, 2), 5);
-        assertEquals(1680, res.getWeight(1, 2), 5);
+        assertEquals(9637, res.getDistance(1, 2), 20);
+        assertEquals(1680, res.getWeight(1, 2), 10);
     }
 
     @Test
