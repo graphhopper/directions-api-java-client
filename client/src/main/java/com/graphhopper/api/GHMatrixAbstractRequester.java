@@ -97,7 +97,6 @@ public abstract class GHMatrixAbstractRequester {
     }
 
     protected static void fillResponseFromJson(MatrixResponse matrixResponse, JSONObject solution) {
-
         final boolean readWeights = solution.has("weights");
         final boolean readDistances = solution.has("distances");
         final boolean readTimes = solution.has("times");
