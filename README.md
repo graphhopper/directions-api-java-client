@@ -5,11 +5,11 @@ You can refer to this client in your pom.xml via
 <dependency>
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-java-client</artifactId>
-  <version>0.7.0.1</version>
+  <version>[CURRENT-VERSION]</version>
 </dependency>
 ```
 
-The latest development version is 0.8-SNAPSHOT
+Please [search maven](https://search.maven.org/#search%7Cga%7C1%7Cdirections-api-java-client-parent) for the latest version.
 
 ## License
 
@@ -18,6 +18,7 @@ Apache License 2.0
 ## Usage
 
 ```java
+// Hint: create this thread safe instance only once in your application to allow the underlying library to cache the costly initial https handshake
 GraphHopperWeb gh = new GraphHopperWeb();
 // insert your key here
 gh.setKey("YOUR_KEY");
@@ -66,6 +67,7 @@ InstructionList il = res.getInstructions();
 ### Matrix API
 
 ```java
+// Hint: create this thread safe instance only once in your application to allow the underlying library to cache the costly initial https handshake
 GraphHopperMatrixWeb matrixClient = new GraphHopperMatrixWeb();
 matrixClient.setKey("[YOUR_KEY]");
 
@@ -88,6 +90,12 @@ MatrixResponse response = matrixClient.route(ghmRequest);
 GHMResponse singleRsp = response.get(fromIndex, toIndex);
 singleRsp.getDistance();
 ...
+```
+
+For small matrices like 20x20 or less locations you can use synchronous calls to reduce latency:
+
+```java
+GraphHopperMatrixWeb ghMatrix = new GraphHopperMatrixWeb(new GHMatrixSyncRequester());
 ```
 
 ## Build Latest Development Version
@@ -148,6 +156,11 @@ See the [tests](./geocoding/src/test/java/io/swagger/client/api) on how to use t
 
 ## Generate from Swagger
 
+Download Swagger Codegen CLI
 ```
-java -jar ../swagger-codegen-cli.jar generate -i geocoding_swagger.yaml -l java -o geocoding -c geocoding-config.json
+get https://oss.sonatype.org/content/repositories/releases/io/swagger/swagger-codegen-cli/2.2.1/swagger-codegen-cli-2.2.1.jar
+```
+
+```
+java -jar swagger-codegen-cli-2.2.1.jar generate -i geocoding_swagger.yaml -l java -o geocoding -c geocoding-config.json
 ```

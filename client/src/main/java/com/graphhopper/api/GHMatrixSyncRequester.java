@@ -1,17 +1,19 @@
 package com.graphhopper.api;
 
 import static com.graphhopper.api.GHMatrixAbstractRequester.encode;
+
 import com.graphhopper.util.Helper;
 import com.graphhopper.util.shapes.GHPoint;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import org.json.JSONObject;
 
 /**
- *
  * @author Peter Karich
  */
 public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
@@ -65,9 +67,6 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
             outArrayStr += "out_array=" + type;
         }
 
-        // TODO allow elevation for full path
-        boolean hasElevation = false;
-
         String url = buildURL("", ghRequest);
         url += "&" + pointsStr + "&" + outArrayStr + "&vehicle=" + ghRequest.getVehicle();
 
@@ -80,7 +79,7 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
 
         try {
             String str = getJson(url);
-            JSONObject getResponseJson = null;
+            JSONObject getResponseJson;
             try {
                 getResponseJson = new JSONObject(str);
             } catch (Exception ex) {
@@ -92,10 +91,8 @@ public class GHMatrixSyncRequester extends GHMatrixAbstractRequester {
                 matrixResponse.addErrors(readUsableEntityError(outArraysList, getResponseJson));
             }
 
-            if (!matrixResponse.hasErrors()) {
-                fillResponseFromJson(ghRequest, outArraysList,
-                        matrixResponse, getResponseJson, hasElevation);
-            }
+            if (!matrixResponse.hasErrors())
+                fillResponseFromJson(matrixResponse, getResponseJson);
 
         } catch (IOException ex) {
             throw new RuntimeException(ex);

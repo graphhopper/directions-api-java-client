@@ -1,17 +1,18 @@
 package com.graphhopper.api;
 
 import com.graphhopper.util.shapes.GHPoint;
+
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+
 import okhttp3.OkHttpClient;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Peter Karich
  */
 public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
@@ -128,11 +129,9 @@ public class GHMatrixBatchRequester extends GHMatrixAbstractRequester {
                 if ("finished".equals(status)) {
                     JSONObject solution = getResponseJson.getJSONObject("solution");
                     matrixResponse.addErrors(readUsableEntityError(outArraysList, solution));
-                    if (!matrixResponse.hasErrors()) {
-                        fillResponseFromJson(ghRequest, outArraysList,
-                                matrixResponse, solution,
-                                hasElevation);
-                    }
+                    if (!matrixResponse.hasErrors())
+                        fillResponseFromJson(matrixResponse, solution);
+
                     break;
                 }
 

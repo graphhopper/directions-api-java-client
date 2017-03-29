@@ -10,16 +10,19 @@ import com.graphhopper.util.exceptions.PointNotFoundException;
 import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 
+import java.net.SocketTimeoutException;
+
 /**
- *
  * @author Peter Karich
  */
 public class GraphHopperWebIT {
 
-    public static final String KEY = "369dc982-86a6-484e-95ad-669331663ca4";
+    public static final String KEY = "614b8305-b4db-48c9-bf4a-40de90919939";
 
     private final GraphHopperWeb gh = new GraphHopperWeb();
     private final GraphHopperMatrixWeb ghMatrix = new GraphHopperMatrixWeb();
@@ -44,14 +47,31 @@ public class GraphHopperWebIT {
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         PathWrapper alt = res.getBest();
         isBetween(200, 250, alt.getPoints().size());
-        isBetween(11000, 12000, alt.getDistance());
+        isBetween(9500, 10000, alt.getDistance());
 
         // change vehicle
         res = gh.route(new GHRequest(49.6724, 11.3494, 49.6550, 11.4180).
                 setVehicle("bike"));
         alt = res.getBest();
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
-        isBetween(9000, 10000, alt.getDistance());
+        isBetween(9000, 9500, alt.getDistance());
+    }
+
+    @Test
+    public void testTimeout() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(49.6724, 11.3494)).
+                addPoint(new GHPoint(49.6550, 11.4180));
+        GHResponse res = gh.route(req);
+        assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
+
+        req.getHints().put(GraphHopperWeb.TIMEOUT, 1);
+        try {
+            res = gh.route(req);
+            fail();
+        } catch (RuntimeException e) {
+            assertEquals(SocketTimeoutException.class, e.getCause().getClass());
+        }
     }
 
     @Test
@@ -66,7 +86,7 @@ public class GraphHopperWebIT {
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         PathWrapper alt = res.getBest();
         assertEquals(0, alt.getPoints().size());
-        isBetween(11000, 12000, alt.getDistance());
+        isBetween(9500, 10000, alt.getDistance());
     }
 
     @Test
@@ -82,9 +102,25 @@ public class GraphHopperWebIT {
                 counter++;
                 RoundaboutInstruction ri = (RoundaboutInstruction) i;
                 assertEquals("turn_angle was incorrect:" + ri.getTurnAngle(), -1.5, ri.getTurnAngle(), 0.1);
+                // This route contains only one roundabout and no (via) point in a roundabout
+                assertEquals("exited was incorrect:" + ri.isExited(), ri.isExited(),true);
             }
         }
         assertTrue("no roundabout in route?", counter > 0);
+    }
+
+    @Test
+    public void testRetrieveOnlyStreetname() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(52.261434, 13.485718)).
+                addPoint(new GHPoint(52.399067, 13.469238));
+
+        GHResponse res = gh.route(req);
+        assertEquals("Turn right onto B 246", res.getBest().getInstructions().get(1).getName());
+
+        req.getHints().put("turn_description", false);
+        res = gh.route(req);
+        assertEquals("B 246", res.getBest().getInstructions().get(1).getName());
     }
 
     @Test
@@ -118,7 +154,7 @@ public class GraphHopperWebIT {
 
         GHResponse res = gh.route(req);
         InstructionList instructions = res.getBest().getInstructions();
-        String finishInstructionName = instructions.get(instructions.getSize()-1).getName();
+        String finishInstructionName = instructions.get(instructions.getSize() - 1).getName();
         assertEquals("Finish!", finishInstructionName);
     }
 
@@ -173,14 +209,14 @@ public class GraphHopperWebIT {
         }
 
         // ... only weight:
-        assertEquals(1160, res.getWeight(1, 2), 5);
+        assertEquals(1680, res.getWeight(1, 2), 5);
 
         req = AbstractGHMatrixWebTester.createRequest();
         req.addOutArray("weights");
         req.addOutArray("distances");
         res = ghMatrix.route(req);
 
-        assertEquals(9637, res.getDistance(1, 2), 5);
-        assertEquals(1160, res.getWeight(1, 2), 5);
+        assertEquals(9637, res.getDistance(1, 2), 20);
+        assertEquals(1680, res.getWeight(1, 2), 10);
     }
 }

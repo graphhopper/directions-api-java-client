@@ -28,6 +28,7 @@ import com.graphhopper.util.exceptions.DetailedRuntimeException;
 import com.graphhopper.util.exceptions.PointNotFoundException;
 import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.json.JSONArray;
@@ -58,8 +60,12 @@ public class GraphHopperWeb implements GraphHopperAPI {
     private boolean instructions = true;
     private boolean calcPoints = true;
     private boolean elevation = false;
+    private boolean turnDescription = true;
     private String optimize = "false";
     private final Set<String> ignoreSet;
+
+    public static final String TIMEOUT = "timeout";
+    private final long DEFAULT_TIMEOUT = 5000;
 
     public GraphHopperWeb() {
         this("https://graphhopper.com/api/1/route");
@@ -68,8 +74,8 @@ public class GraphHopperWeb implements GraphHopperAPI {
     public GraphHopperWeb(String serviceUrl) {
         this.serviceUrl = serviceUrl;
         downloader = new OkHttpClient.Builder().
-                connectTimeout(5, TimeUnit.SECONDS).
-                readTimeout(5, TimeUnit.SECONDS).
+                connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS).
+                readTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS).
                 build();
 
         // some parameters are supported directly via Java API so ignore them when writing the getHints map
@@ -144,12 +150,12 @@ public class GraphHopperWeb implements GraphHopperAPI {
 
     /**
      * @param optimize "false" if the order of the locations should be left
-     * unchanged, this is the default. Or if "true" then the order of the
-     * location is optimized according to the overall best route and returned
-     * this way i.e. the traveling salesman problem is solved under the hood.
-     * Note that in this case the request takes longer and costs more credits.
-     * For more details see:
-     * https://github.com/graphhopper/directions-api/blob/master/FAQ.md#what-is-one-credit
+     *                 unchanged, this is the default. Or if "true" then the order of the
+     *                 location is optimized according to the overall best route and returned
+     *                 this way i.e. the traveling salesman problem is solved under the hood.
+     *                 Note that in this case the request takes longer and costs more credits.
+     *                 For more details see:
+     *                 https://github.com/graphhopper/directions-api/blob/master/FAQ.md#what-is-one-credit
      */
     public GraphHopperWeb setOptimize(String optimize) {
         this.optimize = optimize;
@@ -161,7 +167,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
         String str = "Creating request failed";
         try {
             Request okRequest = createRequest(ghRequest);
-            str = downloader.newCall(okRequest).execute().body().string();
+            str = getClientForRequest(ghRequest).newCall(okRequest).execute().body().string();
 
             JSONObject json = new JSONObject(str);
             GHResponse res = new GHResponse();
@@ -175,10 +181,11 @@ public class GraphHopperWeb implements GraphHopperAPI {
             boolean tmpInstructions = ghRequest.getHints().getBool("instructions", instructions);
             boolean tmpCalcPoints = ghRequest.getHints().getBool("calc_points", calcPoints);
             boolean tmpElevation = ghRequest.getHints().getBool("elevation", elevation);
+            boolean tmpTurnDescription = ghRequest.getHints().getBool("turn_description", turnDescription);
 
             for (int index = 0; index < paths.length(); index++) {
                 JSONObject path = paths.getJSONObject(index);
-                PathWrapper altRsp = createAltResponse(path, tmpCalcPoints, tmpInstructions, tmpElevation);
+                PathWrapper altRsp = createAltResponse(path, tmpCalcPoints, tmpInstructions, tmpElevation, tmpTurnDescription);
                 res.add(altRsp);
             }
             return res;
@@ -192,7 +199,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
         String str = "Creating request failed";
         try {
             Request okRequest = createRequest(ghRequest);
-            str = downloader.newCall(okRequest).execute().body().string();
+            str = getClientForRequest(ghRequest).newCall(okRequest).execute().body().string();
 
             return str;
         } catch (Exception ex) {
@@ -258,7 +265,8 @@ public class GraphHopperWeb implements GraphHopperAPI {
     }
 
     public static PathWrapper createAltResponse(JSONObject path,
-            boolean tmpCalcPoints, boolean tmpInstructions, boolean tmpElevation) {
+                                                boolean tmpCalcPoints, boolean tmpInstructions,
+                                                boolean tmpElevation, boolean turnDescription) {
 
         PathWrapper pathWrapper = new PathWrapper();
         pathWrapper.addErrors(readErrors(path));
@@ -285,7 +293,7 @@ public class GraphHopperWeb implements GraphHopperAPI {
                 for (int instrIndex = 0; instrIndex < instrArr.length(); instrIndex++) {
                     JSONObject jsonObj = instrArr.getJSONObject(instrIndex);
                     double instDist = jsonObj.getDouble("distance");
-                    String text = jsonObj.getString("text");
+                    String text = turnDescription ? jsonObj.getString("text") : jsonObj.getString("street_name");
                     long instTime = jsonObj.getLong("time");
                     int sign = jsonObj.getInt("sign");
                     JSONArray iv = jsonObj.getJSONArray("interval");
@@ -309,6 +317,11 @@ public class GraphHopperWeb implements GraphHopperAPI {
                             ri.setExitNumber(jsonObj.getInt("exit_number"));
                         }
 
+                        if (jsonObj.has("exited")) {
+                            if (jsonObj.getBoolean("exited"))
+                                ri.setExited();
+                        }
+
                         if (jsonObj.has("turn_angle")) {
                             // TODO provide setTurnAngle setter
                             double angle = jsonObj.getDouble("turn_angle");
@@ -328,9 +341,12 @@ public class GraphHopperWeb implements GraphHopperAPI {
                         instr = new Instruction(sign, text, ia, instPL);
                     }
 
-                    // The translation is done from the routing service so just use the provided string
-                    // instead of creating a combination with sign and name etc
-                    instr.setUseRawName();
+                    // Usually, the translation is done from the routing service so just use the provided string
+                    // instead of creating a combination with sign and name etc.
+                    // This is called the turn description.
+                    // This can be changed by passing <code>turn_description=false</code>.
+                    if(turnDescription)
+                        instr.setUseRawName();
 
                     instr.setDistance(instDist).setTime(instTime);
                     il.add(instr);
@@ -371,6 +387,19 @@ public class GraphHopperWeb implements GraphHopperAPI {
             list.add(value);
         }
         return list;
+    }
+
+    private OkHttpClient getClientForRequest(GHRequest request) {
+        OkHttpClient client = this.downloader;
+        if (request.getHints().has(TIMEOUT)) {
+            long timeout = request.getHints().getLong(TIMEOUT, DEFAULT_TIMEOUT);
+            client = client.newBuilder()
+                    .connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                    .readTimeout(timeout, TimeUnit.MILLISECONDS)
+                    .build();
+        }
+
+        return client;
     }
 
     public static List<Throwable> readErrors(JSONObject json) {

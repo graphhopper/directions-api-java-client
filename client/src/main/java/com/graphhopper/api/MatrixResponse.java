@@ -16,12 +16,19 @@ public class MatrixResponse {
     private long[][] times = new long[0][];
     private int[][] distances = new int[0][];
     private double[][] weights = new double[0][];
+    private final int fromCount;
+    private final int toCount;
 
     public MatrixResponse() {
         this(10, 10, true, true, true);
     }
 
     public MatrixResponse(int fromCap, int toCap, boolean withTimes, boolean withDistances, boolean withWeights) {
+        if (fromCap <= 0 || toCap <= 0)
+            throw new IllegalArgumentException("Requested matrix too small: " + fromCap + "x" + toCap);
+        this.fromCount = fromCap;
+        this.toCount = toCap;
+
         if (withTimes) {
             times = new long[fromCap][toCap];
         }
@@ -33,24 +40,37 @@ public class MatrixResponse {
         if (withWeights) {
             weights = new double[fromCap][toCap];
         }
+
+        if (!withTimes && !withDistances && !withWeights)
+            throw new IllegalArgumentException("Please specify times, distances or weights that should be calculated by the matrix");
     }
 
     public void setFromRow(int row, long timeRow[], int distanceRow[], double weightRow[]) {
         if (times.length > 0) {
+            check(timeRow.length, toCount, "to times");
             times[row] = timeRow;
         }
 
         if (distances.length > 0) {
+            check(distanceRow.length, toCount, "to distances");
             distances[row] = distanceRow;
         }
 
         if (weights.length > 0) {
+            check(weights.length, toCount, "to weights");
             weights[row] = weightRow;
         }
     }
 
+    private void check(int currentLength, int expectedLength, String times) {
+        if (currentLength != expectedLength)
+            throw new IllegalArgumentException("Sizes do not match for '" + times + "'. " +
+                    "Expected " + expectedLength + " was: " + currentLength + ". Matrix: " + fromCount + "x" + toCount);
+    }
+
     public void setTimeRow(int row, long timeRow[]) {
         if (times.length > 0) {
+            check(timeRow.length, toCount, "to times");
             times[row] = timeRow;
         } else {
             throw new UnsupportedOperationException("Cannot call setTimeRow if times are disabled");
@@ -59,6 +79,7 @@ public class MatrixResponse {
 
     public void setDistanceRow(int row, int distanceRow[]) {
         if (distances.length > 0) {
+            check(distanceRow.length, toCount, "to distances");
             distances[row] = distanceRow;
         } else {
             throw new UnsupportedOperationException("Cannot call setDistanceRow if distances are disabled");
@@ -67,6 +88,7 @@ public class MatrixResponse {
 
     public void setWeightRow(int row, double weightRow[]) {
         if (weights.length > 0) {
+            check(weights.length, toCount, "to weights");
             weights[row] = weightRow;
         } else {
             throw new UnsupportedOperationException("Cannot call setWeightRow if weights are disabled");

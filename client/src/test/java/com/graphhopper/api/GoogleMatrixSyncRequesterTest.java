@@ -1,14 +1,17 @@
 package com.graphhopper.api;
 
 import static com.graphhopper.api.AbstractGHMatrixWebTester.createRequest;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import com.graphhopper.util.shapes.GHPoint;
 import org.json.JSONObject;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author Peter Karich
  */
 public class GoogleMatrixSyncRequesterTest {
@@ -32,7 +35,13 @@ public class GoogleMatrixSyncRequesterTest {
 
     @Test
     public void testMatrix() throws IOException {
-        GHMRequest req = createRequest();
+        GHMRequest req = new GHMRequest();
+        req.addFromPoint(new GHPoint(51.534377, -0.087891));
+        req.addFromPoint(new GHPoint(51.467697, -0.090637));
+
+        req.addToPoint(new GHPoint(51.521241, -0.171833));
+        req.addToPoint(new GHPoint(51.467697, -0.090637));
+        req.addToPoint(new GHPoint(51.534377, -0.087891));
 
         GraphHopperMatrixWeb matrix = createMatrixClient(AbstractGHMatrixWebTester.readFile(
                 new InputStreamReader(getClass().getResourceAsStream("google-matrix1.json"))));
