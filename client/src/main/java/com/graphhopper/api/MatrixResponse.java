@@ -96,39 +96,6 @@ public class MatrixResponse {
     }
 
     /**
-     * @return the raw array for the specified row. Use getTime for a more convenient usage.
-     */
-    public long[] getTimeRow(int row) {
-        if (times.length > 0) {
-            return times[row];
-        } else {
-            throw new UnsupportedOperationException("Cannot call getTimeRow if times are disabled");
-        }
-    }
-
-    /**
-     * @return the raw array for the specified row. Use getDistance for a more convenient usage.
-     */
-    public int[] getDistanceRow(int row) {
-        if (distances.length > 0) {
-            return distances[row];
-        } else {
-            throw new UnsupportedOperationException("Cannot call getDistanceRow if distances are disabled");
-        }
-    }
-
-    /**
-     * @return the raw array for the specified row. Use getWeight for a more convenient usage.
-     */
-    public double[] getWeightRow(int row) {
-        if (weights.length > 0) {
-            return weights[row];
-        } else {
-            throw new UnsupportedOperationException("Cannot call getWeightRow if weights are disabled");
-        }
-    }
-
-    /**
      * Returns the time for the specific entry (from -&gt; to) in milliseconds.
      */
     public long getTime(int from, int to) {
