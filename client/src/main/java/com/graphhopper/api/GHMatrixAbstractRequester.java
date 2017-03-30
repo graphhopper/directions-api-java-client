@@ -132,7 +132,7 @@ public abstract class GHMatrixAbstractRequester {
             long[] times = null;
             if (readTimes) {
                 timesFromArray = timesArray.getJSONArray(fromIndex);
-                times = new long[timesArray.length()];
+                times = new long[timesFromArray.length()];
                 toCount = checkArraySizes("times", timesFromArray.length(), weightsFromArray);
             }
 
@@ -140,7 +140,7 @@ public abstract class GHMatrixAbstractRequester {
             int[] distances = null;
             if (readDistances) {
                 distancesFromArray = distancesArray.getJSONArray(fromIndex);
-                distances = new int[distancesArray.length()];
+                distances = new int[distancesFromArray.length()];
                 toCount = checkArraySizes("distances", distancesFromArray.length(), weightsFromArray, timesFromArray);
             }
 
