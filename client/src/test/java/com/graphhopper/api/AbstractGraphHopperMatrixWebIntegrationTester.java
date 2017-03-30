@@ -1,11 +1,15 @@
 package com.graphhopper.api;
 
+import com.graphhopper.util.shapes.GHPoint;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 
+import java.util.Arrays;
+
 /**
- *
  * @author Peter Karich
  */
 public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
@@ -53,5 +57,18 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
 
         MatrixResponse res = ghMatrix.route(req);
         assertEquals(2310, res.getTime(1, 2) / 1000, 20);
+    }
+
+    @Test
+    public void testNxM_issue45() {
+        GHMRequest ghmRequest = new GHMRequest();
+        ghmRequest.addOutArray("distances");
+        ghmRequest.addOutArray("times");
+        ghmRequest.setVehicle("car");
+        ghmRequest.addFromPoints(Arrays.asList(new GHPoint(52.557151, 13.515244)))
+                .addToPoints(Arrays.asList(new GHPoint(52.557151, 13.515244), new GHPoint(52.454545, 13.295517)));
+
+        MatrixResponse res = ghMatrix.route(ghmRequest);
+        assertEquals(2436, res.getTime(0, 1) / 1000, 20);
     }
 }
