@@ -5,12 +5,12 @@
   <artifactId>directions-api-java-client-route-opt</artifactId>
   <packaging>jar</packaging>
   <name>directions-api-java-client-route-opt</name>
-  <version>0.8.2-2</version>
+  <version>0.8.2-3</version>
   
       <parent>
           <groupId>com.graphhopper</groupId>
           <artifactId>directions-api-java-client-parent</artifactId>     
-          <version>0.8.2-2</version>
+          <version>0.8.2-3</version>
    </parent>
   
   <scm>
