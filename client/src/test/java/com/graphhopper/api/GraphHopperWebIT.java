@@ -9,6 +9,7 @@ import com.graphhopper.util.RoundaboutInstruction;
 import com.graphhopper.util.exceptions.PointNotFoundException;
 import com.graphhopper.util.exceptions.PointOutOfBoundsException;
 import com.graphhopper.util.shapes.GHPoint;
+import org.json.JSONObject;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -47,7 +48,7 @@ public class GraphHopperWebIT {
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         PathWrapper alt = res.getBest();
         isBetween(200, 250, alt.getPoints().size());
-        isBetween(9500, 10000, alt.getDistance());
+        isBetween(9900, 10300, alt.getDistance());
 
         // change vehicle
         res = gh.route(new GHRequest(49.6724, 11.3494, 49.6550, 11.4180).
@@ -86,7 +87,7 @@ public class GraphHopperWebIT {
         assertFalse("errors:" + res.getErrors().toString(), res.hasErrors());
         PathWrapper alt = res.getBest();
         assertEquals(0, alt.getPoints().size());
-        isBetween(9500, 10000, alt.getDistance());
+        isBetween(9900, 10300, alt.getDistance());
     }
 
     @Test
@@ -103,7 +104,7 @@ public class GraphHopperWebIT {
                 RoundaboutInstruction ri = (RoundaboutInstruction) i;
                 assertEquals("turn_angle was incorrect:" + ri.getTurnAngle(), -1.5, ri.getTurnAngle(), 0.1);
                 // This route contains only one roundabout and no (via) point in a roundabout
-                assertEquals("exited was incorrect:" + ri.isExited(), ri.isExited(),true);
+                assertEquals("exited was incorrect:" + ri.isExited(), ri.isExited(), true);
             }
         }
         assertTrue("no roundabout in route?", counter > 0);
@@ -116,11 +117,11 @@ public class GraphHopperWebIT {
                 addPoint(new GHPoint(52.399067, 13.469238));
 
         GHResponse res = gh.route(req);
-        assertEquals("Turn right onto B 246", res.getBest().getInstructions().get(1).getName());
+        assertEquals("Turn right onto B 246", res.getBest().getInstructions().get(4).getName());
 
         req.getHints().put("turn_description", false);
         res = gh.route(req);
-        assertEquals("B 246", res.getBest().getInstructions().get(1).getName());
+        assertEquals("B 246", res.getBest().getInstructions().get(4).getName());
     }
 
     @Test
@@ -154,7 +155,7 @@ public class GraphHopperWebIT {
 
         GHResponse res = gh.route(req);
         InstructionList instructions = res.getBest().getInstructions();
-        String finishInstructionName = instructions.get(instructions.getSize() - 1).getName();
+        String finishInstructionName = instructions.get(instructions.size() - 1).getName();
         assertEquals("Finish!", finishInstructionName);
     }
 
@@ -218,5 +219,16 @@ public class GraphHopperWebIT {
 
         assertEquals(9637, res.getDistance(1, 2), 20);
         assertEquals(1680, res.getWeight(1, 2), 10);
+    }
+
+    @Test
+    public void testUnknownInstructionSign() {
+        // Actual path for the request: point=48.354413%2C8.676335&point=48.35442%2C8.676345
+        // Modified the sign though
+        JSONObject json = new JSONObject("{\"instructions\":[{\"distance\":1.073,\"sign\":741,\"interval\":[0,1],\"text\":\"Continue onto A 81\",\"time\":32,\"street_name\":\"A 81\"},{\"distance\":0,\"sign\":4,\"interval\":[1,1],\"text\":\"Finish!\",\"time\":0,\"street_name\":\"\"}],\"descend\":0,\"ascend\":0,\"distance\":1.073,\"bbox\":[8.676286,48.354446,8.676297,48.354453],\"weight\":0.032179,\"time\":32,\"points_encoded\":true,\"points\":\"gfcfHwq}s@}c~AAA?\",\"snapped_waypoints\":\"gfcfHwq}s@}c~AAA?\"}");
+        PathWrapper wrapper = GraphHopperWeb.createAltResponse(json, true, true, true, true);
+
+        assertEquals(741, wrapper.getInstructions().get(0).getSign());
+        assertEquals("Continue onto A 81", wrapper.getInstructions().get(0).getName());
     }
 }
