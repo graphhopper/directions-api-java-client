@@ -4,6 +4,8 @@ nbactions.xml
 /route-optimization/target/
 /geocoding/target/
 /client/target/
+/client-optimized/target/
+/route-optimization-examples/target/
 .idea/
 *iml
 .settings/

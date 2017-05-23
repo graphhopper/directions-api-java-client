@@ -1,9 +1,0 @@
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/GraphHopperWebIT.java
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/GHMatrixBatchTest.java
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/AbstractGraphHopperMatrixWebIntegrationTester.java
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/GraphHopperMatrixSyncIT.java
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/AbstractGHMatrixWebTester.java
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/GraphHopperMatrixGoogleIT.java
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/GraphHopperMatrixBatchIT.java
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/GHMatrixSyncTest.java
-/home/peter/Documents/quell/enterprisegh/directions-api-java-client/client-optimized/src/test/java/com/graphhopper/api/GoogleMatrixSyncRequesterTest.java
