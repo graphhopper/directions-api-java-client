@@ -1,0 +1,5 @@
+com/graphhopper/directions/api/examples/TSP_BiggestCitiesInGermanyExample.class
+com/graphhopper/directions/api/examples/TSP_BiggestCitiesInGermanyByBikeExample.class
+com/graphhopper/directions/api/examples/VRP_WithSkillsExample.class
+com/graphhopper/directions/api/examples/VRP_DemoExample.class
+com/graphhopper/directions/api/examples/VRP_WithShipmentExample.class

@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.graphhopper</groupId>
-    <artifactId>directions-api-java-client-parent</artifactId>
+    <artifactId>directions-api-client-parent</artifactId>
     <name>GraphHopper Directions API Client Parent Project</name>
     <version>0.9-SNAPSHOT</version>
     <packaging>pom</packaging> 
-    <url>https://graphhopper.com</url> 
+    <url>https://www.graphhopper.com</url>
     <inceptionYear>2012</inceptionYear>
     <description>
         Super pom of the GraphHopper Directions API client component
@@ -61,9 +61,9 @@
         <url>https://github.com/graphhopper/directions-api-java-client/issues</url>
     </issueManagement>
     <modules>
+        <module>client-optimized</module>
         <module>client</module>
-        <module>route-optimization</module>
-        <module>geocoding</module>
+        <module>route-optimization-examples</module>
     </modules>
         
     <build>        
