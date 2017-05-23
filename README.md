@@ -29,7 +29,7 @@ Please see the [examples](https://github.com/graphhopper/directions-api-java-cli
 
 # Optimized client
 
-We also have an hand-crafted API client (`client-optimized`) for the Matrix and Routing API. Which are much more memory efficient e.g. for large matrices.
+We also have an hand-crafted API client (`client-hc`) for the Matrix and Routing API. Which are much more memory efficient e.g. for large matrices.
 
 <dependency>
   <groupId>com.graphhopper</groupId>
