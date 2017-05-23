@@ -25,7 +25,7 @@ You can use the API client for many API parts like:
  * the Matrix API
  * the Isochrone API
  
-Please see the examples repository for specific and up-to-date Java code.
+Please see the [examples](https://github.com/graphhopper/directions-api-java-client/tree/master/client-examples/src/main/java/com/graphhopper/directions/api/examples) for specific and up-to-date Java code.
 
 # Optimized client
 
