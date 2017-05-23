@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Request
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T18:34:50.745+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
 public class Request {
   @SerializedName("vehicles")
   private List<Vehicle> vehicles = new ArrayList<Vehicle>();

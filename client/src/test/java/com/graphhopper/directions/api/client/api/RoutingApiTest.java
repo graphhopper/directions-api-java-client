@@ -15,7 +15,7 @@ package com.graphhopper.directions.api.client.api;
 
 import com.graphhopper.directions.api.client.ApiException;
 import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GHRouteResponse;
+import com.graphhopper.directions.api.client.model.RouteResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -64,7 +64,7 @@ public class RoutingApiTest {
         Integer alternativeRouteMaxPaths = null;
         Integer alternativeRouteMaxWeightFactor = null;
         Integer alternativeRouteMaxShareFactor = null;
-        GHRouteResponse response = api.routeGet(point, pointsEncoded, key, locale, instructions, vehicle, elevation, calcPoints, pointHint, chDisable, weighting, edgeTraversal, algorithm, heading, headingPenalty, passThrough, roundTripDistance, roundTripSeed, alternativeRouteMaxPaths, alternativeRouteMaxWeightFactor, alternativeRouteMaxShareFactor);
+        RouteResponse response = api.routeGet(point, pointsEncoded, key, locale, instructions, vehicle, elevation, calcPoints, pointHint, chDisable, weighting, edgeTraversal, algorithm, heading, headingPenalty, passThrough, roundTripDistance, roundTripSeed, alternativeRouteMaxPaths, alternativeRouteMaxWeightFactor, alternativeRouteMaxShareFactor);
 
         // TODO: test validations
     }

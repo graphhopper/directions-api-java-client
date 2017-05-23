@@ -16,7 +16,7 @@
   <prerequisites>
     <maven>2.2.0</maven>
   </prerequisites>
-
+  
   <parent>
     <groupId>com.graphhopper</groupId>
     <artifactId>directions-api-client-parent</artifactId>

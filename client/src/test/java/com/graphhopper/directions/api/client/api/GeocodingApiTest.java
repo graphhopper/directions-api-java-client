@@ -15,7 +15,7 @@ package com.graphhopper.directions.api.client.api;
 
 import com.graphhopper.directions.api.client.ApiException;
 import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GHGeocodingResponse;
+import com.graphhopper.directions.api.client.model.GeocodingResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -50,7 +50,7 @@ public class GeocodingApiTest {
         Boolean reverse = null;
         String point = null;
         String provider = null;
-        GHGeocodingResponse response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
+        GeocodingResponse response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
 
         // TODO: test validations
     }

@@ -28,7 +28,7 @@ import java.io.IOException;
 
 
 import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GHRouteResponse;
+import com.graphhopper.directions.api.client.model.RouteResponse;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -190,11 +190,11 @@ public class RoutingApi {
      * @param alternativeRouteMaxPaths If &#x60;algorithm&#x3D;alternative_route&#x60; this parameter sets the number of maximum paths which should be calculated. Increasing can lead to worse alternatives. (optional)
      * @param alternativeRouteMaxWeightFactor If &#x60;algorithm&#x3D;alternative_route&#x60; this parameter sets the factor by which the alternatives routes can be longer than the optimal route. Increasing can lead to worse alternatives. (optional)
      * @param alternativeRouteMaxShareFactor If &#x60;algorithm&#x3D;alternative_route&#x60; this parameter specifies how much alternatives routes can have maximum in common with the optimal route. Increasing can lead to worse alternatives. (optional)
-     * @return GHRouteResponse
+     * @return RouteResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public GHRouteResponse routeGet(List<String> point, Boolean pointsEncoded, String key, String locale, Boolean instructions, String vehicle, Boolean elevation, Boolean calcPoints, List<String> pointHint, Boolean chDisable, String weighting, Boolean edgeTraversal, String algorithm, Integer heading, Integer headingPenalty, Boolean passThrough, Integer roundTripDistance, Long roundTripSeed, Integer alternativeRouteMaxPaths, Integer alternativeRouteMaxWeightFactor, Integer alternativeRouteMaxShareFactor) throws ApiException {
-        ApiResponse<GHRouteResponse> resp = routeGetWithHttpInfo(point, pointsEncoded, key, locale, instructions, vehicle, elevation, calcPoints, pointHint, chDisable, weighting, edgeTraversal, algorithm, heading, headingPenalty, passThrough, roundTripDistance, roundTripSeed, alternativeRouteMaxPaths, alternativeRouteMaxWeightFactor, alternativeRouteMaxShareFactor);
+    public RouteResponse routeGet(List<String> point, Boolean pointsEncoded, String key, String locale, Boolean instructions, String vehicle, Boolean elevation, Boolean calcPoints, List<String> pointHint, Boolean chDisable, String weighting, Boolean edgeTraversal, String algorithm, Integer heading, Integer headingPenalty, Boolean passThrough, Integer roundTripDistance, Long roundTripSeed, Integer alternativeRouteMaxPaths, Integer alternativeRouteMaxWeightFactor, Integer alternativeRouteMaxShareFactor) throws ApiException {
+        ApiResponse<RouteResponse> resp = routeGetWithHttpInfo(point, pointsEncoded, key, locale, instructions, vehicle, elevation, calcPoints, pointHint, chDisable, weighting, edgeTraversal, algorithm, heading, headingPenalty, passThrough, roundTripDistance, roundTripSeed, alternativeRouteMaxPaths, alternativeRouteMaxWeightFactor, alternativeRouteMaxShareFactor);
         return resp.getData();
     }
 
@@ -222,12 +222,12 @@ public class RoutingApi {
      * @param alternativeRouteMaxPaths If &#x60;algorithm&#x3D;alternative_route&#x60; this parameter sets the number of maximum paths which should be calculated. Increasing can lead to worse alternatives. (optional)
      * @param alternativeRouteMaxWeightFactor If &#x60;algorithm&#x3D;alternative_route&#x60; this parameter sets the factor by which the alternatives routes can be longer than the optimal route. Increasing can lead to worse alternatives. (optional)
      * @param alternativeRouteMaxShareFactor If &#x60;algorithm&#x3D;alternative_route&#x60; this parameter specifies how much alternatives routes can have maximum in common with the optimal route. Increasing can lead to worse alternatives. (optional)
-     * @return ApiResponse&lt;GHRouteResponse&gt;
+     * @return ApiResponse&lt;RouteResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<GHRouteResponse> routeGetWithHttpInfo(List<String> point, Boolean pointsEncoded, String key, String locale, Boolean instructions, String vehicle, Boolean elevation, Boolean calcPoints, List<String> pointHint, Boolean chDisable, String weighting, Boolean edgeTraversal, String algorithm, Integer heading, Integer headingPenalty, Boolean passThrough, Integer roundTripDistance, Long roundTripSeed, Integer alternativeRouteMaxPaths, Integer alternativeRouteMaxWeightFactor, Integer alternativeRouteMaxShareFactor) throws ApiException {
+    public ApiResponse<RouteResponse> routeGetWithHttpInfo(List<String> point, Boolean pointsEncoded, String key, String locale, Boolean instructions, String vehicle, Boolean elevation, Boolean calcPoints, List<String> pointHint, Boolean chDisable, String weighting, Boolean edgeTraversal, String algorithm, Integer heading, Integer headingPenalty, Boolean passThrough, Integer roundTripDistance, Long roundTripSeed, Integer alternativeRouteMaxPaths, Integer alternativeRouteMaxWeightFactor, Integer alternativeRouteMaxShareFactor) throws ApiException {
         com.squareup.okhttp.Call call = routeGetValidateBeforeCall(point, pointsEncoded, key, locale, instructions, vehicle, elevation, calcPoints, pointHint, chDisable, weighting, edgeTraversal, algorithm, heading, headingPenalty, passThrough, roundTripDistance, roundTripSeed, alternativeRouteMaxPaths, alternativeRouteMaxWeightFactor, alternativeRouteMaxShareFactor, null, null);
-        Type localVarReturnType = new TypeToken<GHRouteResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<RouteResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -259,7 +259,7 @@ public class RoutingApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call routeGetAsync(List<String> point, Boolean pointsEncoded, String key, String locale, Boolean instructions, String vehicle, Boolean elevation, Boolean calcPoints, List<String> pointHint, Boolean chDisable, String weighting, Boolean edgeTraversal, String algorithm, Integer heading, Integer headingPenalty, Boolean passThrough, Integer roundTripDistance, Long roundTripSeed, Integer alternativeRouteMaxPaths, Integer alternativeRouteMaxWeightFactor, Integer alternativeRouteMaxShareFactor, final ApiCallback<GHRouteResponse> callback) throws ApiException {
+    public com.squareup.okhttp.Call routeGetAsync(List<String> point, Boolean pointsEncoded, String key, String locale, Boolean instructions, String vehicle, Boolean elevation, Boolean calcPoints, List<String> pointHint, Boolean chDisable, String weighting, Boolean edgeTraversal, String algorithm, Integer heading, Integer headingPenalty, Boolean passThrough, Integer roundTripDistance, Long roundTripSeed, Integer alternativeRouteMaxPaths, Integer alternativeRouteMaxWeightFactor, Integer alternativeRouteMaxShareFactor, final ApiCallback<RouteResponse> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -281,7 +281,7 @@ public class RoutingApi {
         }
 
         com.squareup.okhttp.Call call = routeGetValidateBeforeCall(point, pointsEncoded, key, locale, instructions, vehicle, elevation, calcPoints, pointHint, chDisable, weighting, edgeTraversal, algorithm, heading, headingPenalty, passThrough, roundTripDistance, roundTripSeed, alternativeRouteMaxPaths, alternativeRouteMaxWeightFactor, alternativeRouteMaxShareFactor, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<GHRouteResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<RouteResponse>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }

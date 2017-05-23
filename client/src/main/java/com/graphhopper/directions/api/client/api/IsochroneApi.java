@@ -28,7 +28,7 @@ import java.io.IOException;
 
 
 import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GHIsochroneResponse;
+import com.graphhopper.directions.api.client.model.IsochroneResponse;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -143,11 +143,11 @@ public class IsochroneApi {
      * @param vehicle Possible vehicles are bike, car, foot and [more](https://graphhopper.com/api/1/docs/supported-vehicle-profiles/) (optional, default to car)
      * @param buckets For how many sub intervals an additional polygon should be calculated. (optional, default to 1)
      * @param reverseFlow If &#x60;false&#x60; the flow goes from point to the polygon, if &#x60;true&#x60; the flow goes from the polygon \&quot;inside\&quot; to the point. Example usage for &#x60;false&#x60;&amp;#58; *How many potential customer can be reached within 30min travel time from your store* vs. &#x60;true&#x60;&amp;#58; *How many customers can reach your store within 30min travel time.* (optional, default to false)
-     * @return GHIsochroneResponse
+     * @return IsochroneResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public GHIsochroneResponse isochroneGet(String point, String key, Integer timeLimit, Integer distanceLimit, String vehicle, Integer buckets, Boolean reverseFlow) throws ApiException {
-        ApiResponse<GHIsochroneResponse> resp = isochroneGetWithHttpInfo(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow);
+    public IsochroneResponse isochroneGet(String point, String key, Integer timeLimit, Integer distanceLimit, String vehicle, Integer buckets, Boolean reverseFlow) throws ApiException {
+        ApiResponse<IsochroneResponse> resp = isochroneGetWithHttpInfo(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow);
         return resp.getData();
     }
 
@@ -161,12 +161,12 @@ public class IsochroneApi {
      * @param vehicle Possible vehicles are bike, car, foot and [more](https://graphhopper.com/api/1/docs/supported-vehicle-profiles/) (optional, default to car)
      * @param buckets For how many sub intervals an additional polygon should be calculated. (optional, default to 1)
      * @param reverseFlow If &#x60;false&#x60; the flow goes from point to the polygon, if &#x60;true&#x60; the flow goes from the polygon \&quot;inside\&quot; to the point. Example usage for &#x60;false&#x60;&amp;#58; *How many potential customer can be reached within 30min travel time from your store* vs. &#x60;true&#x60;&amp;#58; *How many customers can reach your store within 30min travel time.* (optional, default to false)
-     * @return ApiResponse&lt;GHIsochroneResponse&gt;
+     * @return ApiResponse&lt;IsochroneResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<GHIsochroneResponse> isochroneGetWithHttpInfo(String point, String key, Integer timeLimit, Integer distanceLimit, String vehicle, Integer buckets, Boolean reverseFlow) throws ApiException {
+    public ApiResponse<IsochroneResponse> isochroneGetWithHttpInfo(String point, String key, Integer timeLimit, Integer distanceLimit, String vehicle, Integer buckets, Boolean reverseFlow) throws ApiException {
         com.squareup.okhttp.Call call = isochroneGetValidateBeforeCall(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow, null, null);
-        Type localVarReturnType = new TypeToken<GHIsochroneResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<IsochroneResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -184,7 +184,7 @@ public class IsochroneApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call isochroneGetAsync(String point, String key, Integer timeLimit, Integer distanceLimit, String vehicle, Integer buckets, Boolean reverseFlow, final ApiCallback<GHIsochroneResponse> callback) throws ApiException {
+    public com.squareup.okhttp.Call isochroneGetAsync(String point, String key, Integer timeLimit, Integer distanceLimit, String vehicle, Integer buckets, Boolean reverseFlow, final ApiCallback<IsochroneResponse> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -206,7 +206,7 @@ public class IsochroneApi {
         }
 
         com.squareup.okhttp.Call call = isochroneGetValidateBeforeCall(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<GHIsochroneResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<IsochroneResponse>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }

@@ -28,8 +28,8 @@ import java.io.IOException;
 
 
 import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GHMatrixRequest;
-import com.graphhopper.directions.api.client.model.GHMatrixResponse;
+import com.graphhopper.directions.api.client.model.MatrixRequest;
+import com.graphhopper.directions.api.client.model.MatrixResponse;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -136,11 +136,11 @@ public class MatrixApi {
      * @param toPoint The destination points for the routes. Is a string with the format latitude,longitude. (optional)
      * @param outArray Specifies which arrays should be included in the response. Specify one or more of the following options &#39;weights&#39;, &#39;times&#39;, &#39;distances&#39;. To specify more than one array use e.g. out_array&#x3D;times&amp;out_array&#x3D;distances. The units of the entries of distances are meters, of times are seconds and of weights is arbitrary and it can differ for different vehicles or versions of this API. (optional)
      * @param vehicle The vehicle for which the route should be calculated. Other vehicles are foot, bike, mtb, racingbike, motorcycle, small_truck, bus and truck. See here for the details. (optional, default to car)
-     * @return GHMatrixResponse
+     * @return MatrixResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public GHMatrixResponse matrixGet(String key, List<String> point, String fromPoint, String toPoint, List<String> outArray, String vehicle) throws ApiException {
-        ApiResponse<GHMatrixResponse> resp = matrixGetWithHttpInfo(key, point, fromPoint, toPoint, outArray, vehicle);
+    public MatrixResponse matrixGet(String key, List<String> point, String fromPoint, String toPoint, List<String> outArray, String vehicle) throws ApiException {
+        ApiResponse<MatrixResponse> resp = matrixGetWithHttpInfo(key, point, fromPoint, toPoint, outArray, vehicle);
         return resp.getData();
     }
 
@@ -153,12 +153,12 @@ public class MatrixApi {
      * @param toPoint The destination points for the routes. Is a string with the format latitude,longitude. (optional)
      * @param outArray Specifies which arrays should be included in the response. Specify one or more of the following options &#39;weights&#39;, &#39;times&#39;, &#39;distances&#39;. To specify more than one array use e.g. out_array&#x3D;times&amp;out_array&#x3D;distances. The units of the entries of distances are meters, of times are seconds and of weights is arbitrary and it can differ for different vehicles or versions of this API. (optional)
      * @param vehicle The vehicle for which the route should be calculated. Other vehicles are foot, bike, mtb, racingbike, motorcycle, small_truck, bus and truck. See here for the details. (optional, default to car)
-     * @return ApiResponse&lt;GHMatrixResponse&gt;
+     * @return ApiResponse&lt;MatrixResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<GHMatrixResponse> matrixGetWithHttpInfo(String key, List<String> point, String fromPoint, String toPoint, List<String> outArray, String vehicle) throws ApiException {
+    public ApiResponse<MatrixResponse> matrixGetWithHttpInfo(String key, List<String> point, String fromPoint, String toPoint, List<String> outArray, String vehicle) throws ApiException {
         com.squareup.okhttp.Call call = matrixGetValidateBeforeCall(key, point, fromPoint, toPoint, outArray, vehicle, null, null);
-        Type localVarReturnType = new TypeToken<GHMatrixResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<MatrixResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -175,7 +175,7 @@ public class MatrixApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call matrixGetAsync(String key, List<String> point, String fromPoint, String toPoint, List<String> outArray, String vehicle, final ApiCallback<GHMatrixResponse> callback) throws ApiException {
+    public com.squareup.okhttp.Call matrixGetAsync(String key, List<String> point, String fromPoint, String toPoint, List<String> outArray, String vehicle, final ApiCallback<MatrixResponse> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -197,12 +197,12 @@ public class MatrixApi {
         }
 
         com.squareup.okhttp.Call call = matrixGetValidateBeforeCall(key, point, fromPoint, toPoint, outArray, vehicle, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<GHMatrixResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<MatrixResponse>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /* Build call for matrixPost */
-    private com.squareup.okhttp.Call matrixPostCall(String key, GHMatrixRequest body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call matrixPostCall(String key, MatrixRequest body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
@@ -245,7 +245,7 @@ public class MatrixApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call matrixPostValidateBeforeCall(String key, GHMatrixRequest body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call matrixPostValidateBeforeCall(String key, MatrixRequest body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
         // verify the required parameter 'key' is set
         if (key == null) {
@@ -267,11 +267,11 @@ public class MatrixApi {
      * The GET request has an URL length limitation, which hurts for many locations per request. In those cases use a HTTP POST request with JSON data as input. The only parameter in the URL will be the key which stays in the URL. Both request scenarios are identically except that all singular parameter names are named as their plural for a POST request. 
      * @param key Get your key at graphhopper.com (required)
      * @param body  (optional)
-     * @return GHMatrixResponse
+     * @return MatrixResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public GHMatrixResponse matrixPost(String key, GHMatrixRequest body) throws ApiException {
-        ApiResponse<GHMatrixResponse> resp = matrixPostWithHttpInfo(key, body);
+    public MatrixResponse matrixPost(String key, MatrixRequest body) throws ApiException {
+        ApiResponse<MatrixResponse> resp = matrixPostWithHttpInfo(key, body);
         return resp.getData();
     }
 
@@ -280,12 +280,12 @@ public class MatrixApi {
      * The GET request has an URL length limitation, which hurts for many locations per request. In those cases use a HTTP POST request with JSON data as input. The only parameter in the URL will be the key which stays in the URL. Both request scenarios are identically except that all singular parameter names are named as their plural for a POST request. 
      * @param key Get your key at graphhopper.com (required)
      * @param body  (optional)
-     * @return ApiResponse&lt;GHMatrixResponse&gt;
+     * @return ApiResponse&lt;MatrixResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<GHMatrixResponse> matrixPostWithHttpInfo(String key, GHMatrixRequest body) throws ApiException {
+    public ApiResponse<MatrixResponse> matrixPostWithHttpInfo(String key, MatrixRequest body) throws ApiException {
         com.squareup.okhttp.Call call = matrixPostValidateBeforeCall(key, body, null, null);
-        Type localVarReturnType = new TypeToken<GHMatrixResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<MatrixResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -298,7 +298,7 @@ public class MatrixApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call matrixPostAsync(String key, GHMatrixRequest body, final ApiCallback<GHMatrixResponse> callback) throws ApiException {
+    public com.squareup.okhttp.Call matrixPostAsync(String key, MatrixRequest body, final ApiCallback<MatrixResponse> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -320,7 +320,7 @@ public class MatrixApi {
         }
 
         com.squareup.okhttp.Call call = matrixPostValidateBeforeCall(key, body, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<GHMatrixResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<MatrixResponse>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }

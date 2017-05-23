@@ -28,7 +28,7 @@ import java.io.IOException;
 
 
 import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GHGeocodingResponse;
+import com.graphhopper.directions.api.client.model.GeocodingResponse;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -138,11 +138,11 @@ public class GeocodingApi {
      * @param reverse Set to true to do a reverse Geocoding request (optional)
      * @param point The location bias in the format &#39;latitude,longitude&#39; e.g. point&#x3D;45.93272,11.58803 (optional)
      * @param provider Can be either, default, nominatim, opencagedata (optional)
-     * @return GHGeocodingResponse
+     * @return GeocodingResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public GHGeocodingResponse geocodeGet(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider) throws ApiException {
-        ApiResponse<GHGeocodingResponse> resp = geocodeGetWithHttpInfo(key, q, locale, limit, reverse, point, provider);
+    public GeocodingResponse geocodeGet(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider) throws ApiException {
+        ApiResponse<GeocodingResponse> resp = geocodeGetWithHttpInfo(key, q, locale, limit, reverse, point, provider);
         return resp.getData();
     }
 
@@ -156,12 +156,12 @@ public class GeocodingApi {
      * @param reverse Set to true to do a reverse Geocoding request (optional)
      * @param point The location bias in the format &#39;latitude,longitude&#39; e.g. point&#x3D;45.93272,11.58803 (optional)
      * @param provider Can be either, default, nominatim, opencagedata (optional)
-     * @return ApiResponse&lt;GHGeocodingResponse&gt;
+     * @return ApiResponse&lt;GeocodingResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<GHGeocodingResponse> geocodeGetWithHttpInfo(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider) throws ApiException {
+    public ApiResponse<GeocodingResponse> geocodeGetWithHttpInfo(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider) throws ApiException {
         com.squareup.okhttp.Call call = geocodeGetValidateBeforeCall(key, q, locale, limit, reverse, point, provider, null, null);
-        Type localVarReturnType = new TypeToken<GHGeocodingResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<GeocodingResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -179,7 +179,7 @@ public class GeocodingApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call geocodeGetAsync(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider, final ApiCallback<GHGeocodingResponse> callback) throws ApiException {
+    public com.squareup.okhttp.Call geocodeGetAsync(String key, String q, String locale, Integer limit, Boolean reverse, String point, String provider, final ApiCallback<GeocodingResponse> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -201,7 +201,7 @@ public class GeocodingApi {
         }
 
         com.squareup.okhttp.Call call = geocodeGetValidateBeforeCall(key, q, locale, limit, reverse, point, provider, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<GHGeocodingResponse>(){}.getType();
+        Type localVarReturnType = new TypeToken<GeocodingResponse>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }

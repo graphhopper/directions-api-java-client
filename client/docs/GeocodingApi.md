@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 <a name="geocodeGet"></a>
 # **geocodeGet**
-> GHGeocodingResponse geocodeGet(key, q, locale, limit, reverse, point, provider)
+> GeocodingResponse geocodeGet(key, q, locale, limit, reverse, point, provider)
 
 Execute a Geocoding request
 
@@ -31,7 +31,7 @@ Boolean reverse = true; // Boolean | Set to true to do a reverse Geocoding reque
 String point = "point_example"; // String | The location bias in the format 'latitude,longitude' e.g. point=45.93272,11.58803
 String provider = "provider_example"; // String | Can be either, default, nominatim, opencagedata
 try {
-    GHGeocodingResponse result = apiInstance.geocodeGet(key, q, locale, limit, reverse, point, provider);
+    GeocodingResponse result = apiInstance.geocodeGet(key, q, locale, limit, reverse, point, provider);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling GeocodingApi#geocodeGet");
@@ -53,7 +53,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GHGeocodingResponse**](GHGeocodingResponse.md)
+[**GeocodingResponse**](GeocodingResponse.md)
 
 ### Authorization
 

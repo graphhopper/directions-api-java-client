@@ -15,8 +15,8 @@ package com.graphhopper.directions.api.client.api;
 
 import com.graphhopper.directions.api.client.ApiException;
 import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GHMatrixRequest;
-import com.graphhopper.directions.api.client.model.GHMatrixResponse;
+import com.graphhopper.directions.api.client.model.MatrixRequest;
+import com.graphhopper.directions.api.client.model.MatrixResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -50,7 +50,7 @@ public class MatrixApiTest {
         String toPoint = null;
         List<String> outArray = null;
         String vehicle = null;
-        GHMatrixResponse response = api.matrixGet(key, point, fromPoint, toPoint, outArray, vehicle);
+        MatrixResponse response = api.matrixGet(key, point, fromPoint, toPoint, outArray, vehicle);
 
         // TODO: test validations
     }
@@ -66,8 +66,8 @@ public class MatrixApiTest {
     @Test
     public void matrixPostTest() throws ApiException {
         String key = null;
-        GHMatrixRequest body = null;
-        GHMatrixResponse response = api.matrixPost(key, body);
+        MatrixRequest body = null;
+        MatrixResponse response = api.matrixPost(key, body);
 
         // TODO: test validations
     }

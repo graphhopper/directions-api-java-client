@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * CostMatrix
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T18:34:50.745+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
 public class CostMatrix {
   /**
    * type of cost matrix, currently default or google are supported
