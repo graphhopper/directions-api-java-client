@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.graphhopper</groupId>
-    <artifactId>directions-api-client-optimized</artifactId>
+    <artifactId>directions-api-client-hc</artifactId>
     <version>0.10-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>GraphHopper Directions API Optimized Java Client for the Matrix and Routing API only</name>
+    <name>GraphHopper Directions API hand-crafted Java Client. For the Matrix and Routing API only</name>
      
     <parent>
         <groupId>com.graphhopper</groupId>
