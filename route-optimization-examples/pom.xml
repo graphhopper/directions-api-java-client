@@ -11,8 +11,8 @@
      
     <parent>
         <groupId>com.graphhopper</groupId>
-        <artifactId>directions-api-java-client-parent</artifactId>    	
-        <version>0.9-SNAPSHOT</version>
+        <artifactId>directions-api-client-parent</artifactId>    	
+        <version>0.10-SNAPSHOT</version>
     </parent>  
     
     <properties>
