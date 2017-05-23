@@ -34,7 +34,7 @@ We also have an hand-crafted API client (`client-hc`) for the Matrix and Routing
 ```xml
 <dependency>
   <groupId>com.graphhopper</groupId>
-  <artifactId>directions-api-client-optimized</artifactId>
+  <artifactId>directions-api-client-hc</artifactId>
   <version>[CURRENT-VERSION]</version>
 </dependency>
 ```
