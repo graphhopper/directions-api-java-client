@@ -27,7 +27,7 @@ You can use the API client for many API parts like:
  
 Please see the [examples](https://github.com/graphhopper/directions-api-java-client/tree/master/client-examples/src/main/java/com/graphhopper/directions/api/examples) for specific and up-to-date Java code. This client was auto created via a swagger configuration. You can easily do so on your own too with [this repository](https://github.com/graphhopper/directions-api-clients).
 
-# Optimized client
+# Alternative API Client
 
 We also have an hand-crafted API client (`client-hc`) for the Matrix and Routing API. Which are much more memory efficient e.g. for large matrices.
 
