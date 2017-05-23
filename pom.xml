@@ -63,7 +63,7 @@
     <modules>
         <module>client-optimized</module>
         <module>client</module>
-        <module>route-optimization-examples</module>
+        <module>client-examples</module>
     </modules>
         
     <build>        
