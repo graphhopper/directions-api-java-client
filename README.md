@@ -4,16 +4,38 @@ You can refer to this client in your pom.xml via
 ```xml
 <dependency>
   <groupId>com.graphhopper</groupId>
-  <artifactId>directions-api-java-client</artifactId>
+  <artifactId>directions-api-client</artifactId>
   <version>[CURRENT-VERSION]</version>
 </dependency>
 ```
 
-Please [search maven](https://search.maven.org/#search%7Cga%7C1%7Cdirections-api-java-client-parent) for the latest version.
+Please [search maven](https://search.maven.org/#search%7Cga%7C1%7Cdirections-api-client-parent) for the latest version.
 
 ## License
 
 Apache License 2.0
+
+## Usage
+
+You can use the API client for many API parts like:
+
+ * the Geocoding API
+ * the Route Optimization API
+ * the Routing API
+ * the Matrix API
+ * the Isochrone API
+ 
+Please see the examples repository for specific and up-to-date Java code.
+
+# Optimized client
+
+We also have an optimized (hand crafted) API client for the Matrix and Routing API. Which are much more memory efficient e.g. for large matrices.
+
+<dependency>
+  <groupId>com.graphhopper</groupId>
+  <artifactId>directions-api-client-optimized</artifactId>
+  <version>[CURRENT-VERSION]</version>
+</dependency>
 
 ## Usage
 
@@ -121,46 +143,3 @@ an Android client written from the community. It also supports
 online map tiles. You can see this code in action in 
 [Geopaparazzi](http://geopaparazzi.github.io/geopaparazzi/), 
 [OSMNavigator](https://github.com/MKergall/osmbonuspack/wiki/OSMNavigator) and [more](https://github.com/geopaparazzi/geopaparazzi/wiki/Projects-Using-It)
-
-# Route Optimization API
-
-If you setOptimize("true") then the locations will be optimized according to the best overall route.
-For more advanced features like multiple vehicles and capacity restrictions etc. you need to call the Route Optimization API.
-The client for the Route Optimization API is located in the folder "route-optimization".
-
-## Usage
-
-See the [examples](./route-optimization/src/main/java/com/graphhopper/routeopt/examples) on how to use this client.
-
-## Maven
-
-The route optimization client is in the maven central repository, thus you can just reference it in your pom like:
-
-```xml
-<dependency>
-  <groupId>com.graphhopper</groupId>
-  <artifactId>directions-api-java-client-route-opt</artifactId>
-  <version>[CURRENT-VERSION]</version>
-</dependency>
-```
-
-## Customization
-
-If you want to build it from source please follow the guide for java [here](https://github.com/graphhopper/directions-api-clients-route-optimization).
-
-# Geocoding
-
-## Usage
-
-See the [tests](./geocoding/src/test/java/io/swagger/client/api) on how to use this client.
-
-## Generate from Swagger
-
-Download Swagger Codegen CLI
-```
-get https://oss.sonatype.org/content/repositories/releases/io/swagger/swagger-codegen-cli/2.2.1/swagger-codegen-cli-2.2.1.jar
-```
-
-```
-java -jar swagger-codegen-cli-2.2.1.jar generate -i geocoding_swagger.yaml -l java -o geocoding -c geocoding-config.json
-```
