@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 <a name="isochroneGet"></a>
 # **isochroneGet**
-> GHIsochroneResponse isochroneGet(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow)
+> IsochroneResponse isochroneGet(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow)
 
 Isochrone Request
 
@@ -31,7 +31,7 @@ String vehicle = "car"; // String | Possible vehicles are bike, car, foot and [m
 Integer buckets = 1; // Integer | For how many sub intervals an additional polygon should be calculated.
 Boolean reverseFlow = false; // Boolean | If `false` the flow goes from point to the polygon, if `true` the flow goes from the polygon \"inside\" to the point. Example usage for `false`&#58; *How many potential customer can be reached within 30min travel time from your store* vs. `true`&#58; *How many customers can reach your store within 30min travel time.*
 try {
-    GHIsochroneResponse result = apiInstance.isochroneGet(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow);
+    IsochroneResponse result = apiInstance.isochroneGet(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling IsochroneApi#isochroneGet");
@@ -53,7 +53,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GHIsochroneResponse**](GHIsochroneResponse.md)
+[**IsochroneResponse**](IsochroneResponse.md)
 
 ### Authorization
 

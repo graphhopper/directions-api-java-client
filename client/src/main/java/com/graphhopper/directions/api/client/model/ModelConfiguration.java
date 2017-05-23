@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * ModelConfiguration
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T18:34:50.745+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
 public class ModelConfiguration {
   @SerializedName("routing")
   private Routing routing = null;

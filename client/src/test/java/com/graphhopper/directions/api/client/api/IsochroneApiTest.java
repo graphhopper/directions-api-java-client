@@ -15,7 +15,7 @@ package com.graphhopper.directions.api.client.api;
 
 import com.graphhopper.directions.api.client.ApiException;
 import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GHIsochroneResponse;
+import com.graphhopper.directions.api.client.model.IsochroneResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -50,7 +50,7 @@ public class IsochroneApiTest {
         String vehicle = null;
         Integer buckets = null;
         Boolean reverseFlow = null;
-        GHIsochroneResponse response = api.isochroneGet(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow);
+        IsochroneResponse response = api.isochroneGet(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow);
 
         // TODO: test validations
     }
