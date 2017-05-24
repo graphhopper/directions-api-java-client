@@ -14,15 +14,13 @@
 package com.graphhopper.directions.api.client.api;
 
 import com.graphhopper.directions.api.client.ApiException;
-import com.graphhopper.directions.api.client.model.GHError;
 import com.graphhopper.directions.api.client.model.RouteResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * API tests for RoutingApi
@@ -32,20 +30,20 @@ public class RoutingApiTest {
 
     private final RoutingApi api = new RoutingApi();
 
-    
+    public static final String KEY = "614b8305-b4db-48c9-bf4a-40de90919939";
+
     /**
      * Routing Request
-     *
+     * <p>
      * The GraphHopper Routing API allows to calculate route and implement navigation via the turn instructions
      *
-     * @throws ApiException
-     *          if the Api call fails
+     * @throws ApiException if the Api call fails
      */
     @Test
     public void routeGetTest() throws ApiException {
-        List<String> point = null;
-        Boolean pointsEncoded = null;
-        String key = null;
+        List<String> point = Arrays.asList(new String[]{"48.802195, 9.125709", "48.872699, 9.298057"});
+        Boolean pointsEncoded = false;
+        String key = KEY;
         String locale = null;
         Boolean instructions = null;
         String vehicle = null;
@@ -65,8 +63,7 @@ public class RoutingApiTest {
         Integer alternativeRouteMaxWeightFactor = null;
         Integer alternativeRouteMaxShareFactor = null;
         RouteResponse response = api.routeGet(point, pointsEncoded, key, locale, instructions, vehicle, elevation, calcPoints, pointHint, chDisable, weighting, edgeTraversal, algorithm, heading, headingPenalty, passThrough, roundTripDistance, roundTripSeed, alternativeRouteMaxPaths, alternativeRouteMaxWeightFactor, alternativeRouteMaxShareFactor);
-
-        // TODO: test validations
+        assertEquals(1, response.getPaths().size());
     }
-    
+
 }

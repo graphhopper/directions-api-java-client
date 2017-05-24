@@ -14,16 +14,9 @@
 package com.graphhopper.directions.api.client.api;
 
 import com.graphhopper.directions.api.client.ApiException;
-import com.graphhopper.directions.api.client.model.GHError;
-import com.graphhopper.directions.api.client.model.GeocodingLocation;
 import com.graphhopper.directions.api.client.model.GeocodingResponse;
 import org.junit.Test;
 import org.junit.Ignore;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
@@ -51,12 +44,12 @@ public class GeocodingApiTest {
         // Default Limit and Locale
         // TODO: Why is default limit 15? Documentation says it's 10
         // see: https://graphhopper.com/api/1/docs/geocoding/
-        assertEquals(15,response.getHits().size());
-        assertEquals("en",response.getLocale());
+        assertEquals(15, response.getHits().size());
+        assertEquals("en", response.getLocale());
 
-        assertEquals("Wernau (Neckar)",response.getHits().get(0).getName());
-        assertEquals("boundary",response.getHits().get(0).getOsmKey());
-        assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
+        assertEquals("Wernau (Neckar)", response.getHits().get(0).getName());
+        assertEquals("boundary", response.getHits().get(0).getOsmKey());
+        assertEquals(48.68825915, response.getHits().get(0).getPoint().getLat(), .001);
     }
 
     @Test
@@ -72,11 +65,11 @@ public class GeocodingApiTest {
 
         // Default Limit and Locale
         // TODO: Why is it 5 in this case?
-        assertEquals(5,response.getHits().size());
-        assertEquals("en",response.getLocale());
+        assertEquals(5, response.getHits().size());
+        assertEquals("en", response.getLocale());
 
-        assertEquals("Wernau (Neckar)",response.getHits().get(0).getName());
-        assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
+        assertEquals("Wernau (Neckar)", response.getHits().get(0).getName());
+        assertEquals(48.68825915, response.getHits().get(0).getPoint().getLat(), .001);
     }
 
     @Test
@@ -91,11 +84,11 @@ public class GeocodingApiTest {
         GeocodingResponse response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
 
         // Default Limit and Locale
-        assertEquals(1,response.getHits().size());
-        assertEquals("de",response.getLocale());
+        assertEquals(1, response.getHits().size());
+        assertEquals("de", response.getLocale());
 
-        assertEquals("Wernau (Neckar)",response.getHits().get(0).getName());
-        assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
+        assertEquals("Wernau (Neckar)", response.getHits().get(0).getName());
+        assertEquals(48.68825915, response.getHits().get(0).getPoint().getLat(), .001);
     }
 
     @Test
@@ -111,11 +104,11 @@ public class GeocodingApiTest {
         GeocodingResponse response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
 
         // Default Limit and Locale
-        assertEquals(1,response.getHits().size());
-        assertEquals("de",response.getLocale());
+        assertEquals(1, response.getHits().size());
+        assertEquals("de", response.getLocale());
 
-        assertEquals("Wernau (Neckar), Baden-Württemberg, Deutschland",response.getHits().get(0).getName());
-        assertEquals(48.68825915,response.getHits().get(0).getPoint().getLat(), .001);
+        assertEquals("Wernau (Neckar), Baden-Württemberg, Deutschland", response.getHits().get(0).getName());
+        assertEquals(48.68825915, response.getHits().get(0).getPoint().getLat(), .001);
     }
 
     @Test(expected = ApiException.class)
@@ -156,5 +149,5 @@ public class GeocodingApiTest {
         GeocodingResponse response = api.geocodeGet(key, q, locale, limit, reverse, point, provider);
         fail("No excpetion?");
     }
-    
+
 }
