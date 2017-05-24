@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * GeocodingLocation
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-24T14:34:11.605+10:00")
 public class GeocodingLocation {
   @SerializedName("point")
   private GeocodingPoint point = null;
@@ -32,6 +32,9 @@ public class GeocodingLocation {
 
   @SerializedName("osm_type")
   private String osmType = null;
+
+  @SerializedName("osm_key")
+  private String osmKey = null;
 
   @SerializedName("name")
   private String name = null;
@@ -106,6 +109,24 @@ public class GeocodingLocation {
 
   public void setOsmType(String osmType) {
     this.osmType = osmType;
+  }
+
+  public GeocodingLocation osmKey(String osmKey) {
+    this.osmKey = osmKey;
+    return this;
+  }
+
+   /**
+   * The osm key of the result like `place` or `amenity`
+   * @return osmKey
+  **/
+  @ApiModelProperty(example = "null", value = "The osm key of the result like `place` or `amenity`")
+  public String getOsmKey() {
+    return osmKey;
+  }
+
+  public void setOsmKey(String osmKey) {
+    this.osmKey = osmKey;
   }
 
   public GeocodingLocation name(String name) {
@@ -247,6 +268,7 @@ public class GeocodingLocation {
     return Objects.equals(this.point, geocodingLocation.point) &&
         Objects.equals(this.osmId, geocodingLocation.osmId) &&
         Objects.equals(this.osmType, geocodingLocation.osmType) &&
+        Objects.equals(this.osmKey, geocodingLocation.osmKey) &&
         Objects.equals(this.name, geocodingLocation.name) &&
         Objects.equals(this.country, geocodingLocation.country) &&
         Objects.equals(this.city, geocodingLocation.city) &&
@@ -258,7 +280,7 @@ public class GeocodingLocation {
 
   @Override
   public int hashCode() {
-    return Objects.hash(point, osmId, osmType, name, country, city, state, street, housenumber, postcode);
+    return Objects.hash(point, osmId, osmType, osmKey, name, country, city, state, street, housenumber, postcode);
   }
 
 
@@ -270,6 +292,7 @@ public class GeocodingLocation {
     sb.append("    point: ").append(toIndentedString(point)).append("\n");
     sb.append("    osmId: ").append(toIndentedString(osmId)).append("\n");
     sb.append("    osmType: ").append(toIndentedString(osmType)).append("\n");
+    sb.append("    osmKey: ").append(toIndentedString(osmKey)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    country: ").append(toIndentedString(country)).append("\n");
     sb.append("    city: ").append(toIndentedString(city)).append("\n");

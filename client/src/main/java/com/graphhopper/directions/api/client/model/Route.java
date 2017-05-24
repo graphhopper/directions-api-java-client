@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Route
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-24T14:34:11.605+10:00")
 public class Route {
   @SerializedName("vehicle_id")
   private String vehicleId = null;

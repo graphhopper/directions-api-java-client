@@ -25,7 +25,7 @@ import java.util.List;
  * JSON data of matrix response
  */
 @ApiModel(description = "JSON data of matrix response")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-24T14:34:11.605+10:00")
 public class CostMatrixData {
   @SerializedName("times")
   private List<List<Long>> times = new ArrayList<List<Long>>();
