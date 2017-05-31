@@ -61,9 +61,9 @@
         <url>https://github.com/graphhopper/directions-api-java-client/issues</url>
     </issueManagement>
     <modules>
-        <module>client-optimized</module>
+        <module>client-hc</module>
         <module>client</module>
-        <module>route-optimization-examples</module>
+        <module>client-examples</module>
     </modules>
         
     <build>        
