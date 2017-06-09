@@ -157,7 +157,7 @@ public class GraphHopperWebIT {
         GHResponse res = gh.route(req);
         InstructionList instructions = res.getBest().getInstructions();
         String finishInstructionName = instructions.get(instructions.size() - 1).getName();
-        assertEquals("Finish!", finishInstructionName);
+        assertEquals("Arrive at destination", finishInstructionName);
     }
 
     @Test
