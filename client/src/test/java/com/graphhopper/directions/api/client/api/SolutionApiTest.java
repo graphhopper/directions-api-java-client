@@ -18,11 +18,6 @@ import com.graphhopper.directions.api.client.model.Response;
 import org.junit.Test;
 import org.junit.Ignore;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * API tests for SolutionApi
  */
@@ -31,14 +26,13 @@ public class SolutionApiTest {
 
     private final SolutionApi api = new SolutionApi();
 
-    
+
     /**
      * Return the solution associated to the jobId
+     * <p>
+     * This endpoint returns the solution of a large problems. You can fetch it with the job_id, you have been sent.
      *
-     * This endpoint returns the solution of a large problems. You can fetch it with the job_id, you have been sent. 
-     *
-     * @throws ApiException
-     *          if the Api call fails
+     * @throws ApiException if the Api call fails
      */
     @Test
     public void getSolutionTest() throws ApiException {
@@ -48,5 +42,5 @@ public class SolutionApiTest {
 
         // TODO: test validations
     }
-    
+
 }
