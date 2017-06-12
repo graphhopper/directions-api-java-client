@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * IsochroneResponsePolygonProperties
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-24T14:34:11.605+10:00")
+
 public class IsochroneResponsePolygonProperties {
   @SerializedName("bucket")
   private Integer bucket = null;

@@ -22,7 +22,7 @@ import java.util.List;
  * An array containing coordinates
  */
 @ApiModel(description = "An array containing coordinates")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-24T14:34:11.605+10:00")
+
 public class ResponseCoordinatesArray extends ArrayList<List> {
 
   @Override
