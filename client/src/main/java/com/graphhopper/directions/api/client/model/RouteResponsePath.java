@@ -26,7 +26,7 @@ import java.util.List;
  * A found path
  */
 @ApiModel(description = "A found path")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+
 public class RouteResponsePath {
   @SerializedName("distance")
   private Double distance = null;

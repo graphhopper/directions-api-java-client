@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * MatrixResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+
 public class MatrixResponse {
   @SerializedName("distances")
   private List<List<BigDecimal>> distances = new ArrayList<List<BigDecimal>>();

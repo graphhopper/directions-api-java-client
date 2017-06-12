@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
  * A found path
  */
 @ApiModel(description = "A found path")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+
 public class IsochroneResponsePolygon {
   @SerializedName("properties")
   private IsochroneResponsePolygonProperties properties = null;

@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Objective
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+
 public class Objective {
   /**
    * type of objective function, i.e. min or min-max 

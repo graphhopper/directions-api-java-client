@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * JobId
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+
 public class JobId {
   @SerializedName("job_id")
   private String jobId = null;

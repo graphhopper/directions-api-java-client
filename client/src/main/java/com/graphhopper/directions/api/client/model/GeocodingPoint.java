@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * GeocodingPoint
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+
 public class GeocodingPoint {
   @SerializedName("lat")
   private Double lat = null;

@@ -13,7 +13,7 @@
 
 package com.graphhopper.directions.api.client;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+
 public class StringUtil {
   /**
    * Check if the given array contains the given value (with case-insensitive comparison).

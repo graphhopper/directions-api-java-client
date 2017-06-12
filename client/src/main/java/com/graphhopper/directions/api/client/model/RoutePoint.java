@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * RoutePoint
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-05-23T23:21:18.836+02:00")
+
 public class RoutePoint {
   @SerializedName("type")
   private String type = null;
