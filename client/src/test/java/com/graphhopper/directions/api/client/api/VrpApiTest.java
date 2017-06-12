@@ -19,6 +19,11 @@ import com.graphhopper.directions.api.client.model.Request;
 import org.junit.Test;
 import org.junit.Ignore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * API tests for VrpApi
  */
@@ -27,13 +32,14 @@ public class VrpApiTest {
 
     private final VrpApi api = new VrpApi();
 
-
+    
     /**
      * Solves vehicle routing problems
-     * <p>
+     *
      * This endpoint for solving vehicle routing problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.
      *
-     * @throws ApiException if the Api call fails
+     * @throws ApiException
+     *          if the Api call fails
      */
     @Test
     public void postVrpTest() throws ApiException {
@@ -43,5 +49,5 @@ public class VrpApiTest {
 
         // TODO: test validations
     }
-
+    
 }
