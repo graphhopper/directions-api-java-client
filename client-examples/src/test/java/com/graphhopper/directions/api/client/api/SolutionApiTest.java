@@ -14,40 +14,33 @@
 package com.graphhopper.directions.api.client.api;
 
 import com.graphhopper.directions.api.client.ApiException;
-import com.graphhopper.directions.api.client.model.JobId;
-import com.graphhopper.directions.api.client.model.Request;
+import com.graphhopper.directions.api.client.model.Response;
 import org.junit.Test;
 import org.junit.Ignore;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
- * API tests for VrpApi
+ * API tests for SolutionApi
  */
 @Ignore
-public class VrpApiTest {
+public class SolutionApiTest {
 
-    private final VrpApi api = new VrpApi();
+    private final SolutionApi api = new SolutionApi();
 
-    
+
     /**
-     * Solves vehicle routing problems
+     * Return the solution associated to the jobId
+     * <p>
+     * This endpoint returns the solution of a large problems. You can fetch it with the job_id, you have been sent.
      *
-     * This endpoint for solving vehicle routing problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.
-     *
-     * @throws ApiException
-     *          if the Api call fails
+     * @throws ApiException if the Api call fails
      */
     @Test
-    public void postVrpTest() throws ApiException {
+    public void getSolutionTest() throws ApiException {
         String key = null;
-        Request body = null;
-        JobId response = api.postVrp(key, body);
+        String jobId = null;
+        Response response = api.getSolution(key, jobId);
 
         // TODO: test validations
     }
-    
+
 }

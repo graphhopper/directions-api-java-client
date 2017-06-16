@@ -14,15 +14,12 @@
 package com.graphhopper.directions.api.client.api;
 
 import com.graphhopper.directions.api.client.ApiException;
-import com.graphhopper.directions.api.client.model.GHError;
 import com.graphhopper.directions.api.client.model.IsochroneResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * API tests for IsochroneApi
@@ -32,27 +29,27 @@ public class IsochroneApiTest {
 
     private final IsochroneApi api = new IsochroneApi();
 
-    
+    public static final String KEY = "614b8305-b4db-48c9-bf4a-40de90919939";
+
     /**
      * Isochrone Request
+     * <p>
+     * The GraphHopper Isochrone API allows calculating an isochrone of a locations means to calculate &#39;a line connecting points at which a vehicle arrives at the same time,&#39; see [Wikipedia](http://en.wikipedia.org/wiki/Isochrone_map). It is also called **reachability** or **walkability**.
      *
-     * The GraphHopper Isochrone API allows calculating an isochrone of a locations means to calculate &#39;a line connecting points at which a vehicle arrives at the same time,&#39; see [Wikipedia](http://en.wikipedia.org/wiki/Isochrone_map). It is also called **reachability** or **walkability**. 
-     *
-     * @throws ApiException
-     *          if the Api call fails
+     * @throws ApiException if the Api call fails
      */
     @Test
     public void isochroneGetTest() throws ApiException {
-        String point = null;
-        String key = null;
+        String point = "-33.678555,151.303432";
+        String key = KEY;
         Integer timeLimit = null;
         Integer distanceLimit = null;
         String vehicle = null;
         Integer buckets = null;
         Boolean reverseFlow = null;
         IsochroneResponse response = api.isochroneGet(point, key, timeLimit, distanceLimit, vehicle, buckets, reverseFlow);
+        assertEquals(1, response.getPolygons().size());
 
-        // TODO: test validations
     }
-    
+
 }
