@@ -205,6 +205,22 @@ public class GraphHopperWebIT {
         assertTrue(res.endsWith("</gpx>"));
     }
 
+    @Test
+    public void testCreateGPXFromInstructionList() {
+        GHRequest req = new GHRequest().
+                addPoint(new GHPoint(49.6724, 11.3494)).
+                addPoint(new GHPoint(49.6550, 11.4180));
+        req.getHints().put("elevation", false);
+        req.getHints().put("instructions", true);
+        req.getHints().put("calc_points", true);
+        GHResponse ghResponse = gh.route(req);
+        String gpx = ghResponse.getBest().getInstructions().createGPX();
+        assertTrue(gpx.contains("<gpx"));
+        assertTrue(gpx.contains("<rtept lat="));
+        assertTrue(gpx.contains("<trk><name>"));
+        assertTrue(gpx.endsWith("</gpx>"));
+    }
+
     void isBetween(double from, double to, double expected) {
         assertTrue("expected value " + expected + " was smaller than limit " + from, expected >= from);
         assertTrue("expected value " + expected + " was bigger than limit " + to, expected <= to);
@@ -223,15 +239,15 @@ public class GraphHopperWebIT {
         }
 
         // ... only weight:
-        assertEquals(1680, res.getWeight(1, 2), 5);
+        assertEquals(1685, res.getWeight(1, 2), 5);
 
         req = AbstractGHMatrixWebTester.createRequest();
         req.addOutArray("weights");
         req.addOutArray("distances");
         res = ghMatrix.route(req);
 
-        assertEquals(9637, res.getDistance(1, 2), 20);
-        assertEquals(1680, res.getWeight(1, 2), 10);
+        assertEquals(9664, res.getDistance(1, 2), 20);
+        assertEquals(1685, res.getWeight(1, 2), 10);
     }
 
     @Test
