@@ -38,15 +38,15 @@ public abstract class AbstractGraphHopperMatrixWebIntegrationTester {
         }
 
         // ... only weight:
-        assertEquals(1680, res.getWeight(1, 2), 5);
+        assertEquals(1685, res.getWeight(1, 2), 5);
 
         req = AbstractGHMatrixWebTester.createRequest();
         req.addOutArray("weights");
         req.addOutArray("distances");
         res = ghMatrix.route(req);
 
-        assertEquals(9637, res.getDistance(1, 2), 20);
-        assertEquals(1680, res.getWeight(1, 2), 10);
+        assertEquals(9664, res.getDistance(1, 2), 20);
+        assertEquals(1685, res.getWeight(1, 2), 10);
     }
 
     @Test
