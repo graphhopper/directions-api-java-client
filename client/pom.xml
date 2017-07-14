@@ -4,7 +4,7 @@
   <groupId>com.graphhopper</groupId>
   <artifactId>directions-api-client</artifactId>
   <packaging>jar</packaging>
-  <name>GraphHopper Directions API Java Client</name>
+  <name>directions-api-client</name>
   <version>0.10-SNAPSHOT</version>
   <url>https://github.com/swagger-api/swagger-codegen</url>
   <description>Swagger Java</description>
@@ -16,12 +16,6 @@
   <prerequisites>
     <maven>2.2.0</maven>
   </prerequisites>
-  
-  <parent>
-    <groupId>com.graphhopper</groupId>
-    <artifactId>directions-api-client-parent</artifactId>
-    <version>0.10-SNAPSHOT</version>
-  </parent>
 
   <licenses>
     <license>

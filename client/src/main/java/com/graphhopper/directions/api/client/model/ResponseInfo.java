@@ -30,7 +30,7 @@ public class ResponseInfo {
   private List<String> copyrights = new ArrayList<String>();
 
   @SerializedName("took")
-  private Integer took = null;
+  private Double took = null;
 
   public ResponseInfo copyrights(List<String> copyrights) {
     this.copyrights = copyrights;
@@ -55,7 +55,7 @@ public class ResponseInfo {
     this.copyrights = copyrights;
   }
 
-  public ResponseInfo took(Integer took) {
+  public ResponseInfo took(Double took) {
     this.took = took;
     return this;
   }
@@ -65,11 +65,11 @@ public class ResponseInfo {
    * @return took
   **/
   @ApiModelProperty(example = "null", value = "")
-  public Integer getTook() {
+  public Double getTook() {
     return took;
   }
 
-  public void setTook(Integer took) {
+  public void setTook(Double took) {
     this.took = took;
   }
 

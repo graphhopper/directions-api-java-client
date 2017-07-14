@@ -80,6 +80,15 @@ public class VehicleType {
   @SerializedName("service_time_factor")
   private Double serviceTimeFactor = null;
 
+  @SerializedName("cost_per_meter")
+  private Double costPerMeter = null;
+
+  @SerializedName("cost_per_second")
+  private Double costPerSecond = null;
+
+  @SerializedName("cost_per_activation")
+  private Double costPerActivation = null;
+
   public VehicleType typeId(String typeId) {
     this.typeId = typeId;
     return this;
@@ -175,6 +184,60 @@ public class VehicleType {
     this.serviceTimeFactor = serviceTimeFactor;
   }
 
+  public VehicleType costPerMeter(Double costPerMeter) {
+    this.costPerMeter = costPerMeter;
+    return this;
+  }
+
+   /**
+   * cost parameter per distance unit, here meter is used
+   * @return costPerMeter
+  **/
+  @ApiModelProperty(example = "null", value = "cost parameter per distance unit, here meter is used")
+  public Double getCostPerMeter() {
+    return costPerMeter;
+  }
+
+  public void setCostPerMeter(Double costPerMeter) {
+    this.costPerMeter = costPerMeter;
+  }
+
+  public VehicleType costPerSecond(Double costPerSecond) {
+    this.costPerSecond = costPerSecond;
+    return this;
+  }
+
+   /**
+   * cost parameter per time unit, here second is used
+   * @return costPerSecond
+  **/
+  @ApiModelProperty(example = "null", value = "cost parameter per time unit, here second is used")
+  public Double getCostPerSecond() {
+    return costPerSecond;
+  }
+
+  public void setCostPerSecond(Double costPerSecond) {
+    this.costPerSecond = costPerSecond;
+  }
+
+  public VehicleType costPerActivation(Double costPerActivation) {
+    this.costPerActivation = costPerActivation;
+    return this;
+  }
+
+   /**
+   * cost parameter vehicle activation, i.e. fixed costs per vehicle
+   * @return costPerActivation
+  **/
+  @ApiModelProperty(example = "null", value = "cost parameter vehicle activation, i.e. fixed costs per vehicle")
+  public Double getCostPerActivation() {
+    return costPerActivation;
+  }
+
+  public void setCostPerActivation(Double costPerActivation) {
+    this.costPerActivation = costPerActivation;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -189,12 +252,15 @@ public class VehicleType {
         Objects.equals(this.profile, vehicleType.profile) &&
         Objects.equals(this.capacity, vehicleType.capacity) &&
         Objects.equals(this.speedFactor, vehicleType.speedFactor) &&
-        Objects.equals(this.serviceTimeFactor, vehicleType.serviceTimeFactor);
+        Objects.equals(this.serviceTimeFactor, vehicleType.serviceTimeFactor) &&
+        Objects.equals(this.costPerMeter, vehicleType.costPerMeter) &&
+        Objects.equals(this.costPerSecond, vehicleType.costPerSecond) &&
+        Objects.equals(this.costPerActivation, vehicleType.costPerActivation);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(typeId, profile, capacity, speedFactor, serviceTimeFactor);
+    return Objects.hash(typeId, profile, capacity, speedFactor, serviceTimeFactor, costPerMeter, costPerSecond, costPerActivation);
   }
 
 
@@ -208,6 +274,9 @@ public class VehicleType {
     sb.append("    capacity: ").append(toIndentedString(capacity)).append("\n");
     sb.append("    speedFactor: ").append(toIndentedString(speedFactor)).append("\n");
     sb.append("    serviceTimeFactor: ").append(toIndentedString(serviceTimeFactor)).append("\n");
+    sb.append("    costPerMeter: ").append(toIndentedString(costPerMeter)).append("\n");
+    sb.append("    costPerSecond: ").append(toIndentedString(costPerSecond)).append("\n");
+    sb.append("    costPerActivation: ").append(toIndentedString(costPerActivation)).append("\n");
     sb.append("}");
     return sb.toString();
   }

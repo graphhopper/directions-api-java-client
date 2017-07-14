@@ -9,6 +9,9 @@ Name | Type | Description | Notes
 **capacity** | **List&lt;Integer&gt;** | array of capacity dimensions |  [optional]
 **speedFactor** | **Double** | speed_factor of vehicle type |  [optional]
 **serviceTimeFactor** | **Double** | service time factor of vehicle type |  [optional]
+**costPerMeter** | **Double** | cost parameter per distance unit, here meter is used |  [optional]
+**costPerSecond** | **Double** | cost parameter per time unit, here second is used |  [optional]
+**costPerActivation** | **Double** | cost parameter vehicle activation, i.e. fixed costs per vehicle |  [optional]
 
 
 <a name="ProfileEnum"></a>

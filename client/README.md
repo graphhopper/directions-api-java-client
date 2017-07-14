@@ -28,7 +28,7 @@ Add this dependency to your project's POM:
 <dependency>
     <groupId>com.graphhopper</groupId>
     <artifactId>directions-api-client</artifactId>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.10-SNAPSHOT</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -38,7 +38,7 @@ Add this dependency to your project's POM:
 Add this dependency to your project's build file:
 
 ```groovy
-compile "com.graphhopper:directions-api-client:0.9-SNAPSHOT"
+compile "com.graphhopper:directions-api-client:0.10-SNAPSHOT"
 ```
 
 ### Others
@@ -49,7 +49,7 @@ At first generate the JAR by executing:
 
 Then manually install the following JARs:
 
-* target/directions-api-client-0.9-SNAPSHOT.jar
+* target/directions-api-client-0.10-SNAPSHOT.jar
 * target/lib/*.jar
 
 ## Getting Started

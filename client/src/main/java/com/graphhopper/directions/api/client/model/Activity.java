@@ -48,7 +48,10 @@ public class Activity {
     PICKUP("pickup"),
     
     @SerializedName("delivery")
-    DELIVERY("delivery");
+    DELIVERY("delivery"),
+    
+    @SerializedName("break")
+    BREAK("break");
 
     private String value;
 
