@@ -17,7 +17,7 @@ public class IsochroneExample {
 
     private void start() {
         IsochroneApi isochrone = new IsochroneApi();
-        String key = System.getProperty("graphhopper.key", "0ae2a909-38e7-4d3c-a315-9478e0c6399d");
+        String key = System.getProperty("graphhopper.key", "");
         try {
             // Please note: the request string for the point has the order "lat,lon" but the response contains
             // an array with the order [lon,lat]
